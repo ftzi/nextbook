@@ -1,0 +1,22 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "stream",
+	"globalEnv": ["NODE_ENV"],
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$"],
+			"outputs": [".next/**", "!.next/cache/**"]
+		},
+		"ts": {
+			"dependsOn": ["^ts"]
+		},
+		"test": {
+			"dependsOn": ["^test"]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		}
+	}
+}
