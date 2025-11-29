@@ -131,13 +131,22 @@ export function ControlsPanel({
 				<div className={resizeHandleClassName} onMouseDown={handleResizeStart} />
 			)}
 			<div className={styles.header}>
-				<span className={styles.headerTitle}>Controls</span>
-				<div className={styles.headerActions}>
+				{position === "right" && (
 					<Tooltip content={collapsed ? "Expand" : "Collapse"}>
 						<button type="button" onClick={() => onCollapsedChange(!collapsed)} className={styles.positionButton}>
 							{getCollapseIcon()}
 						</button>
 					</Tooltip>
+				)}
+				<span className={styles.headerTitle}>Controls</span>
+				<div className={styles.headerActions}>
+					{position === "bottom" && (
+						<Tooltip content={collapsed ? "Expand" : "Collapse"}>
+							<button type="button" onClick={() => onCollapsedChange(!collapsed)} className={styles.positionButton}>
+								{getCollapseIcon()}
+							</button>
+						</Tooltip>
+					)}
 					<Tooltip content={position === "bottom" ? "Move to right" : "Move to bottom"}>
 						<button
 							type="button"
@@ -166,14 +175,7 @@ export function ControlsPanel({
 			</div>
 			{!collapsed && (
 				<div className={styles.controlsList}>
-					{controls.map((control) => (
-						<ControlField
-							key={control.name}
-							control={control}
-							value={values[control.name]}
-							onChange={(value) => onChange(control.name, value)}
-						/>
-					))}
+					<GroupedControls controls={controls} values={values} onChange={onChange} />
 				</div>
 			)}
 		</div>
@@ -182,13 +184,78 @@ export function ControlsPanel({
 
 export { DEFAULT_SIZE_BOTTOM, DEFAULT_SIZE_RIGHT }
 
+type GroupedControlsProps = {
+	controls: ControlConfig[]
+	values: Record<string, unknown>
+	onChange: (name: string, value: unknown) => void
+}
+
+function GroupedControls({ controls, values, onChange }: GroupedControlsProps) {
+	// Group controls by type category
+	const textControls = controls.filter((c) => c.type === "text" || c.type === "number")
+	const selectControls = controls.filter((c) => c.type === "select")
+	const booleanControls = controls.filter((c) => c.type === "boolean")
+
+	return (
+		<>
+			{/* Text/Number inputs */}
+			{textControls.length > 0 && (
+				<div className={styles.controlGroup}>
+					<div className={styles.controlRow}>
+						{textControls.map((control) => (
+							<TextControl
+								key={control.name}
+								control={control}
+								value={values[control.name]}
+								onChange={(value) => onChange(control.name, value)}
+							/>
+						))}
+					</div>
+				</div>
+			)}
+
+			{/* Select inputs */}
+			{selectControls.length > 0 && (
+				<div className={styles.controlGroup}>
+					<div className={styles.controlRow}>
+						{selectControls.map((control) => (
+							<SelectControl
+								key={control.name}
+								control={control}
+								value={values[control.name]}
+								onChange={(value) => onChange(control.name, value)}
+							/>
+						))}
+					</div>
+				</div>
+			)}
+
+			{/* Boolean switches */}
+			{booleanControls.length > 0 && (
+				<div className={styles.controlGroup}>
+					<div className={styles.switchRow}>
+						{booleanControls.map((control) => (
+							<SwitchControl
+								key={control.name}
+								control={control}
+								value={values[control.name]}
+								onChange={(value) => onChange(control.name, value)}
+							/>
+						))}
+					</div>
+				</div>
+			)}
+		</>
+	)
+}
+
 type ControlFieldProps = {
 	control: ControlConfig
 	value: unknown
 	onChange: (value: unknown) => void
 }
 
-function ControlField({ control, value, onChange }: ControlFieldProps) {
+function TextControl({ control, value, onChange }: ControlFieldProps) {
 	const { type, name, label } = control
 
 	return (
@@ -196,48 +263,57 @@ function ControlField({ control, value, onChange }: ControlFieldProps) {
 			<label htmlFor={`control-${name}`} className={styles.label}>
 				{label}
 			</label>
-			{type === "text" && (
-				<input
-					id={`control-${name}`}
-					type="text"
-					value={String(value ?? "")}
-					onChange={(e) => onChange(e.target.value)}
-					className={styles.input}
-				/>
-			)}
-			{type === "number" && (
-				<input
-					id={`control-${name}`}
-					type="number"
-					value={Number(value ?? 0)}
-					onChange={(e) => onChange(Number(e.target.value))}
-					className={styles.input}
-				/>
-			)}
-			{type === "boolean" && (
-				<button
-					type="button"
-					id={`control-${name}`}
-					onClick={() => onChange(!value)}
-					className={`${styles.toggle} ${value ? styles.toggleActive : ""}`}
-				>
-					<span className={`${styles.toggleKnob} ${value ? styles.toggleKnobActive : ""}`} />
-				</button>
-			)}
-			{type === "select" && control.options && (
-				<select
-					id={`control-${name}`}
-					value={String(value ?? "")}
-					onChange={(e) => onChange(e.target.value)}
-					className={`${styles.input} ${styles.select}`}
-				>
-					{control.options.map((option) => (
-						<option key={option} value={option}>
-							{option}
-						</option>
-					))}
-				</select>
-			)}
+			<input
+				id={`control-${name}`}
+				type={type === "number" ? "number" : "text"}
+				value={type === "number" ? Number(value ?? 0) : String(value ?? "")}
+				onChange={(e) => onChange(type === "number" ? Number(e.target.value) : e.target.value)}
+				className={styles.input}
+			/>
+		</div>
+	)
+}
+
+function SelectControl({ control, value, onChange }: ControlFieldProps) {
+	const { name, label, options } = control
+
+	return (
+		<div className={styles.field}>
+			<label htmlFor={`control-${name}`} className={styles.label}>
+				{label}
+			</label>
+			<select
+				id={`control-${name}`}
+				value={String(value ?? "")}
+				onChange={(e) => onChange(e.target.value)}
+				className={`${styles.input} ${styles.select}`}
+			>
+				{options?.map((option) => (
+					<option key={option} value={option}>
+						{option}
+					</option>
+				))}
+			</select>
+		</div>
+	)
+}
+
+function SwitchControl({ control, value, onChange }: ControlFieldProps) {
+	const { name, label } = control
+
+	return (
+		<div className={styles.switchField}>
+			<label htmlFor={`control-${name}`} className={styles.label}>
+				{label}
+			</label>
+			<button
+				type="button"
+				id={`control-${name}`}
+				onClick={() => onChange(!value)}
+				className={`${styles.toggle} ${value ? styles.toggleActive : ""}`}
+			>
+				<span className={`${styles.toggleKnob} ${value ? styles.toggleKnobActive : ""}`} />
+			</button>
 		</div>
 	)
 }

@@ -11,8 +11,8 @@ import type { Story, StoryConfig } from "./types"
  * })
  *
  * @example
- * // Story with Zod schema for interactive controls
- * export const Interactive = story({
+ * // Story with Zod schema for controlled props
+ * export const Controlled = story({
  *   schema: z.object({
  *     variant: z.enum(['primary', 'secondary']).default('primary').describe('Button style'),
  *     disabled: z.boolean().default(false).describe('Disabled state'),

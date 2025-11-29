@@ -47,9 +47,9 @@ test.describe("Nextbook Visual Regression", () => {
 			await expect(page).toHaveScreenshot("button-disabled.png")
 		})
 
-		test("interactive button with controls", async ({ page }) => {
-			await page.goto("/ui/button/interactive")
-			await expect(page.getByRole("heading", { name: "Button / Interactive" })).toBeVisible()
+		test("controlled button with controls", async ({ page }) => {
+			await page.goto("/ui/button/controlled")
+			await expect(page.getByRole("heading", { name: "Button / Controlled" })).toBeVisible()
 
 			// Verify controls panel is visible
 			await expect(page.getByText("Controls")).toBeVisible()

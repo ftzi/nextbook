@@ -110,7 +110,7 @@
 
 .zoomInput {
 	width: 52px;
-	padding: var(--nb-space-1) var(--nb-space-4) var(--nb-space-1) var(--nb-space-2);
+	padding: var(--nb-space-1) var(--nb-space-5) var(--nb-space-1) 2px;
 	font-size: var(--nb-text-xs);
 	font-weight: var(--nb-font-medium);
 	color: var(--nb-text-secondary);

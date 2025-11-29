@@ -66,39 +66,71 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 		return () => window.removeEventListener("keydown", handleKeyDown)
 	}, [resetView])
 
-	// Handle wheel zoom
+	// Handle wheel zoom with debounce to handle macOS smooth scrolling
+	const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const accumulatedDelta = useRef(0)
+	const WHEEL_DEBOUNCE_MS = 100
+
 	useEffect(() => {
 		const canvas = canvasRef.current
 		if (!canvas) return
 
 		const handleWheel = (e: WheelEvent) => {
 			e.preventDefault()
-			// Normalize delta to -1 or 1, ignoring system scroll speed settings
-			const direction = e.deltaY > 0 ? -1 : 1
-			setZoom((prev) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev + direction * ZOOM_STEP)))
+
+			// Accumulate delta from smooth scrolling
+			accumulatedDelta.current += e.deltaY
+
+			// Clear existing timeout
+			if (wheelTimeout.current) {
+				clearTimeout(wheelTimeout.current)
+			}
+
+			// Debounce: wait for scroll gesture to finish
+			wheelTimeout.current = setTimeout(() => {
+				const direction = accumulatedDelta.current > 0 ? -1 : 1
+				setZoom((prev) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, prev + direction * ZOOM_STEP)))
+				accumulatedDelta.current = 0
+			}, WHEEL_DEBOUNCE_MS)
 		}
 
 		canvas.addEventListener("wheel", handleWheel, { passive: false })
-		return () => canvas.removeEventListener("wheel", handleWheel)
+		return () => {
+			canvas.removeEventListener("wheel", handleWheel)
+			if (wheelTimeout.current) {
+				clearTimeout(wheelTimeout.current)
+			}
+		}
 	}, [])
 
-	// Handle drag
+	// Handle drag with document-level events so panning continues outside canvas
+	useEffect(() => {
+		if (!isDragging) return
+
+		const handleMouseMove = (e: MouseEvent) => {
+			const dx = e.clientX - dragStart.current.x
+			const dy = e.clientY - dragStart.current.y
+			setPan({ x: panStart.current.x + dx, y: panStart.current.y + dy })
+		}
+
+		const handleMouseUp = () => {
+			setIsDragging(false)
+		}
+
+		document.addEventListener("mousemove", handleMouseMove)
+		document.addEventListener("mouseup", handleMouseUp)
+
+		return () => {
+			document.removeEventListener("mousemove", handleMouseMove)
+			document.removeEventListener("mouseup", handleMouseUp)
+		}
+	}, [isDragging])
+
 	const handleMouseDown = (e: React.MouseEvent) => {
 		if (e.button !== 0) return
 		setIsDragging(true)
 		dragStart.current = { x: e.clientX, y: e.clientY }
 		panStart.current = { x: pan.x, y: pan.y }
-	}
-
-	const handleMouseMove = (e: React.MouseEvent) => {
-		if (!isDragging) return
-		const dx = e.clientX - dragStart.current.x
-		const dy = e.clientY - dragStart.current.y
-		setPan({ x: panStart.current.x + dx, y: panStart.current.y + dy })
-	}
-
-	const handleMouseUp = () => {
-		setIsDragging(false)
 	}
 
 	useEffect(() => {
@@ -224,14 +256,7 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 
 				{/* Story canvas */}
 				{/* biome-ignore lint/a11y/noStaticElementInteractions: canvas needs drag events for pan functionality */}
-				<div
-					ref={canvasRef}
-					className={canvasClassName}
-					onMouseDown={handleMouseDown}
-					onMouseMove={handleMouseMove}
-					onMouseUp={handleMouseUp}
-					onMouseLeave={handleMouseUp}
-				>
+				<div ref={canvasRef} className={canvasClassName} onMouseDown={handleMouseDown}>
 					<div
 						className={styles.canvasInner}
 						style={{

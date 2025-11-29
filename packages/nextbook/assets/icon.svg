@@ -16,7 +16,7 @@
   </defs>
 
   <g transform="rotate(45 200 200)">
-    <rect x="90" y="90" width="220" height="220"
+    <rect x="115" y="115" width="170" height="170"
           fill="none"
           stroke="url(#outerGradient)"
           stroke-width="70"

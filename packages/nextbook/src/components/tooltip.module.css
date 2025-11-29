@@ -7,8 +7,6 @@
 
 .tooltip {
 	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
 	padding: var(--nb-space-1-5) var(--nb-space-2);
 	font-size: var(--nb-text-xs);
 	font-weight: var(--nb-font-medium);
@@ -25,9 +23,39 @@
 .tooltip::after {
 	content: "";
 	position: absolute;
+	border: 5px solid transparent;
+}
+
+/* Horizontal alignment */
+.alignCenter {
 	left: 50%;
 	transform: translateX(-50%);
-	border: 5px solid transparent;
+}
+
+.alignCenter::after {
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.alignLeft {
+	left: 0;
+	transform: none;
+}
+
+.alignLeft::after {
+	left: 12px;
+	transform: none;
+}
+
+.alignRight {
+	right: 0;
+	transform: none;
+}
+
+.alignRight::after {
+	right: 12px;
+	left: auto;
+	transform: none;
 }
 
 /* Top position (default) */

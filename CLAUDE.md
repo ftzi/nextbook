@@ -116,6 +116,7 @@ The nextbook UI should be **AMAZING**, **MODERN**, **PROFESSIONAL**, **NEXT-GEN*
 - Smooth micro-interactions and transitions
 - Professional color palette with excellent contrast
 - Polished details that delight users
+- **Use Tooltips liberally** - Add tooltips to icons, buttons, and controls to help developers discover functionality and maximize usability. The `Tooltip` component has a 200ms delay before showing.
 
 **File Structure:**
 

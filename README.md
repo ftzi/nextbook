@@ -128,7 +128,7 @@ import { story } from "nextbook";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 
-export const Interactive = story({
+export const Controlled = story({
   schema: z.object({
     variant: z
       .enum(["primary", "secondary"])
@@ -216,7 +216,7 @@ Reference: [useSelectedLayoutSegment](https://nextjs.org/docs/app/api-reference/
 
 - `/ui` - Welcome page
 - `/ui/button/primary` - Button / Primary story
-- `/ui/forms/input/interactive` - Forms / Input / Interactive story
+- `/ui/forms/input/controlled` - Forms / Input / Controlled story
 
 ## Access Control
 

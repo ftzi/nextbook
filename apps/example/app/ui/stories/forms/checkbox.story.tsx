@@ -32,7 +32,7 @@ export const Disabled = story({
 	),
 })
 
-export const Interactive = story({
+export const Controlled = story({
 	schema: z.object({
 		label: z.string().default("Checkbox label").describe("Label text"),
 		checked: z.boolean().default(false).describe("Checked state"),

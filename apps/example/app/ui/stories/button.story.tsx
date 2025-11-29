@@ -40,7 +40,7 @@ export const Disabled = story({
 	),
 })
 
-export const Interactive = story({
+export const Controlled = story({
 	schema: z.object({
 		label: z.string().default("Click me").describe("Button text"),
 		variant: z.enum(["primary", "secondary", "outline"]).default("primary").describe("Button style"),

@@ -22,7 +22,7 @@ export const WithImage = story({
 	),
 })
 
-export const Interactive = story({
+export const Controlled = story({
 	schema: z.object({
 		title: z.string().default("Card Title").describe("Card title"),
 		description: z.string().default("Card description goes here.").describe("Card description"),

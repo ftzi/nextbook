@@ -48,7 +48,7 @@ export const WithError = story({
 	),
 })
 
-export const Interactive = story({
+export const Controlled = story({
 	schema: z.object({
 		placeholder: z.string().default("Enter text...").describe("Placeholder text"),
 		type: z.enum(["text", "email", "password", "number"]).default("text").describe("Input type"),

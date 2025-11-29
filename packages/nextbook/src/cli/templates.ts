@@ -60,7 +60,7 @@ Use Zod schemas to auto-generate interactive controls:
 \`\`\`tsx
 import { z } from "zod"
 
-export const Interactive = story({
+export const Controlled = story({
   schema: z.object({
     label: z.string().default("Click").describe("Button text"),
     variant: z.enum(["primary", "secondary"]).default("primary"),
