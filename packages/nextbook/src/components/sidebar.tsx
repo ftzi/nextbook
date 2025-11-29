@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import type { StoryTreeNode } from "../types"
+import LogoIcon from "./icons/icon"
 import styles from "./sidebar.module.css"
 
 type SidebarProps = {
@@ -24,26 +25,7 @@ export function Sidebar({ tree, basePath = "/ui" }: SidebarProps) {
 			{/* Header */}
 			<div className={styles.header}>
 				<Link href={basePath} className={styles.logo}>
-					<svg className={styles.logoIcon} viewBox="-20 -20 440 440" aria-hidden="true">
-						<defs>
-							<linearGradient id="nb-logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-								<stop offset="0%" stopColor="#06B6D4" />
-								<stop offset="50%" stopColor="#7C3AED" />
-								<stop offset="100%" stopColor="#EC4899" />
-							</linearGradient>
-						</defs>
-						<g transform="rotate(45 200 200)">
-							<rect
-								x="90"
-								y="90"
-								width="220"
-								height="220"
-								fill="none"
-								stroke="url(#nb-logo-gradient)"
-								strokeWidth="70"
-							/>
-						</g>
-					</svg>
+					<LogoIcon className={styles.logoIcon} />
 					Nextbook
 				</Link>
 				<a

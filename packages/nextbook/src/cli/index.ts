@@ -1,11 +1,11 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { defineCommand, runMain } from "citty"
 import { init } from "./init"
 
 const main = defineCommand({
 	meta: {
 		name: "nextbook",
-		version: "0.0.1",
+		version: "0.1.0",
 		description: "Zero-config component stories for Next.js",
 	},
 	args: {

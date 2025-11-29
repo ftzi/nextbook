@@ -3,7 +3,7 @@ STILL WIP!
 STAY TUNED!
 
 <p align="center">
-  <img src="https://github.com/ftzi/nextbook/blob/main/packages/nextbook/assets/logo-animated.svg" alt="Nextbook" width="400" />
+  <img src="https://github.com/ftzi/nextbook/blob/main/assets/logo-animated.svg" alt="Nextbook" width="400" />
 </p>
 
 <h3 align="center">

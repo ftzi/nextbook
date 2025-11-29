@@ -1,6 +1,6 @@
 {
 	"name": "nextbook",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Zero-config component stories for Next.js",
 	"type": "module",
 	"license": "MIT",
@@ -15,11 +15,24 @@
 		"stories",
 		"react"
 	],
-	"bin": {
-		"nextbook": "./src/cli/index.ts"
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
 	},
+	"bin": {
+		"nextbook": "./dist/cli/index.js"
+	},
+	"files": [
+		"dist"
+	],
 	"scripts": {
-		"svg": "svgr --out-dir src/components/icons --config-file svgr.config.js assets",
+		"dev": "bun run svg",
+		"build": "bun run svg && rm -rf dist && tsc -p tsconfig.build.json && cp src/components/*.css dist/components/ && cp -r src/styles dist/",
+		"svg": "svgr --out-dir src/components/icons --config-file svgr.config.js ../../assets",
 		"ts": "tsc --noEmit",
 		"test": "bun test"
 	},
@@ -42,13 +55,5 @@
 		"react-dom": "catalog:",
 		"typescript": "catalog:",
 		"zod": "catalog:"
-	},
-	"exports": {
-		".": "./src/index.ts",
-		"./story": "./src/story.ts",
-		"./components/*": "./src/components/*.tsx",
-		"./utils/*": "./src/utils/*.ts",
-		"./page": "./src/page.tsx",
-		"./params": "./src/params.ts"
 	}
 }
