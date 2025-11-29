@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Sparkles } from "lucide-react"
+import { ArrowRight, Blocks, Sparkles } from "lucide-react"
 import { Container } from "@/components/shared/container"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -77,8 +77,14 @@ export function Hero() {
 							</a>
 						</Button>
 						<Button size="lg" variant="outline" asChild>
+							<a href="/ui">
+								<Blocks className="size-4" />
+								View Components
+							</a>
+						</Button>
+						<Button size="lg" variant="ghost" asChild>
 							<a href={externalLinks.github} target="_blank" rel="noopener noreferrer">
-								View on GitHub
+								GitHub
 							</a>
 						</Button>
 					</motion.div>

@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github } from "lucide-react"
+import { Blocks, Github } from "lucide-react"
 import Link from "next/link"
 import { Container } from "@/components/shared/container"
-import { Logo } from "@/components/shared/logo"
+import { LogoAnimated } from "@/components/shared/logo-animated"
 import { Button } from "@/components/ui/button"
 import { externalLinks } from "@/lib/public-routes"
 
@@ -19,7 +19,7 @@ export function Header() {
 			<Container>
 				<nav className="flex h-16 items-center justify-between">
 					<Link href="/" className="flex items-center">
-						<Logo size="sm" />
+						<LogoAnimated className="h-8 w-auto" />
 					</Link>
 
 					<div className="flex items-center gap-4">
@@ -28,6 +28,12 @@ export function Header() {
 						</Button>
 						<Button variant="ghost" size="sm" asChild>
 							<a href="#quickstart">Quick Start</a>
+						</Button>
+						<Button variant="ghost" size="sm" asChild>
+							<Link href="/ui">
+								<Blocks className="mr-1.5 size-4" />
+								Components
+							</Link>
 						</Button>
 						<Button variant="ghost" size="icon" asChild>
 							<a href={externalLinks.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub repository">
