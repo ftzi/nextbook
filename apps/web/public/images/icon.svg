@@ -5,14 +5,6 @@
       <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
     </linearGradient>
-
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
 
   <g transform="rotate(45 200 200)">
@@ -20,7 +12,6 @@
           fill="none"
           stroke="url(#outerGradient)"
           stroke-width="70"
-          filter="url(#glow)"
           opacity="0.9"/>
   </g>
 </svg>
