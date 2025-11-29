@@ -2,6 +2,7 @@
 
 import { Component, type ReactNode } from "react"
 import type { StoryTreeNode } from "../types"
+import styles from "./story-page.module.css"
 import { StoryViewer } from "./story-viewer"
 
 type StoryLoaders = Record<string, () => Promise<Record<string, unknown>>>
@@ -31,16 +32,16 @@ class StoryErrorBoundary extends Component<
 	render() {
 		if (this.state.hasError) {
 			return (
-				<div className="rounded border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
-					<p className="font-medium">Story crashed</p>
-					<p className="mt-1 font-mono text-sm">{this.state.error?.message}</p>
+				<div className={styles.errorBoundary}>
+					<p className={styles.errorBoundaryTitle}>Story crashed</p>
+					<p className={styles.errorBoundaryMessage}>{this.state.error?.message}</p>
 					<button
 						type="button"
 						onClick={() => {
 							this.setState({ hasError: false, error: null })
 							this.props.onReset?.()
 						}}
-						className="mt-3 rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+						className={styles.errorBoundaryButton}
 					>
 						Try again
 					</button>
@@ -128,10 +129,10 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 	if (path.length === 0) {
 		const storyCount = countStoryFiles(storyTree)
 		return (
-			<div className="flex h-full flex-col items-center justify-center p-8 text-center">
-				<h1 className="mb-4 font-bold text-3xl text-neutral-900 dark:text-neutral-100">Welcome to Nextbook</h1>
-				<p className="mb-2 text-neutral-600 dark:text-neutral-400">Select a story from the sidebar to get started.</p>
-				<p className="text-neutral-500 text-sm dark:text-neutral-500">
+			<div className={styles.welcome}>
+				<AnimatedLogo className={styles.welcomeLogo} />
+				<p className={styles.welcomeSubtitle}>Select a story from the sidebar to get started.</p>
+				<p className={styles.welcomeCount}>
 					{storyCount} {storyCount === 1 ? "story" : "stories"} available
 				</p>
 			</div>
@@ -146,17 +147,17 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 		const dirNode = findNodeByPath(storyTree, path)
 		if (dirNode && !dirNode.filePath && dirNode.children && dirNode.children.length > 0) {
 			return (
-				<div className="flex h-full flex-col items-center justify-center p-8 text-center">
-					<h1 className="mb-4 font-bold text-neutral-900 text-xl dark:text-neutral-100">{dirNode.name}</h1>
-					<p className="text-neutral-600 dark:text-neutral-400">Select a story from the sidebar.</p>
+				<div className={styles.placeholder}>
+					<h1 className={styles.placeholderTitle}>{dirNode.name}</h1>
+					<p className={styles.placeholderText}>Select a story from the sidebar.</p>
 				</div>
 			)
 		}
 
 		return (
-			<div className="flex h-full flex-col items-center justify-center p-8 text-center">
-				<h1 className="mb-4 font-bold text-neutral-900 text-xl dark:text-neutral-100">Story not found</h1>
-				<p className="text-neutral-600 dark:text-neutral-400">The requested story does not exist.</p>
+			<div className={styles.placeholder}>
+				<h1 className={styles.placeholderTitle}>Story not found</h1>
+				<p className={styles.placeholderText}>The requested story does not exist.</p>
 			</div>
 		)
 	}
@@ -166,9 +167,9 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 	// Story file without export specified - prompt to select variant
 	if (!exportName) {
 		return (
-			<div className="flex h-full flex-col items-center justify-center p-8 text-center">
-				<h1 className="mb-4 font-bold text-neutral-900 text-xl dark:text-neutral-100">{node.name}</h1>
-				<p className="text-neutral-600 dark:text-neutral-400">Select a story variant from the sidebar.</p>
+			<div className={styles.placeholder}>
+				<h1 className={styles.placeholderTitle}>{node.name}</h1>
+				<p className={styles.placeholderText}>Select a story variant from the sidebar.</p>
 			</div>
 		)
 	}
@@ -177,9 +178,9 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 	const loader = loaders[node.filePath as string]
 	if (!loader) {
 		return (
-			<div className="flex h-full flex-col items-center justify-center p-8 text-center">
-				<h1 className="mb-4 font-bold text-neutral-900 text-xl dark:text-neutral-100">Loader not found</h1>
-				<p className="text-neutral-600 dark:text-neutral-400">No loader for: {node.filePath}</p>
+			<div className={styles.placeholder}>
+				<h1 className={styles.placeholderTitle}>Loader not found</h1>
+				<p className={styles.placeholderText}>No loader for: {node.filePath}</p>
 			</div>
 		)
 	}
@@ -190,5 +191,236 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 		<StoryErrorBoundary key={path.join("/")}>
 			<StoryViewer loader={loader} exportName={exportName} title={title} />
 		</StoryErrorBoundary>
+	)
+}
+
+function AnimatedLogo({ className }: { className?: string }) {
+	return (
+		<svg viewBox="-60 -60 3000 520" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
+			<defs>
+				<linearGradient id="outerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+					<stop offset="0%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
+					<stop offset="50%" style={{ stopColor: "#7C3AED", stopOpacity: 1 }} />
+					<stop offset="100%" style={{ stopColor: "#EC4899", stopOpacity: 1 }} />
+				</linearGradient>
+				<linearGradient id="nextGradient" x1="420" y1="0" x2="1580" y2="0" gradientUnits="userSpaceOnUse">
+					<stop offset="0%" style={{ stopColor: "#06B6D4", stopOpacity: 1 }} />
+					<stop offset="100%" style={{ stopColor: "#4F46E5", stopOpacity: 1 }} />
+				</linearGradient>
+				<linearGradient id="bookGradient" x1="0" y1="0" x2="1220" y2="0" gradientUnits="userSpaceOnUse">
+					<stop offset="0%" style={{ stopColor: "#4F46E5", stopOpacity: 1 }} />
+					<stop offset="50%" style={{ stopColor: "#7C3AED", stopOpacity: 1 }} />
+					<stop offset="100%" style={{ stopColor: "#EC4899", stopOpacity: 1 }} />
+				</linearGradient>
+				<filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+					<feGaussianBlur stdDeviation="6" result="coloredBlur" />
+					<feMerge>
+						<feMergeNode in="coloredBlur" />
+						<feMergeNode in="SourceGraphic" />
+					</feMerge>
+				</filter>
+				<filter id="textGlow" x="-50%" y="-50%" width="200%" height="200%">
+					<feGaussianBlur stdDeviation="3" result="coloredBlur" />
+					<feMerge>
+						<feMergeNode in="coloredBlur" />
+						<feMergeNode in="SourceGraphic" />
+					</feMerge>
+				</filter>
+				<filter id="mirageB" x="-50%" y="-50%" width="200%" height="200%">
+					<feTurbulence type="turbulence" baseFrequency="0.006 0.04" numOctaves={2} result="turbulence" seed={5}>
+						<animate
+							attributeName="baseFrequency"
+							values="0.006 0.04;0.008 0.05;0.006 0.04"
+							dur="12s"
+							repeatCount="indefinite"
+						/>
+					</feTurbulence>
+					<feDisplacementMap
+						in="SourceGraphic"
+						in2="turbulence"
+						scale={4}
+						xChannelSelector="R"
+						yChannelSelector="G"
+						result="displaced"
+					>
+						<animate attributeName="scale" values="2;5;2" dur="10s" repeatCount="indefinite" />
+					</feDisplacementMap>
+					<feGaussianBlur in="displaced" stdDeviation="3" result="coloredBlur" />
+					<feMerge>
+						<feMergeNode in="coloredBlur" />
+						<feMergeNode in="displaced" />
+					</feMerge>
+				</filter>
+				<filter id="mirageO1" x="-50%" y="-50%" width="200%" height="200%">
+					<feTurbulence type="turbulence" baseFrequency="0.006 0.04" numOctaves={2} result="turbulence" seed={7}>
+						<animate
+							attributeName="baseFrequency"
+							values="0.006 0.04;0.008 0.05;0.006 0.04"
+							dur="12s"
+							repeatCount="indefinite"
+						/>
+					</feTurbulence>
+					<feDisplacementMap
+						in="SourceGraphic"
+						in2="turbulence"
+						scale={7}
+						xChannelSelector="R"
+						yChannelSelector="G"
+						result="displaced"
+					>
+						<animate attributeName="scale" values="4;9;4" dur="10s" repeatCount="indefinite" />
+					</feDisplacementMap>
+					<feGaussianBlur in="displaced" stdDeviation="3" result="coloredBlur" />
+					<feMerge>
+						<feMergeNode in="coloredBlur" />
+						<feMergeNode in="displaced" />
+					</feMerge>
+				</filter>
+				<filter id="mirageO2" x="-50%" y="-50%" width="200%" height="200%">
+					<feTurbulence type="turbulence" baseFrequency="0.006 0.04" numOctaves={2} result="turbulence" seed={11}>
+						<animate
+							attributeName="baseFrequency"
+							values="0.006 0.04;0.008 0.05;0.006 0.04"
+							dur="12s"
+							repeatCount="indefinite"
+						/>
+					</feTurbulence>
+					<feDisplacementMap
+						in="SourceGraphic"
+						in2="turbulence"
+						scale={10}
+						xChannelSelector="R"
+						yChannelSelector="G"
+						result="displaced"
+					>
+						<animate attributeName="scale" values="7;13;7" dur="10s" repeatCount="indefinite" />
+					</feDisplacementMap>
+					<feGaussianBlur in="displaced" stdDeviation="3" result="coloredBlur" />
+					<feMerge>
+						<feMergeNode in="coloredBlur" />
+						<feMergeNode in="displaced" />
+					</feMerge>
+				</filter>
+				<filter id="mirageK" x="-50%" y="-50%" width="200%" height="200%">
+					<feTurbulence type="turbulence" baseFrequency="0.006 0.04" numOctaves={2} result="turbulence" seed={13}>
+						<animate
+							attributeName="baseFrequency"
+							values="0.006 0.04;0.008 0.05;0.006 0.04"
+							dur="12s"
+							repeatCount="indefinite"
+						/>
+					</feTurbulence>
+					<feDisplacementMap
+						in="SourceGraphic"
+						in2="turbulence"
+						scale={13}
+						xChannelSelector="R"
+						yChannelSelector="G"
+						result="displaced"
+					>
+						<animate attributeName="scale" values="10;16;10" dur="10s" repeatCount="indefinite" />
+					</feDisplacementMap>
+					<feGaussianBlur in="displaced" stdDeviation="3" result="coloredBlur" />
+					<feMerge>
+						<feMergeNode in="coloredBlur" />
+						<feMergeNode in="displaced" />
+					</feMerge>
+				</filter>
+			</defs>
+			<g transform="rotate(45 200 200)">
+				<rect
+					x="90"
+					y="90"
+					width="220"
+					height="220"
+					fill="none"
+					stroke="url(#outerGradient)"
+					strokeWidth="70"
+					filter="url(#glow)"
+					opacity="0.9"
+				/>
+			</g>
+			<text
+				x="420"
+				y="245"
+				fontFamily="'Helvetica Neue'"
+				fontSize="550"
+				fontWeight="700"
+				letterSpacing="-16"
+				filter="url(#textGlow)"
+				opacity="0.9"
+				dominantBaseline="middle"
+			>
+				<tspan fill="url(#nextGradient)" stroke="url(#nextGradient)" strokeWidth="11">
+					Next
+				</tspan>
+			</text>
+			<g transform="translate(1580, 0)">
+				<text
+					x="0"
+					y="245"
+					fontFamily="'Helvetica Neue'"
+					fontSize="550"
+					fontWeight="700"
+					letterSpacing="-16"
+					filter="url(#mirageB)"
+					opacity="0.9"
+					dominantBaseline="middle"
+					fill="none"
+					stroke="url(#bookGradient)"
+					strokeWidth="11"
+				>
+					b
+				</text>
+				<text
+					x="300"
+					y="245"
+					fontFamily="'Helvetica Neue'"
+					fontSize="550"
+					fontWeight="700"
+					letterSpacing="-16"
+					filter="url(#mirageO1)"
+					opacity="0.9"
+					dominantBaseline="middle"
+					fill="none"
+					stroke="url(#bookGradient)"
+					strokeWidth="11"
+				>
+					o
+				</text>
+				<text
+					x="600"
+					y="245"
+					fontFamily="'Helvetica Neue'"
+					fontSize="550"
+					fontWeight="700"
+					letterSpacing="-16"
+					filter="url(#mirageO2)"
+					opacity="0.9"
+					dominantBaseline="middle"
+					fill="none"
+					stroke="url(#bookGradient)"
+					strokeWidth="11"
+				>
+					o
+				</text>
+				<text
+					x="900"
+					y="245"
+					fontFamily="'Helvetica Neue'"
+					fontSize="550"
+					fontWeight="700"
+					letterSpacing="-16"
+					filter="url(#mirageK)"
+					opacity="0.9"
+					dominantBaseline="middle"
+					fill="none"
+					stroke="url(#bookGradient)"
+					strokeWidth="11"
+				>
+					k
+				</text>
+			</g>
+		</svg>
 	)
 }

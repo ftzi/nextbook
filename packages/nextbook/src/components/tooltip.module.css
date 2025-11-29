@@ -1,0 +1,75 @@
+@import "../styles/tokens.css";
+
+.wrapper {
+	position: relative;
+	display: inline-flex;
+}
+
+.tooltip {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: var(--nb-space-1-5) var(--nb-space-2);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-neutral-0);
+	background: var(--nb-neutral-800);
+	border-radius: var(--nb-radius-sm);
+	white-space: nowrap;
+	pointer-events: none;
+	z-index: 50;
+	box-shadow: var(--nb-shadow-md);
+	animation: tooltipFadeIn 100ms ease-out forwards;
+}
+
+.tooltip::after {
+	content: "";
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 5px solid transparent;
+}
+
+/* Top position (default) */
+.tooltipTop {
+	bottom: calc(100% + 8px);
+}
+
+.tooltipTop::after {
+	top: 100%;
+	border-top-color: var(--nb-neutral-800);
+}
+
+/* Bottom position */
+.tooltipBottom {
+	top: calc(100% + 8px);
+}
+
+.tooltipBottom::after {
+	bottom: 100%;
+	border-bottom-color: var(--nb-neutral-800);
+}
+
+@keyframes tooltipFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.tooltip {
+		background: var(--nb-neutral-100);
+		color: var(--nb-neutral-900);
+	}
+
+	.tooltipTop::after {
+		border-top-color: var(--nb-neutral-100);
+	}
+
+	.tooltipBottom::after {
+		border-bottom-color: var(--nb-neutral-100);
+	}
+}

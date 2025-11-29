@@ -3,7 +3,7 @@ STILL WIP!
 STAY TUNED!
 
 <p align="center">
-  <img src="./assets/logo.svg" alt="Nextbook" width="400" />
+  <img src="./packages/nextbook/assets/logo.svg" alt="Nextbook" width="400" />
 </p>
 
 <h3 align="center">
@@ -20,7 +20,8 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 - **Zod Controls** - Auto-generate interactive controls from Zod schemas
 - **Type Safe** - Full TypeScript support with IntelliSense
 - **Lazy Loading** - Stories load on-demand for fast startup
-- **Background Switcher** - Toggle between default, striped, and magenta backgrounds to spot component imperfections
+- **Background Switcher** - Toggle between default and striped backgrounds to spot component imperfections
+- **AI-Ready** - Simple, predictable API that AI assistants can use to generate stories instantly
 
 ## Quick Start
 
@@ -248,6 +249,16 @@ export default function NextbookLayout({ children }: { children: React.ReactNode
 | Config duplication | Yes (Tailwind, etc.) | No          |
 | Bundle size        | Large                | Minimal     |
 | Hot reload         | Separate process     | Same as app |
+
+## AI-Ready
+
+Nextbook is designed to work seamlessly with AI assistants. The simple, predictable API makes it easy for AI to generate stories for your components instantly.
+
+Just ask your AI assistant:
+
+> "Create a nextbook story for my Button component with variants for primary, secondary, and disabled states"
+
+The straightforward `story()` function and Zod schema integration means AI can quickly understand your component props and generate comprehensive stories with interactive controls - no complex configuration to explain.
 
 <details>
 <summary>Development</summary>

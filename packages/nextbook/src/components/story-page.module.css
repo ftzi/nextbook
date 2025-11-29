@@ -1,0 +1,111 @@
+/*
+ * StoryPage - Welcome page and story display
+ */
+
+@import "../styles/tokens.css";
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * WELCOME PAGE
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.welcome {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: var(--nb-space-8);
+	text-align: center;
+}
+
+.welcomeLogo {
+	width: 100%;
+	max-width: 500px;
+	margin-bottom: var(--nb-space-8);
+}
+
+.welcomeTitle {
+	font-size: var(--nb-text-3xl);
+	font-weight: var(--nb-font-bold);
+	color: var(--nb-text-primary);
+	margin: 0 0 var(--nb-space-4) 0;
+}
+
+.welcomeSubtitle {
+	font-size: var(--nb-text-base);
+	color: var(--nb-text-secondary);
+	margin: 0 0 var(--nb-space-2) 0;
+}
+
+.welcomeCount {
+	font-size: var(--nb-text-sm);
+	color: var(--nb-text-tertiary);
+	margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * PLACEHOLDER PAGES
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: var(--nb-space-8);
+	text-align: center;
+}
+
+.placeholderTitle {
+	font-size: var(--nb-text-xl);
+	font-weight: var(--nb-font-bold);
+	color: var(--nb-text-primary);
+	margin: 0 0 var(--nb-space-4) 0;
+}
+
+.placeholderText {
+	font-size: var(--nb-text-base);
+	color: var(--nb-text-secondary);
+	margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * ERROR BOUNDARY
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.errorBoundary {
+	padding: var(--nb-space-4);
+	border-radius: var(--nb-radius-md);
+	border: 1px solid var(--nb-error-border);
+	background: var(--nb-error-light);
+	color: var(--nb-error-text);
+}
+
+.errorBoundaryTitle {
+	font-weight: var(--nb-font-medium);
+	margin: 0 0 var(--nb-space-1) 0;
+}
+
+.errorBoundaryMessage {
+	font-family: var(--nb-font-mono);
+	font-size: var(--nb-text-sm);
+	margin: 0;
+}
+
+.errorBoundaryButton {
+	margin-top: var(--nb-space-3);
+	padding: var(--nb-space-1) var(--nb-space-3);
+	font-size: var(--nb-text-sm);
+	font-family: var(--nb-font-sans);
+	color: white;
+	background: var(--nb-error-text);
+	border: none;
+	border-radius: var(--nb-radius-md);
+	cursor: pointer;
+	transition: opacity var(--nb-transition-fast);
+}
+
+.errorBoundaryButton:hover {
+	opacity: 0.9;
+}

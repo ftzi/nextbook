@@ -1,6 +1,6 @@
 /*
  * StoryViewer - Main story display area
- * Features: Header, canvas with backgrounds, error states
+ * Features: Header, canvas with backgrounds, pan/zoom, error states
  */
 
 @import "../styles/tokens.css";
@@ -16,6 +16,18 @@
 	background: var(--nb-bg-canvas);
 }
 
+.containerWithRightPanel {
+	flex-direction: row;
+}
+
+.mainArea {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════════
  * HEADER
  * ═══════════════════════════════════════════════════════════════════════════════ */
@@ -24,17 +36,113 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: var(--nb-space-4) var(--nb-space-6);
+	padding: var(--nb-space-3) var(--nb-space-6);
 	background: var(--nb-bg-elevated);
 	border-bottom: 1px solid var(--nb-border-subtle);
 	flex-shrink: 0;
+	gap: var(--nb-space-4);
 }
 
 .title {
-	font-size: var(--nb-text-lg);
+	font-size: var(--nb-text-base);
 	font-weight: var(--nb-font-semibold);
 	color: var(--nb-text-primary);
 	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.headerControls {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-3);
+	flex-shrink: 0;
+}
+
+.divider {
+	width: 1px;
+	height: 20px;
+	background: var(--nb-border-default);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * ZOOM CONTROLS
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.zoomControls {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1);
+}
+
+.zoomButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: none;
+	border-radius: var(--nb-radius-sm);
+	background: transparent;
+	color: var(--nb-text-secondary);
+	cursor: pointer;
+	transition:
+		background var(--nb-transition-fast),
+		color var(--nb-transition-fast);
+}
+
+.zoomButton:hover:not(:disabled) {
+	background: var(--nb-bg-hover);
+	color: var(--nb-text-primary);
+}
+
+.zoomButton:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.zoomInputWrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.zoomInput {
+	width: 52px;
+	padding: var(--nb-space-1) var(--nb-space-4) var(--nb-space-1) var(--nb-space-2);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-secondary);
+	background: var(--nb-bg-hover);
+	border: 1px solid transparent;
+	border-radius: var(--nb-radius-sm);
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+	transition:
+		border-color var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.zoomInput:hover {
+	background: var(--nb-bg-active);
+}
+
+.zoomInput:focus {
+	outline: none;
+	border-color: var(--nb-text-brand);
+	background: var(--nb-bg-elevated);
+}
+
+.zoomInputSuffix {
+	position: absolute;
+	right: var(--nb-space-1-5);
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-tertiary);
+	pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
@@ -44,7 +152,7 @@
 .backgroundSwitcher {
 	display: flex;
 	align-items: center;
-	gap: var(--nb-space-2);
+	gap: var(--nb-space-1);
 }
 
 .bgButton {
@@ -57,15 +165,13 @@
 	cursor: pointer;
 	transition:
 		border-color var(--nb-transition-fast),
-		box-shadow var(--nb-transition-fast),
-		transform var(--nb-transition-fast);
+		box-shadow var(--nb-transition-fast);
 	background: none;
 	padding: 0;
 }
 
 .bgButton:hover {
 	border-color: var(--nb-border-strong);
-	transform: scale(1.05);
 }
 
 .bgButtonActive {
@@ -83,9 +189,6 @@
 
 .bgDefault {
 	background: var(--nb-neutral-100);
-	font-size: 10px;
-	font-weight: var(--nb-font-medium);
-	color: var(--nb-text-muted);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -110,8 +213,14 @@
 
 .canvas {
 	flex: 1;
-	overflow: auto;
-	padding: var(--nb-space-6);
+	overflow: hidden;
+	cursor: grab;
+	user-select: none;
+}
+
+.canvas:active,
+.canvasDragging {
+	cursor: grabbing;
 }
 
 .canvasDefault {
@@ -130,9 +239,12 @@
 
 .canvasInner {
 	display: flex;
-	min-height: 100%;
-	align-items: flex-start;
+	width: 100%;
+	height: 100%;
+	align-items: center;
 	justify-content: center;
+	transform-origin: center center;
+	transition: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

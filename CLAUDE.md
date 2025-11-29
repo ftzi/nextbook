@@ -33,6 +33,8 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 - **apps/example** - Example Next.js app demonstrating nextbook features
 - **Playwright tests** - Visual regression tests to prevent UI regressions
 
+**AI-Ready Design:** Nextbook is designed to be AI-friendly. The simple, predictable API (`story()` function + Zod schemas) makes it easy for AI assistants to generate stories for components instantly. When working with users, AI can quickly scaffold comprehensive stories with interactive controls - no complex configuration needed.
+
 ## Common Commands
 
 ### Development
