@@ -1,0 +1,78 @@
+<svg viewBox="-60 -60 3000 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Static gradient for icon -->
+    <linearGradient id="outerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Gradient for "Next" text - subtle cyan to indigo -->
+    <linearGradient id="nextGradient" x1="420" y1="0" x2="1580" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Gradient for "book" text - continues from where Next ends (indigo -> purple -> pink) -->
+    <linearGradient id="bookGradient" x1="0" y1="0" x2="1220" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="textGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer 45 degree square - OUTLINE ONLY -->
+  <g transform="translate(50, 0)">
+    <g transform="rotate(45 200 200)">
+      <rect x="115" y="115" width="170" height="170"
+            fill="none"
+            stroke="url(#outerGradient)"
+            stroke-width="70"
+            filter="url(#glow)"
+            opacity="0.9"/>
+    </g>
+  </g>
+
+  <!-- "Next" text -->
+  <text x="420" y="245"
+        font-family="'Helvetica Neue'"
+        font-size="550"
+        font-weight="700"
+        letter-spacing="-16"
+        filter="url(#textGlow)"
+        opacity="0.9"
+        dominant-baseline="middle">
+    <tspan fill="url(#nextGradient)" stroke="url(#nextGradient)" stroke-width="11">Next</tspan>
+  </text>
+
+  <!-- "book" text -->
+  <g transform="translate(1580, 0)">
+    <text x="0" y="245"
+          font-family="'Helvetica Neue'"
+          font-size="550"
+          font-weight="700"
+          letter-spacing="-16"
+          filter="url(#textGlow)"
+          opacity="0.9"
+          dominant-baseline="middle"
+          fill="none"
+          stroke="url(#bookGradient)"
+          stroke-width="11">book</text>
+  </g>
+</svg>

@@ -50,6 +50,7 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 
 - **packages/nextbook** - The main library (publishable as `nextbook` on npm)
 - **apps/example** - Example Next.js app demonstrating nextbook features
+- **apps/web** - Marketing website for nextbook.dev
 - **Playwright tests** - Visual regression tests to prevent UI regressions
 
 **AI-Ready Design:** Nextbook is designed to be AI-friendly. The simple, predictable API (`story()` function + Zod schemas) makes it easy for AI assistants to generate stories for components instantly. When working with users, AI can quickly scaffold comprehensive stories with interactive controls - no complex configuration needed.
@@ -80,6 +81,7 @@ This is a Turborepo monorepo with two main workspace types:
 
 - **apps/** - Application projects
   - **example/** - Next.js 16 example app demonstrating nextbook
+  - **web/** - Marketing website for nextbook.dev
 
 - **packages/** - Shared packages
   - **nextbook/** - The main nextbook library
@@ -183,6 +185,63 @@ packages/nextbook/src/
 - `app/ui/stories/` - Example stories (button, card, forms)
 - `tests/` - Playwright visual regression tests
 
+### Marketing Website (apps/web/)
+
+**Purpose:** Public-facing marketing website at nextbook.dev
+
+**Tech Stack:**
+
+- Next.js 16 with React 19 and React Compiler
+- Tailwind CSS 4 with shadcn/ui components
+- Framer Motion for animations
+- Vercel Analytics for usage tracking
+
+**Key Features:**
+
+- Landing page with hero, features, code demo, comparison, quick start, and CTA sections
+- Dynamic OG images using Next.js ImageResponse API
+- SEO infrastructure (sitemap.ts, robots.ts)
+- Responsive design with dark mode default
+
+**File Structure:**
+
+```
+apps/web/
+├── app/
+│   ├── layout.tsx           # Root layout (Geist fonts, metadata, Analytics)
+│   ├── page.tsx             # Landing page
+│   ├── globals.css          # Tailwind CSS 4 + design tokens
+│   ├── opengraph-image.tsx  # OG image generation
+│   ├── twitter-image.tsx    # Twitter card image
+│   ├── sitemap.ts           # SEO sitemap
+│   └── robots.ts            # Crawler rules
+├── components/
+│   ├── landing/             # Landing page sections (hero, features, etc.)
+│   ├── shared/              # Header, footer, logo, container, section
+│   └── ui/                  # shadcn/ui components (button, badge, card)
+├── lib/
+│   ├── env.ts               # Type-safe environment variables
+│   ├── public-routes.ts     # Centralized route definitions
+│   ├── utils.ts             # cn() utility
+│   └── opengraph/           # OG image utilities
+└── public/images/           # Logo assets (copied from /assets)
+```
+
+**Design Philosophy:**
+
+- Uses Tailwind CSS (unlike the nextbook package which uses CSS Modules)
+- This is intentional: the marketing site can use any styling, while the package must work in any user's setup
+- Brand colors match the logo gradient: cyan (#06B6D4) → purple (#7C3AED) → pink (#EC4899)
+
+**Screenshot Placeholders:**
+
+The website includes placeholder areas for screenshots that need to be captured:
+- `hero-screenshot.png` (1200x800) - Full nextbook UI
+- `feature-zod-controls.png` (600x400) - Controls panel demo
+- `feature-story-matrix.png` (800x500) - Matrix view
+- `code-demo-preview.png` (800x600) - Code + preview
+- `quickstart-terminal.png` (700x200) - CLI command
+
 ### Linting & Code Quality
 
 - **Biome** - Code formatting and linting (TypeScript, React, accessibility)
@@ -275,7 +334,7 @@ packages/nextbook/src/
 - **NEVER create documentation files** unless explicitly requested
   - The only exception: updating existing CLAUDE.md when architecture changes
 
-**README Synchronization:**
+**Documentation Synchronization:**
 
 - **THE root README.md MUST BE KEPT IN SYNC WITH THE CODE AT ALL TIMES**
 - When making ANY changes to the nextbook package:
@@ -284,6 +343,19 @@ packages/nextbook/src/
   3. Verify code examples in README are copy-paste correct
 - The root README is the primary documentation for users
 - **Manual Setup must match CLI output** - The manual setup steps in README must produce the same result as `npx nextbook init`. When updating CLI templates (`src/cli/templates.ts`), also update the README manual setup section to match.
+
+**Marketing Website Synchronization (apps/web):**
+
+- **The apps/web marketing site MUST also stay in sync with the nextbook package**
+- When making changes to nextbook features or API:
+  1. Update the package code
+  2. Update the root README.md
+  3. **Update apps/web if affected** (code examples, feature descriptions, comparison table)
+- Key files to update in apps/web when features change:
+  - `components/landing/features.tsx` - Feature descriptions
+  - `components/landing/code-demo.tsx` - Code examples
+  - `components/landing/comparison.tsx` - Comparison table
+  - `components/landing/hero.tsx` - Taglines and value prop
 
 ## Important Notes
 

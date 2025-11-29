@@ -39,3 +39,4 @@ playwright/.cache/
 # Claude Code
 .claude/activity.log
 .env*.local
+.vercel
