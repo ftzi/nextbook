@@ -132,3 +132,24 @@ export type ControlConfig = {
 	/** Options for select controls */
 	options?: string[]
 }
+
+/**
+ * Story loader function that dynamically imports a story module.
+ */
+export type StoryLoader = () => Promise<Record<string, unknown>>
+
+/**
+ * Flat loader map - key is the path like "button" or "forms/input".
+ */
+export type StoryLoaders = Record<string, StoryLoader>
+
+/**
+ * The stories object returned by createStories.
+ * Pass this to NextbookShell and StoryPage components.
+ */
+export type Stories = {
+	/** Tree structure for sidebar navigation */
+	tree: StoryTreeNode[]
+	/** Flat map of loaders for lazy loading stories */
+	loaders: StoryLoaders
+}

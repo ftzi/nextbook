@@ -22,56 +22,24 @@ const CANVAS_CLASSES: Record<BackgroundType, string | undefined> = {
 }
 
 type MatrixViewerProps = {
-	loader: () => Promise<Record<string, unknown>>
-	exportName: string
+	story: MatrixStory<z.ZodObject<z.ZodRawShape>>
 	title: string
 }
 
-export function MatrixViewer({ loader, exportName, title }: MatrixViewerProps) {
-	const [story, setStory] = useState<MatrixStory<z.ZodObject<z.ZodRawShape>> | null>(null)
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
+export function MatrixViewer({ story, title }: MatrixViewerProps) {
 	const [combinations, setCombinations] = useState<PropCombination[]>([])
 	const [total, setTotal] = useState(0)
 	const [truncated, setTruncated] = useState(false)
 	const [background, setBackground] = useState<BackgroundType>("default")
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
-	// Load the story module
+	// Generate combinations from schema
 	useEffect(() => {
-		setLoading(true)
-		setError(null)
-
-		loader()
-			.then((mod) => {
-				const matchingKey = Object.keys(mod).find((key) => key.toLowerCase() === exportName.toLowerCase())
-				const exportedStory = matchingKey ? mod[matchingKey] : undefined
-
-				if (
-					exportedStory &&
-					typeof exportedStory === "object" &&
-					"__nextbook" in exportedStory &&
-					"__nextbook_matrix" in exportedStory
-				) {
-					const matrixStory = exportedStory as MatrixStory<z.ZodObject<z.ZodRawShape>>
-					setStory(matrixStory)
-
-					// Generate combinations from schema
-					const result = generateCombinations(matrixStory.schema)
-					setCombinations(result.combinations)
-					setTotal(result.total)
-					setTruncated(result.truncated)
-				} else {
-					setError(`Export "${exportName}" not found or not a valid matrix story`)
-				}
-			})
-			.catch((err) => {
-				setError(String(err))
-			})
-			.finally(() => {
-				setLoading(false)
-			})
-	}, [loader, exportName])
+		const result = generateCombinations(story.schema)
+		setCombinations(result.combinations)
+		setTotal(result.total)
+		setTruncated(result.truncated)
+	}, [story.schema])
 
 	const handleCellClick = useCallback((index: number) => {
 		setSelectedIndex((prev) => (prev === index ? null : index))
@@ -93,8 +61,6 @@ export function MatrixViewer({ loader, exportName, title }: MatrixViewerProps) {
 	}, [selectedIndex])
 
 	const renderStory = (values: Record<string, unknown>) => {
-		if (!story) return null
-
 		try {
 			return story.render(values as z.output<z.ZodObject<z.ZodRawShape>>)
 		} catch (err) {
@@ -105,31 +71,6 @@ export function MatrixViewer({ loader, exportName, title }: MatrixViewerProps) {
 				</div>
 			)
 		}
-	}
-
-	if (loading) {
-		return (
-			<div className={styles.container}>
-				<header className={styles.header}>
-					<h1 className={styles.title}>{title}</h1>
-				</header>
-				<div className={styles.loading}>Loading...</div>
-			</div>
-		)
-	}
-
-	if (error) {
-		return (
-			<div className={styles.container}>
-				<header className={styles.header}>
-					<h1 className={styles.title}>{title}</h1>
-				</header>
-				<div className={styles.error}>
-					<p className={styles.errorTitle}>Error loading matrix story</p>
-					<p className={styles.errorMessage}>{error}</p>
-				</div>
-			</div>
-		)
 	}
 
 	// Selected cell view (expanded)

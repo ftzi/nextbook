@@ -1,7 +1,7 @@
 import "@/app/globals.css"
 import type { Metadata } from "next"
 import { NextbookShell } from "nextbook"
-import { loaders, storyTree } from "./stories"
+import { stories } from "./stories"
 
 export const metadata: Metadata = {
 	title: "Nextbook | Component Stories",
@@ -9,9 +9,5 @@ export const metadata: Metadata = {
 }
 
 export default function NextbookLayout({ children }: { children: React.ReactNode }) {
-	return (
-		<NextbookShell tree={storyTree} loaders={loaders}>
-			{children}
-		</NextbookShell>
-	)
+	return <NextbookShell stories={stories}>{children}</NextbookShell>
 }

@@ -1,26 +1,16 @@
-import type { StoryTreeNode } from "./types"
+import type { Stories, StoryLoader, StoryLoaders, StoryTreeNode } from "./types"
 
-type StoryLoader = () => Promise<Record<string, unknown>>
-
-/** Flat loader map (internal) - key is the path like "button" or "forms/input" */
-type FlatLoaders = Record<string, StoryLoader>
-
-/** Nested input structure for createStoryRegistry */
+/** Nested input structure for createStories */
 type NestedLoaders = {
 	[key: string]: StoryLoader | NestedLoaders
-}
-
-type StoryRegistry = {
-	storyTree: StoryTreeNode[]
-	loaders: FlatLoaders
 }
 
 /**
  * Flatten nested loaders into a flat map with path keys.
  * { forms: { input: loader } } → { "forms/input": loader }
  */
-function flattenLoaders(nested: NestedLoaders, prefix = ""): FlatLoaders {
-	const flat: FlatLoaders = {}
+function flattenLoaders(nested: NestedLoaders, prefix = ""): StoryLoaders {
+	const flat: StoryLoaders = {}
 
 	for (const [key, value] of Object.entries(nested)) {
 		const path = prefix ? `${prefix}/${key}` : key
@@ -38,13 +28,13 @@ function flattenLoaders(nested: NestedLoaders, prefix = ""): FlatLoaders {
 }
 
 /**
- * Create a story registry from lazy loaders.
+ * Create stories from lazy loaders.
  *
  * This function is server-safe - it only builds the tree structure from keys.
  * Actual module loading happens on-demand when viewing a story.
  *
  * @example
- * export const { storyTree, loaders } = createStoryRegistry({
+ * export const stories = createStories({
  *   button: () => import("./button.story"),
  *   forms: {
  *     input: () => import("./forms/input.story"),
@@ -52,7 +42,7 @@ function flattenLoaders(nested: NestedLoaders, prefix = ""): FlatLoaders {
  *   },
  * })
  */
-export function createStoryRegistry(nestedLoaders: NestedLoaders): StoryRegistry {
+export function createStories(nestedLoaders: NestedLoaders): Stories {
 	// Flatten nested structure to path-based keys
 	const loaders = flattenLoaders(nestedLoaders)
 
@@ -88,5 +78,5 @@ export function createStoryRegistry(nestedLoaders: NestedLoaders): StoryRegistry
 		}
 	}
 
-	return { storyTree: tree, loaders }
+	return { tree, loaders }
 }

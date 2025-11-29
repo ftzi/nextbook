@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
 import { isMatrixStory } from "../story-matrix"
-import type { ControlConfig, Story } from "../types"
+import type { ControlConfig, MatrixStory, Story } from "../types"
 import { getSchemaDefaults, schemaToControls } from "../utils/schema"
 import { ControlsPanel, DEFAULT_SIZE_BOTTOM, DEFAULT_SIZE_RIGHT } from "./controls-panel"
 import { MatrixViewer } from "./matrix-viewer"
@@ -14,8 +14,8 @@ type BackgroundType = "default" | "striped"
 type PanelPosition = "bottom" | "right"
 
 type StoryViewerProps = {
-	loader: () => Promise<Record<string, unknown>>
-	exportName: string
+	story: Story<z.ZodType | undefined> | MatrixStory<z.ZodObject<z.ZodRawShape>>
+	storyType: "simple" | "controlled" | "matrix"
 	title: string
 }
 
@@ -24,11 +24,7 @@ const MIN_ZOOM = 0.25
 const MAX_ZOOM = 3
 const ZOOM_STEP = 0.1
 
-export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
-	const [story, setStory] = useState<Story<z.ZodType | undefined> | null>(null)
-	const [isMatrix, setIsMatrix] = useState(false)
-	const [loading, setLoading] = useState(true)
-	const [error, setError] = useState<string | null>(null)
+export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 	const [controls, setControls] = useState<ControlConfig[]>([])
 	const [values, setValues] = useState<Record<string, unknown>>({})
 	const [defaultValues, setDefaultValues] = useState<Record<string, unknown>>({})
@@ -46,6 +42,7 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 	// Pan and zoom state
 	const [zoom, setZoom] = useState(DEFAULT_ZOOM)
 	const [pan, setPan] = useState({ x: 0, y: 0 })
+	const [isPanEnabled, setIsPanEnabled] = useState(true)
 	const [isDragging, setIsDragging] = useState(false)
 	const dragStart = useRef({ x: 0, y: 0 })
 	const panStart = useRef({ x: 0, y: 0 })
@@ -130,44 +127,15 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 	}, [isDragging])
 
 	const handleMouseDown = (e: React.MouseEvent) => {
-		if (e.button !== 0) return
+		if (e.button !== 0 || !isPanEnabled) return
 		setIsDragging(true)
 		dragStart.current = { x: e.clientX, y: e.clientY }
 		panStart.current = { x: pan.x, y: pan.y }
 	}
 
+	// Extract controls from schema
 	useEffect(() => {
-		setLoading(true)
-		setError(null)
-		setIsMatrix(false)
-
-		loader()
-			.then((mod) => {
-				const matchingKey = Object.keys(mod).find((key) => key.toLowerCase() === exportName.toLowerCase())
-				const exportedStory = matchingKey ? mod[matchingKey] : undefined
-
-				if (exportedStory && typeof exportedStory === "object" && "__nextbook" in exportedStory) {
-					// Check if it's a matrix story
-					if (isMatrixStory(exportedStory)) {
-						setIsMatrix(true)
-						setStory(null) // MatrixViewer handles its own loading
-					} else {
-						setStory(exportedStory as Story<z.ZodType | undefined>)
-					}
-				} else {
-					setError(`Export "${exportName}" not found or not a valid story`)
-				}
-			})
-			.catch((err) => {
-				setError(String(err))
-			})
-			.finally(() => {
-				setLoading(false)
-			})
-	}, [loader, exportName])
-
-	useEffect(() => {
-		if (story?.schema) {
+		if (storyType === "controlled" && story.schema) {
 			try {
 				const schemaControls = schemaToControls(story.schema as z.ZodObject<z.ZodRawShape>)
 				const schemaDefaults = getSchemaDefaults(story.schema as z.ZodObject<z.ZodRawShape>)
@@ -186,7 +154,7 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 			setDefaultValues({})
 			setValues({})
 		}
-	}, [story?.schema])
+	}, [story.schema, storyType])
 
 	// Reset view when story changes
 	useEffect(() => {
@@ -201,30 +169,14 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 		setValues(defaultValues)
 	}
 
+	// Render MatrixViewer for matrix stories
+	if (storyType === "matrix" && isMatrixStory(story)) {
+		return <MatrixViewer story={story} title={title} />
+	}
+
 	const renderStory = () => {
-		if (loading) {
-			return null
-		}
-
-		if (error) {
-			return (
-				<div className={styles.error}>
-					<p className={styles.errorTitle}>Error loading story</p>
-					<p className={styles.errorMessage}>{error}</p>
-				</div>
-			)
-		}
-
-		if (!story) {
-			return (
-				<div className={styles.error}>
-					<p className={styles.errorTitle}>Story not found</p>
-				</div>
-			)
-		}
-
 		try {
-			if (story.schema) {
+			if (storyType === "controlled" && story.schema) {
 				return (story.render as (props: Record<string, unknown>) => React.ReactNode)(values)
 			}
 			return (story.render as () => React.ReactNode)()
@@ -239,12 +191,7 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 		}
 	}
 
-	// Render MatrixViewer for matrix stories
-	if (isMatrix) {
-		return <MatrixViewer loader={loader} exportName={exportName} title={title} />
-	}
-
-	const canvasClassName = `${styles.canvas ?? ""} ${background === "striped" ? (styles.canvasStriped ?? "") : (styles.canvasDefault ?? "")} ${isDragging ? (styles.canvasDragging ?? "") : ""}`
+	const canvasClassName = `${styles.canvas ?? ""} ${background === "striped" ? (styles.canvasStriped ?? "") : (styles.canvasDefault ?? "")} ${isDragging ? (styles.canvasDragging ?? "") : ""} ${isPanEnabled ? "" : (styles.canvasNoPan ?? "")}`
 
 	const hasControls = controls.length > 0
 	const containerClassName = `${styles.container} ${hasControls && panelPosition === "right" ? styles.containerWithRightPanel : ""}`
@@ -256,6 +203,8 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 				<header className={styles.header}>
 					<h1 className={styles.title}>{title}</h1>
 					<div className={styles.headerControls}>
+						<PanToggle enabled={isPanEnabled} onChange={setIsPanEnabled} />
+						<div className={styles.divider} />
 						<ZoomControls
 							zoom={zoom}
 							onZoomIn={() => setZoom((prev) => Math.min(MAX_ZOOM, prev + ZOOM_STEP))}
@@ -426,5 +375,29 @@ function BackgroundSwitcher({ value, onChange }: { value: BackgroundType; onChan
 				</button>
 			</Tooltip>
 		</div>
+	)
+}
+
+function PanToggle({ enabled, onChange }: { enabled: boolean; onChange: (enabled: boolean) => void }) {
+	return (
+		<Tooltip content={enabled ? "Disable panning" : "Enable panning"}>
+			<button
+				type="button"
+				onClick={() => onChange(!enabled)}
+				className={`${styles.panButton} ${enabled ? styles.panButtonActive : ""}`}
+				aria-pressed={enabled}
+			>
+				<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+					{/* Hand/grab icon */}
+					<path
+						d="M10 4.5V3a1 1 0 0 0-2 0v1.5M8 4.5V2.5a1 1 0 0 0-2 0v2M6 4.5V3a1 1 0 0 0-2 0v4l-.7-.7a1 1 0 0 0-1.4 1.4l2.6 2.6c.8.8 1.8 1.2 2.9 1.2h.6a4 4 0 0 0 4-4V4.5a1 1 0 0 0-2 0"
+						stroke="currentColor"
+						strokeWidth="1.2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+			</button>
+		</Tooltip>
 	)
 }

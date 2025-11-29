@@ -6,7 +6,7 @@ export { NextbookShell } from "./components/nextbook-shell"
 export { Sidebar } from "./components/sidebar"
 export { StoryPage } from "./components/story-page"
 export { StoryViewer } from "./components/story-viewer"
-export { createStoryRegistry } from "./registry"
+export { createStories } from "./registry"
 export { isStory, story } from "./story"
 export { isMatrixStory, storyMatrix } from "./story-matrix"
 
@@ -17,6 +17,7 @@ export type {
 	MatrixStory,
 	MatrixStoryConfig,
 	PropCombination,
+	Stories,
 	Story,
 	StoryConfig,
 	StoryMeta,

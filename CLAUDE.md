@@ -97,8 +97,8 @@ This is a Turborepo monorepo with two main workspace types:
 
 **Key Files:**
 
-- `src/index.ts` - Public exports (createStoryRegistry, NextbookShell, StoryPage, story)
-- `src/registry.tsx` - createStoryRegistry implementation (nested loaders → flat loaders)
+- `src/index.ts` - Public exports (createStories, NextbookShell, StoryPage, story)
+- `src/registry.tsx` - createStories implementation (nested loaders → flat loaders)
 - `src/story.ts` - story() function and isStory() type guard
 - `src/components/` - React components (NextbookShell, Sidebar, StoryViewer, ControlsPanel)
 - `src/cli/` - CLI tool for scaffolding (bunx nextbook init)
@@ -107,14 +107,14 @@ This is a Turborepo monorepo with two main workspace types:
 **Server/Client Boundary:**
 
 - `stories/index.ts` must have `"use client"` - loaders are functions that can't cross server→client boundary
-- `NextbookShell` is a client component - receives loaders
+- `NextbookShell` is a client component - receives the stories object
 - User's layout.tsx (Server Component) must render `<html>` and `<body>` tags
 
 **Lazy Loading Strategy:**
 
 Stories are loaded on-demand, NOT at initialization:
 
-1. `createStoryRegistry()` - Only parses file paths to build tree structure. NO modules loaded.
+1. `createStories()` - Only parses file paths to build tree structure. NO modules loaded.
 2. Sidebar expansion - When a story file node is expanded, exports are loaded to show variants.
 3. Story viewing - When navigating to a story, the module is loaded to render it.
 
@@ -161,7 +161,7 @@ packages/nextbook/src/
 ├── utils/
 │   └── schema.ts          # Zod schema introspection
 ├── index.ts               # Public exports
-├── registry.tsx           # createStoryRegistry implementation
+├── registry.tsx           # createStories implementation
 ├── story.ts               # story() function and isStory()
 └── types.ts               # TypeScript types
 ```
@@ -170,7 +170,7 @@ packages/nextbook/src/
 
 1. **Forgetting "use client" on stories/index.ts** - Loaders contain functions that can't cross server→client boundary
 2. **Adding html/body in the nextbook layout** - Next.js layouts nest; the root layout already provides these tags. The `/ui` layout should only contain `<NextbookShell>`.
-3. **Making createStoryRegistry async** - It was async before but caused boundary issues; now synchronous
+3. **Making createStories async** - It was async before but caused boundary issues; now synchronous
 4. **CLI templates out of sync** - `src/cli/templates.ts` MUST match current API when making changes
 
 ### Example App (apps/example/)

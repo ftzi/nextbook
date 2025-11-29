@@ -1,7 +1,7 @@
 import { StoryPage } from "nextbook"
-import { loaders, storyTree } from "../stories"
+import { stories } from "../stories"
 
 export default async function Page({ params }: { params: Promise<{ path?: string[] }> }) {
 	const { path = [] } = await params
-	return <StoryPage path={path} storyTree={storyTree} loaders={loaders} />
+	return <StoryPage path={path} stories={stories} />
 }

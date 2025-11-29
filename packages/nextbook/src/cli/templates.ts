@@ -32,7 +32,7 @@ export const Default = story({
 2. Register it in \`stories/index.ts\`:
 
 \`\`\`tsx
-export const { storyTree, loaders } = createStoryRegistry({
+export const stories = createStories({
   // ... existing stories
   myComponent: () => import("./my-component.story"),
 })
@@ -46,12 +46,12 @@ The \`stories/index.ts\` file MUST have \`"use client"\` at the top. The loaders
 ### Keys become sidebar paths
 Registry keys become the sidebar hierarchy:
 - \`button: () => import(...)\` → "Button"
-- \`forms: { input: () => import(...) }\` → "Forms / Input"
+- \`forms: { input: () => import(...) }\` → "Forms > Input"
 
 ### Named exports become variants
 Each named export in a story file becomes a variant:
-- \`export const Default\` → "My Component / Default"
-- \`export const Large\` → "My Component / Large"
+- \`export const Default\` → "My Component > Default"
+- \`export const Large\` → "My Component > Large"
 
 ## Zod Controls
 
@@ -81,7 +81,8 @@ export const Controlled = story({
 	layout: `import "@/app/globals.css"
 import { NextbookShell } from "nextbook"
 import type { Metadata } from "next"
-import { loaders, storyTree } from "./stories"
+import { notFound } from "next/navigation"
+import { stories } from "./stories"
 
 export const metadata: Metadata = {
 	title: "Nextbook | Component Stories",
@@ -89,8 +90,12 @@ export const metadata: Metadata = {
 }
 
 export default function NextbookLayout({ children }: { children: React.ReactNode }) {
+	if (process.env.NODE_ENV === "production") {
+		notFound()
+	}
+
 	return (
-		<NextbookShell tree={storyTree} loaders={loaders}>
+		<NextbookShell stories={stories}>
 			{children}
 		</NextbookShell>
 	)
@@ -98,19 +103,19 @@ export default function NextbookLayout({ children }: { children: React.ReactNode
 `,
 
 	page: `import { StoryPage } from "nextbook"
-import { loaders, storyTree } from "../stories"
+import { stories } from "../stories"
 
 export default async function Page({ params }: { params: Promise<{ path?: string[] }> }) {
 	const { path = [] } = await params
-	return <StoryPage path={path} storyTree={storyTree} loaders={loaders} />
+	return <StoryPage path={path} stories={stories} />
 }
 `,
 
 	storiesIndex: `"use client"
 
-import { createStoryRegistry } from "nextbook"
+import { createStories } from "nextbook"
 
-export const { storyTree, loaders } = createStoryRegistry({
+export const stories = createStories({
 	example: () => import("./example.story"),
 })
 `,

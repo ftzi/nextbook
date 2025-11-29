@@ -1,147 +1,139 @@
 /*
- * StoryPage - Welcome page and story display
+ * Story Tabs - Tab bar for story variants
+ * Modern, minimal design with smooth animations
  */
 
 @import "../styles/tokens.css";
 
 /* ═══════════════════════════════════════════════════════════════════════════════
- * WELCOME PAGE
+ * CONTAINER
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
-.welcome {
+.container {
+	position: relative;
+	border-bottom: 1px solid var(--nb-border-subtle);
+	background: var(--nb-bg-elevated);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * TABS SCROLLABLE AREA
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.tabs {
 	display: flex;
-	flex-direction: column;
+	gap: var(--nb-space-1);
+	padding: var(--nb-space-2) var(--nb-space-4);
+	overflow-x: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.tabs::-webkit-scrollbar {
+	display: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * FADE INDICATORS
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.fadeLeft,
+.fadeRight {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 40px;
+	pointer-events: none;
+	z-index: 1;
+}
+
+.fadeLeft {
+	left: 0;
+	background: linear-gradient(to right, var(--nb-bg-elevated), transparent);
+}
+
+.fadeRight {
+	right: 0;
+	background: linear-gradient(to left, var(--nb-bg-elevated), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * TAB ITEM
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.tab {
+	display: flex;
 	align-items: center;
-	justify-content: center;
-	height: 100%;
-	padding: var(--nb-space-8);
-	text-align: center;
-}
-
-.welcomeLogo {
-	width: 100%;
-	max-width: 500px;
-	margin-bottom: var(--nb-space-8);
-}
-
-.welcomeTitle {
-	font-size: var(--nb-text-3xl);
-	font-weight: var(--nb-font-bold);
-	color: var(--nb-text-primary);
-	margin: 0 0 var(--nb-space-4) 0;
-}
-
-.welcomeSubtitle {
-	font-size: var(--nb-text-base);
-	color: var(--nb-text-secondary);
-	margin: 0 0 var(--nb-space-2) 0;
-}
-
-.welcomeCount {
+	gap: var(--nb-space-1-5);
+	padding: var(--nb-space-2) var(--nb-space-3);
 	font-size: var(--nb-text-sm);
-	color: var(--nb-text-tertiary);
-	margin: 0;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════════
- * PLACEHOLDER PAGES
- * ═══════════════════════════════════════════════════════════════════════════════ */
-
-.placeholder {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	padding: var(--nb-space-8);
-	text-align: center;
-}
-
-.placeholderTitle {
-	font-size: var(--nb-text-xl);
-	font-weight: var(--nb-font-bold);
-	color: var(--nb-text-primary);
-	margin: 0 0 var(--nb-space-4) 0;
-}
-
-.placeholderText {
-	font-size: var(--nb-text-base);
-	color: var(--nb-text-secondary);
-	margin: 0;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════════
- * ERROR BOUNDARY
- * ═══════════════════════════════════════════════════════════════════════════════ */
-
-.errorBoundary {
-	padding: var(--nb-space-4);
-	border-radius: var(--nb-radius-md);
-	border: 1px solid var(--nb-error-border);
-	background: var(--nb-error-light);
-	color: var(--nb-error-text);
-}
-
-.errorBoundaryTitle {
 	font-weight: var(--nb-font-medium);
-	margin: 0 0 var(--nb-space-1) 0;
-}
-
-.errorBoundaryMessage {
-	font-family: var(--nb-font-mono);
-	font-size: var(--nb-text-sm);
-	margin: 0;
-}
-
-.errorBoundaryButton {
-	margin-top: var(--nb-space-3);
-	padding: var(--nb-space-1) var(--nb-space-3);
-	font-size: var(--nb-text-sm);
 	font-family: var(--nb-font-sans);
-	color: white;
-	background: var(--nb-error-text);
-	border: none;
+	color: var(--nb-text-tertiary);
+	text-decoration: none;
+	white-space: nowrap;
 	border-radius: var(--nb-radius-md);
-	cursor: pointer;
+	background: transparent;
+	transition:
+		color var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.tab:hover {
+	color: var(--nb-text-primary);
+	background: var(--nb-bg-hover);
+}
+
+.tabActive {
+	color: var(--nb-text-primary);
+	background: var(--nb-bg-active);
+}
+
+.tabActive:hover {
+	background: var(--nb-bg-active);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * TAB NAME & BADGE
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.tabName {
+	line-height: 1;
+}
+
+.badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--nb-text-muted);
+	opacity: 0.7;
 	transition: opacity var(--nb-transition-fast);
 }
 
-.errorBoundaryButton:hover {
-	opacity: 0.9;
+.tab:hover .badge,
+.tabActive .badge {
+	opacity: 1;
+}
+
+/* Badge colors for different story types */
+.tabActive .badge {
+	color: var(--nb-text-brand);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
- * LOADING STATE
+ * ANIMATIONS
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
-.loading {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-}
-
-.loadingSpinner {
-	width: 32px;
-	height: 32px;
-	border: 3px solid var(--nb-border-subtle);
-	border-top-color: var(--nb-text-brand);
-	border-radius: 50%;
-	animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
+@keyframes tabFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
 	to {
-		transform: rotate(360deg);
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════════
- * TABBED VIEW
- * ═══════════════════════════════════════════════════════════════════════════════ */
-
-.tabbedView {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
+.tab {
+	animation: tabFadeIn 150ms ease-out;
 }

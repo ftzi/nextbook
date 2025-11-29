@@ -263,7 +263,9 @@
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
 .storyLink {
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	padding: var(--nb-space-1-5) var(--nb-space-2);
 	font-size: var(--nb-text-sm);
 	color: var(--nb-text-secondary);
@@ -288,6 +290,29 @@
 .storyLinkActive:hover {
 	background: var(--nb-bg-active);
 	color: var(--nb-text-brand);
+}
+
+.chevronRight {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+	opacity: 0;
+	color: var(--nb-text-muted);
+	transition:
+		opacity var(--nb-transition-fast),
+		transform var(--nb-transition-fast);
+}
+
+.storyLink:hover .chevronRight {
+	opacity: 1;
+	transform: translateX(2px);
+}
+
+.storyLinkActive .chevronRight {
+	opacity: 1;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

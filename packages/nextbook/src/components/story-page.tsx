@@ -1,17 +1,16 @@
 "use client"
 
-import { Component, type ReactNode } from "react"
-import type { StoryTreeNode } from "../types"
+import { Component, type ReactNode, useEffect, useState } from "react"
+import type { Stories, StoryTreeNode } from "../types"
 import LogoAnimated from "./icons/logo-animated"
 import styles from "./story-page.module.css"
+import { extractStoryExports, StoryTabs } from "./story-tabs"
 import { StoryViewer } from "./story-viewer"
-
-type StoryLoaders = Record<string, () => Promise<Record<string, unknown>>>
 
 type StoryPageProps = {
 	path: string[]
-	storyTree: StoryTreeNode[]
-	loaders: StoryLoaders
+	stories: Stories
+	basePath?: string
 }
 
 /**
@@ -122,13 +121,15 @@ function findStoryFile(
 }
 
 /**
- * Client component for rendering stories.
+ * Client component for rendering stories with tabbed navigation.
  * Handles the welcome page, story lookup, and lazy loading.
  */
-export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
+export function StoryPage({ path, stories, basePath = "/ui" }: StoryPageProps) {
+	const { tree, loaders } = stories
+
 	// Welcome page
 	if (path.length === 0) {
-		const storyCount = countStoryFiles(storyTree)
+		const storyCount = countStoryFiles(tree)
 		return (
 			<div className={styles.welcome}>
 				<AnimatedLogo className={styles.welcomeLogo} />
@@ -141,11 +142,11 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 	}
 
 	// Try to find a story file in the path
-	const result = findStoryFile(storyTree, path)
+	const result = findStoryFile(tree, path)
 
 	if (!result) {
 		// Maybe it's a directory node
-		const dirNode = findNodeByPath(storyTree, path)
+		const dirNode = findNodeByPath(tree, path)
 		if (dirNode && !dirNode.filePath && dirNode.children && dirNode.children.length > 0) {
 			return (
 				<div className={styles.placeholder}>
@@ -165,16 +166,6 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 
 	const { node, exportName } = result
 
-	// Story file without export specified - prompt to select variant
-	if (!exportName) {
-		return (
-			<div className={styles.placeholder}>
-				<h1 className={styles.placeholderTitle}>{node.name}</h1>
-				<p className={styles.placeholderText}>Select a story variant from the sidebar.</p>
-			</div>
-		)
-	}
-
 	// Get loader for this file
 	const loader = loaders[node.filePath as string]
 	if (!loader) {
@@ -186,12 +177,98 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 		)
 	}
 
-	const title = path.map((s) => s.charAt(0).toUpperCase() + s.slice(1)).join("\u00A0\u00A0\u00A0›\u00A0\u00A0\u00A0")
+	return (
+		<TabbedStoryView
+			key={node.filePath}
+			loader={loader}
+			filePath={node.filePath as string}
+			componentName={node.name}
+			requestedExport={exportName}
+			basePath={basePath}
+		/>
+	)
+}
+
+type TabbedStoryViewProps = {
+	loader: () => Promise<Record<string, unknown>>
+	filePath: string
+	componentName: string
+	requestedExport: string | null
+	basePath: string
+}
+
+function TabbedStoryView({ loader, filePath, componentName, requestedExport, basePath }: TabbedStoryViewProps) {
+	const [module, setModule] = useState<Record<string, unknown> | null>(null)
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
+
+	useEffect(() => {
+		setLoading(true)
+		setError(null)
+
+		loader()
+			.then((mod) => {
+				setModule(mod)
+			})
+			.catch((err) => {
+				setError(String(err))
+			})
+			.finally(() => {
+				setLoading(false)
+			})
+	}, [loader])
+
+	if (loading) {
+		return (
+			<div className={styles.loading}>
+				<div className={styles.loadingSpinner} />
+			</div>
+		)
+	}
+
+	if (error || !module) {
+		return (
+			<div className={styles.placeholder}>
+				<h1 className={styles.placeholderTitle}>Error loading story</h1>
+				<p className={styles.placeholderText}>{error || "Unknown error"}</p>
+			</div>
+		)
+	}
+
+	const storyExports = extractStoryExports(module)
+
+	if (storyExports.length === 0) {
+		return (
+			<div className={styles.placeholder}>
+				<h1 className={styles.placeholderTitle}>{componentName}</h1>
+				<p className={styles.placeholderText}>No stories found in this file.</p>
+			</div>
+		)
+	}
+
+	// Find the active story - either from URL or default to first
+	const activeExportName = requestedExport || storyExports[0]?.name || ""
+	const activeExport = storyExports.find((e) => e.name.toLowerCase() === activeExportName.toLowerCase())
+	const activeStory = activeExport || storyExports[0]
+
+	if (!activeStory) {
+		return (
+			<div className={styles.placeholder}>
+				<h1 className={styles.placeholderTitle}>{componentName}</h1>
+				<p className={styles.placeholderText}>No stories found.</p>
+			</div>
+		)
+	}
+
+	const title = componentName
 
 	return (
-		<StoryErrorBoundary key={path.join("/")}>
-			<StoryViewer loader={loader} exportName={exportName} title={title} />
-		</StoryErrorBoundary>
+		<div className={styles.tabbedView}>
+			<StoryTabs exports={storyExports} activeStory={activeStory.name} basePath={basePath} filePath={filePath} />
+			<StoryErrorBoundary key={activeStory.name}>
+				<StoryViewer story={activeStory.story} storyType={activeStory.type} title={title} />
+			</StoryErrorBoundary>
+		</div>
 	)
 }
 

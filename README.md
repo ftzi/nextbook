@@ -3,7 +3,7 @@ STILL WIP!
 STAY TUNED!
 
 <p align="center">
-  <img src="./packages/nextbook/assets/logo.svg" alt="Nextbook" width="400" />
+  <img src="https://github.com/ftzi/nextbook/blob/main/packages/nextbook/assets/logo-animated.svg" alt="Nextbook" width="400" />
 </p>
 
 <h3 align="center">
@@ -13,7 +13,7 @@ STAY TUNED!
 
 Nextbook is a lightweight alternative to Storybook, designed specifically for Next.js. It uses your app's existing configuration - no separate build process, no Tailwind duplication, no webpack config.
 
-## Features
+## ✨ Features
 
 - **Zero Config** - Uses your Next.js app's existing setup
 - **Path-Based Hierarchy** - Keys become sidebar structure automatically
@@ -24,12 +24,10 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 - **Background Switcher** - Toggle between default and striped backgrounds to spot component imperfections
 - **AI-Ready** - Simple, predictable API that AI assistants can use to generate stories instantly
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
-npx nextbook
-# or
-bunx nextbook
+npx nextbook # or: bunx, pnpm dlx, yarn dlx, etc.
 ```
 
 This scaffolds the required files in `app/ui/` and creates an example story.
@@ -37,7 +35,7 @@ This scaffolds the required files in `app/ui/` and creates an example story.
 Then visit `http://localhost:3000/ui` to see your stories.
 
 <details>
-<summary>Manual Setup</summary>
+<summary>Manual Setup (alternative to CLI)</summary>
 
 ### 1. Install
 
@@ -53,9 +51,9 @@ bun add nextbook
 // app/ui/stories/index.ts
 "use client";
 
-import { createStoryRegistry } from "nextbook";
+import { createStories } from "nextbook";
 
-export const { storyTree, loaders } = createStoryRegistry({
+export const stories = createStories({
   button: () => import("./button.story"),
   forms: {
     input: () => import("./forms/input.story"),
@@ -64,7 +62,7 @@ export const { storyTree, loaders } = createStoryRegistry({
 });
 ```
 
-Keys become sidebar paths: `forms.input` → `Forms / Input`
+Keys become sidebar paths: `forms.input` → `Forms > Input`
 
 ### 3. Create the layout
 
@@ -72,15 +70,20 @@ Keys become sidebar paths: `forms.input` → `Forms / Input`
 // app/ui/layout.tsx
 import "@/app/globals.css";
 import { NextbookShell } from "nextbook";
-import { loaders, storyTree } from "./stories";
+import { notFound } from "next/navigation";
+import { stories } from "./stories";
 
 export default function NextbookLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  if (process.env.NODE_ENV === "production") {
+    notFound();
+  }
+
   return (
-    <NextbookShell tree={storyTree} loaders={loaders}>
+    <NextbookShell stories={stories}>
       {children}
     </NextbookShell>
   );
@@ -94,7 +97,7 @@ export default function NextbookLayout({
 ```tsx
 // app/ui/[[...path]]/page.tsx
 import { StoryPage } from "nextbook";
-import { loaders, storyTree } from "../stories";
+import { stories } from "../stories";
 
 export default async function Page({
   params,
@@ -102,13 +105,13 @@ export default async function Page({
   params: Promise<{ path?: string[] }>;
 }) {
   const { path = [] } = await params;
-  return <StoryPage path={path} storyTree={storyTree} loaders={loaders} />;
+  return <StoryPage path={path} stories={stories} />;
 }
 ```
 
 </details>
 
-## Writing Stories
+## 📝 Writing Stories
 
 ```tsx
 // app/ui/stories/button.story.tsx
@@ -165,7 +168,7 @@ import { Button } from "@/components/ui/button";
 
 // This single export generates 12 visual tests automatically!
 // (3 variants × 2 sizes × 2 disabled states = 12 combinations)
-export const AllVariants = storyMatrix({
+export const Matrix = storyMatrix({
   schema: z.object({
     variant: z.enum(["primary", "secondary", "ghost"]),
     size: z.enum(["sm", "lg"]),
@@ -197,19 +200,19 @@ The matrix view displays all combinations in a grid:
 - **Always in sync** - Add a new variant? The matrix updates automatically
 - **Visual regression at scale** - See every state at once, catch issues instantly
 
-## File Organization
+## 📁 File Organization
 
-Stories are organized by the keys you provide to `createStoryRegistry`:
+Stories are organized by the keys you provide to `createStories`:
 
 ```tsx
-export const { storyTree, loaders } = createStoryRegistry({
+export const stories = createStories({
   button: () => import("./button.story"), // → "Button"
   forms: {
-    input: () => import("./forms/input.story"), // → "Forms / Input"
-    select: () => import("./forms/select.story"), // → "Forms / Select"
+    input: () => import("./forms/input.story"), // → "Forms > Input"
+    select: () => import("./forms/select.story"), // → "Forms > Select"
   },
   layout: {
-    card: () => import("./layout/card.story"), // → "Layout / Card"
+    card: () => import("./layout/card.story"), // → "Layout > Card"
   },
 });
 ```
@@ -218,11 +221,11 @@ Named exports become story variants:
 
 ```tsx
 // button.story.tsx
-export const Primary = story({ ... })   // → "Button / Primary"
-export const Secondary = story({ ... }) // → "Button / Secondary"
+export const Primary = story({ ... })   // → "Button > Primary"
+export const Secondary = story({ ... }) // → "Button > Secondary"
 ```
 
-## Layout Isolation
+## 🔒 Layout Isolation
 
 If your root layout has providers that conflict with Nextbook, use `useSelectedLayoutSegment` to skip them for the `/ui` route:
 
@@ -256,35 +259,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Reference: [useSelectedLayoutSegment](https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segment)
 
-## URL Structure
+## 🔗 URL Structure
 
 - `/ui` - Welcome page
-- `/ui/button/primary` - Button / Primary story
-- `/ui/forms/input/controlled` - Forms / Input / Controlled story
+- `/ui/button/primary` - Button > Primary story
+- `/ui/forms/input/controlled` - Forms > Input > Controlled story
 
-## Access Control
+## 🛡️ Access Control
 
-Block in production if needed:
+By default, the generated layout blocks access in production. To allow access in production, remove the `notFound()` guard from your layout:
 
 ```tsx
 // app/ui/layout.tsx
-import { notFound } from "next/navigation";
-import { NextbookShell } from "nextbook";
-import { loaders, storyTree } from "./stories";
-
 export default function NextbookLayout({ children }: { children: React.ReactNode }) {
-  if (process.env.NODE_ENV === "production") {
-    notFound();
-  }
+  // Remove this block to allow access in production
+  // if (process.env.NODE_ENV === "production") {
+  //   notFound();
+  // }
+
   return (
-    <NextbookShell tree={storyTree} loaders={loaders}>
+    <NextbookShell stories={stories}>
       {children}
     </NextbookShell>
   );
 }
 ```
 
-## Why Nextbook?
+## 💡 Why Nextbook?
 
 ### The Storybook Problem
 
@@ -307,12 +308,13 @@ export const SecondaryDisabled = () => <Button variant="secondary" disabled />
 ### The Nextbook Solution
 
 ```tsx
-// Nextbook: ONE line generates ALL 12 combinations 🎉
-export const AllVariants = storyMatrix({
+// Generates ALL 36 combinations automatically 🎉
+export const Matrix = storyMatrix({
   schema: z.object({
     variant: z.enum(["primary", "secondary", "ghost"]),
-    size: z.enum(["sm", "lg"]),
+    size: z.enum(["sm", "md", "lg"]),
     disabled: z.boolean(),
+    loading: z.boolean(),
   }),
   render: (props) => <Button {...props}>Click me</Button>,
 });
@@ -331,7 +333,7 @@ export const AllVariants = storyMatrix({
 | Variant coverage        | Whatever you remember        | **100% guaranteed**          |
 | Maintenance burden      | High (keep variants in sync) | **Zero (schema is truth)**  |
 
-## AI-Ready
+## 🤖 AI-Ready
 
 Nextbook is designed to work seamlessly with AI assistants. The simple, predictable API makes it easy for AI to generate stories for your components instantly.
 
@@ -341,8 +343,10 @@ Just ask your AI assistant:
 
 The straightforward `story()` function and Zod schema integration means AI can quickly understand your component props and generate comprehensive stories with interactive controls - no complex configuration to explain.
 
+## 🛠️ Development
+
 <details>
-<summary>Development</summary>
+<summary>Commands</summary>
 
 ```bash
 # Install dependencies
@@ -360,6 +364,6 @@ bun test:e2e
 
 </details>
 
-## License
+## 📄 License
 
 MIT

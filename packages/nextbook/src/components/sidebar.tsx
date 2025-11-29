@@ -3,19 +3,15 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
-import { isStory } from "../story"
 import type { StoryTreeNode } from "../types"
 import styles from "./sidebar.module.css"
 
-type StoryLoaders = Record<string, () => Promise<Record<string, unknown>>>
-
 type SidebarProps = {
 	tree: StoryTreeNode[]
-	loaders: StoryLoaders
 	basePath?: string
 }
 
-export function Sidebar({ tree, loaders, basePath = "/ui" }: SidebarProps) {
+export function Sidebar({ tree, basePath = "/ui" }: SidebarProps) {
 	const [search, setSearch] = useState("")
 
 	const filteredTree = useMemo(() => {
@@ -86,7 +82,7 @@ export function Sidebar({ tree, loaders, basePath = "/ui" }: SidebarProps) {
 			{/* Tree */}
 			<nav className={styles.nav}>
 				{filteredTree.length > 0 ? (
-					<TreeNodes nodes={filteredTree} loaders={loaders} basePath={basePath} depth={0} />
+					<TreeNodes nodes={filteredTree} basePath={basePath} depth={0} />
 				) : (
 					<p className={styles.emptyMessage}>No stories found</p>
 				)}
@@ -119,24 +115,16 @@ function filterTree(nodes: StoryTreeNode[], query: string): StoryTreeNode[] {
 
 type TreeNodesProps = {
 	nodes: StoryTreeNode[]
-	loaders: StoryLoaders
 	basePath: string
 	depth: number
 	parentPath?: string[]
 }
 
-function TreeNodes({ nodes, loaders, basePath, depth, parentPath = [] }: TreeNodesProps) {
+function TreeNodes({ nodes, basePath, depth, parentPath = [] }: TreeNodesProps) {
 	return (
 		<ul className={styles.treeList}>
 			{nodes.map((node) => (
-				<TreeNode
-					key={node.segment}
-					node={node}
-					loaders={loaders}
-					basePath={basePath}
-					depth={depth}
-					parentPath={parentPath}
-				/>
+				<TreeNode key={node.segment} node={node} basePath={basePath} depth={depth} parentPath={parentPath} />
 			))}
 		</ul>
 	)
@@ -144,48 +132,62 @@ function TreeNodes({ nodes, loaders, basePath, depth, parentPath = [] }: TreeNod
 
 type TreeNodeProps = {
 	node: StoryTreeNode
-	loaders: StoryLoaders
 	basePath: string
 	depth: number
 	parentPath: string[]
 }
 
-function TreeNode({ node, loaders, basePath, depth, parentPath }: TreeNodeProps) {
+function TreeNode({ node, basePath, depth, parentPath }: TreeNodeProps) {
 	const pathname = usePathname()
-	const [isOpen, setIsOpen] = useState(true)
 	const currentPath = [...parentPath, node.segment]
 	const paddingLeft = depth * 12 + 8
 	const pathPrefix = `${basePath}/${currentPath.join("/").toLowerCase()}`
-	const isAncestorOfActive = pathname.toLowerCase().startsWith(pathPrefix)
+	const isActiveOrAncestor = pathname.toLowerCase().startsWith(pathPrefix)
 
+	// Directories start collapsed, but auto-expand if they contain the active item
+	const [isOpen, setIsOpen] = useState(isActiveOrAncestor)
+
+	// Auto-expand when navigation changes to a child
+	useEffect(() => {
+		if (isActiveOrAncestor && !isOpen) {
+			setIsOpen(true)
+		}
+	}, [isActiveOrAncestor, isOpen])
+
+	// Story file - render as a simple link
 	if (node.filePath) {
+		const href = `${basePath}/${node.filePath.toLowerCase()}`
+		const isActive = pathname.toLowerCase().startsWith(href)
+
 		return (
-			<StoryFileNode
-				node={node}
-				loaders={loaders}
-				basePath={basePath}
-				currentPath={currentPath}
-				paddingLeft={paddingLeft}
-				isAncestorOfActive={isAncestorOfActive}
-				isOpen={isOpen}
-				onToggle={() => setIsOpen(!isOpen)}
-			/>
+			<li>
+				<Link
+					href={href}
+					className={`${styles.storyLink} ${isActive ? styles.storyLinkActive : ""}`}
+					style={{ paddingLeft }}
+				>
+					<span>{node.name}</span>
+					<ChevronRightIcon />
+				</Link>
+			</li>
 		)
 	}
 
+	// Directory - render with expand/collapse
 	if (node.children && node.children.length > 0) {
 		return (
-			<DirectoryNode
-				node={node}
-				loaders={loaders}
-				basePath={basePath}
-				depth={depth}
-				currentPath={currentPath}
-				paddingLeft={paddingLeft}
-				isAncestorOfActive={isAncestorOfActive}
-				isOpen={isOpen}
-				onToggle={() => setIsOpen(!isOpen)}
-			/>
+			<li>
+				<button
+					type="button"
+					onClick={() => setIsOpen(!isOpen)}
+					className={`${styles.expandButton} ${isActiveOrAncestor ? styles.expandButtonActive : ""}`}
+					style={{ paddingLeft }}
+				>
+					<ChevronIcon isOpen={isOpen} />
+					{node.name}
+				</button>
+				{isOpen && <TreeNodes nodes={node.children} basePath={basePath} depth={depth + 1} parentPath={currentPath} />}
+			</li>
 		)
 	}
 
@@ -209,195 +211,18 @@ function ChevronIcon({ isOpen }: { isOpen: boolean }) {
 	)
 }
 
-function ExpandButton({
-	isOpen,
-	isActive,
-	onClick,
-	name,
-	paddingLeft,
-}: {
-	isOpen: boolean
-	isActive: boolean
-	onClick: () => void
-	name: string
-	paddingLeft: number
-}) {
+function ChevronRightIcon() {
 	return (
-		<button
-			type="button"
-			onClick={onClick}
-			className={`${styles.expandButton} ${isActive ? styles.expandButtonActive : ""}`}
-			style={{ paddingLeft }}
-		>
-			<ChevronIcon isOpen={isOpen} />
-			{name}
-		</button>
-	)
-}
-
-function StoryFileNode({
-	node,
-	loaders,
-	basePath,
-	currentPath,
-	paddingLeft,
-	isAncestorOfActive,
-	isOpen,
-	onToggle,
-}: {
-	node: StoryTreeNode
-	loaders: StoryLoaders
-	basePath: string
-	currentPath: string[]
-	paddingLeft: number
-	isAncestorOfActive: boolean
-	isOpen: boolean
-	onToggle: () => void
-}) {
-	const pathname = usePathname()
-	const [exports, setExports] = useState<string[]>([])
-	const [loading, setLoading] = useState(false)
-
-	useEffect(() => {
-		if (isOpen && exports.length === 0 && node.filePath) {
-			const loader = loaders[node.filePath]
-			if (loader) {
-				setLoading(true)
-				loader()
-					.then((mod) => {
-						const storyExports = Object.entries(mod)
-							.filter(([, value]) => isStory(value))
-							.map(([name]) => name)
-						setExports(storyExports)
-					})
-					.catch((err) => {
-						console.error("[nextbook] Failed to load exports:", err)
-					})
-					.finally(() => {
-						setLoading(false)
-					})
-			}
-		}
-	}, [isOpen, exports.length, node.filePath, loaders])
-
-	return (
-		<li>
-			<ExpandButton
-				isOpen={isOpen}
-				isActive={isAncestorOfActive}
-				onClick={onToggle}
-				name={node.name}
-				paddingLeft={paddingLeft}
-			/>
-			{isOpen && (
-				<ExportsList
-					exports={exports}
-					loading={loading}
-					basePath={basePath}
-					currentPath={currentPath}
-					paddingLeft={paddingLeft + 20}
-					pathname={pathname}
+		<span className={styles.chevronRight}>
+			<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+				<path
+					d="M4.5 2L8.5 6L4.5 10"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
 				/>
-			)}
-		</li>
-	)
-}
-
-function ExportsList({
-	exports,
-	loading,
-	basePath,
-	currentPath,
-	paddingLeft,
-	pathname,
-}: {
-	exports: string[]
-	loading: boolean
-	basePath: string
-	currentPath: string[]
-	paddingLeft: number
-	pathname: string
-}) {
-	if (loading) {
-		return (
-			<ul className={styles.treeList}>
-				<li className={styles.loadingText} style={{ paddingLeft }}>
-					Loading...
-				</li>
-			</ul>
-		)
-	}
-
-	if (exports.length === 0) {
-		return (
-			<ul className={styles.treeList}>
-				<li className={styles.noStories} style={{ paddingLeft }}>
-					No stories
-				</li>
-			</ul>
-		)
-	}
-
-	return (
-		<ul className={styles.treeList}>
-			{exports.map((exportName) => {
-				const url = `${basePath}/${currentPath.join("/")}/${exportName}`.toLowerCase()
-				const isActive = pathname.toLowerCase() === url
-				return (
-					<li key={exportName}>
-						<Link
-							href={url}
-							className={`${styles.storyLink} ${isActive ? styles.storyLinkActive : ""}`}
-							style={{ paddingLeft }}
-						>
-							{exportName}
-						</Link>
-					</li>
-				)
-			})}
-		</ul>
-	)
-}
-
-function DirectoryNode({
-	node,
-	loaders,
-	basePath,
-	depth,
-	currentPath,
-	paddingLeft,
-	isAncestorOfActive,
-	isOpen,
-	onToggle,
-}: {
-	node: StoryTreeNode
-	loaders: StoryLoaders
-	basePath: string
-	depth: number
-	currentPath: string[]
-	paddingLeft: number
-	isAncestorOfActive: boolean
-	isOpen: boolean
-	onToggle: () => void
-}) {
-	return (
-		<li>
-			<ExpandButton
-				isOpen={isOpen}
-				isActive={isAncestorOfActive}
-				onClick={onToggle}
-				name={node.name}
-				paddingLeft={paddingLeft}
-			/>
-			{isOpen && node.children && (
-				<TreeNodes
-					nodes={node.children}
-					loaders={loaders}
-					basePath={basePath}
-					depth={depth + 1}
-					parentPath={currentPath}
-				/>
-			)}
-		</li>
+			</svg>
+		</span>
 	)
 }

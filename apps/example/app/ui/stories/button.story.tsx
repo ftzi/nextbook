@@ -74,7 +74,7 @@ export const Controlled = story({
  * Matrix story - automatically generates ALL 18 combinations!
  * (3 variants × 3 sizes × 2 disabled states = 18)
  */
-export const AllVariants = storyMatrix({
+export const Matrix = storyMatrix({
 	schema: z.object({
 		variant: z.enum(["primary", "secondary", "outline"]),
 		size: z.enum(["sm", "md", "lg"]),

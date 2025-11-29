@@ -67,6 +67,39 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
+ * PAN TOGGLE
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.panButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: none;
+	border-radius: var(--nb-radius-sm);
+	background: transparent;
+	color: var(--nb-text-tertiary);
+	cursor: pointer;
+	transition:
+		background var(--nb-transition-fast),
+		color var(--nb-transition-fast);
+}
+
+.panButton:hover {
+	background: var(--nb-bg-hover);
+	color: var(--nb-text-secondary);
+}
+
+.panButtonActive {
+	color: var(--nb-text-brand);
+}
+
+.panButtonActive:hover {
+	color: var(--nb-text-brand);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
  * ZOOM CONTROLS
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
@@ -221,6 +254,14 @@
 .canvas:active,
 .canvasDragging {
 	cursor: grabbing;
+}
+
+.canvasNoPan {
+	cursor: default;
+}
+
+.canvasNoPan:active {
+	cursor: default;
 }
 
 .canvasDefault {

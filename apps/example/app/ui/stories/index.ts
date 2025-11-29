@@ -1,8 +1,8 @@
 "use client"
 
-import { createStoryRegistry } from "nextbook"
+import { createStories } from "nextbook"
 
-export const { storyTree, loaders } = createStoryRegistry({
+export const stories = createStories({
 	button: () => import("./button.story"),
 	card: () => import("./card.story"),
 	forms: {

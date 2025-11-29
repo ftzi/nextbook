@@ -1,16 +1,13 @@
 "use client"
 
 import type { ReactNode } from "react"
-import type { StoryTreeNode } from "../types"
+import type { Stories } from "../types"
 import styles from "./nextbook-shell.module.css"
 import { Sidebar } from "./sidebar"
 
-type StoryLoaders = Record<string, () => Promise<Record<string, unknown>>>
-
 type NextbookShellProps = {
 	children: ReactNode
-	tree: StoryTreeNode[]
-	loaders: StoryLoaders
+	stories: Stories
 	basePath?: string
 }
 
@@ -22,14 +19,14 @@ type NextbookShellProps = {
  *
  * @example
  * // app/ui/layout.tsx
- * import { NextbookShell } from '@workspace/nextbook'
- * import { storyTree, loaders } from './stories'
+ * import { NextbookShell } from 'nextbook'
+ * import { stories } from './stories'
  *
  * export default function Layout({ children }) {
  *   return (
  *     <html lang="en">
  *       <body>
- *         <NextbookShell tree={storyTree} loaders={loaders}>
+ *         <NextbookShell stories={stories}>
  *           {children}
  *         </NextbookShell>
  *       </body>
@@ -37,10 +34,10 @@ type NextbookShellProps = {
  *   )
  * }
  */
-export function NextbookShell({ children, tree, loaders, basePath = "/ui" }: NextbookShellProps) {
+export function NextbookShell({ children, stories, basePath = "/ui" }: NextbookShellProps) {
 	return (
 		<div className={styles.shell}>
-			<Sidebar tree={tree} loaders={loaders} basePath={basePath} />
+			<Sidebar tree={stories.tree} basePath={basePath} />
 			<main className={styles.main}>{children}</main>
 		</div>
 	)
