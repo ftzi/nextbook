@@ -10,12 +10,8 @@ export const metadata: Metadata = {
 
 export default function NextbookLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body>
-				<NextbookShell tree={storyTree} loaders={loaders}>
-					{children}
-				</NextbookShell>
-			</body>
-		</html>
+		<NextbookShell tree={storyTree} loaders={loaders}>
+			{children}
+		</NextbookShell>
 	)
 }

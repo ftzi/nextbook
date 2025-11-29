@@ -10,7 +10,7 @@ This directory contains a [Nextbook](https://github.com/your-org/nextbook) compo
 
 ## Structure
 
-- \`layout.tsx\` - Nextbook layout (renders html/body + NextbookShell)
+- \`layout.tsx\` - Nextbook layout (wraps children with NextbookShell)
 - \`[[...path]]/page.tsx\` - Catch-all route for stories
 - \`stories/index.ts\` - Story registry (**MUST have "use client"**)
 - \`stories/*.story.tsx\` - Story files
@@ -78,7 +78,7 @@ export const Interactive = story({
 | \`z.enum([...])\` | Select dropdown |
 `,
 
-	layout: `import "globals.css"
+	layout: `import "@/app/globals.css"
 import { NextbookShell } from "nextbook"
 import type { Metadata } from "next"
 import { loaders, storyTree } from "./stories"
@@ -90,13 +90,9 @@ export const metadata: Metadata = {
 
 export default function NextbookLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body>
-				<NextbookShell tree={storyTree} loaders={loaders}>
-					{children}
-				</NextbookShell>
-			</body>
-		</html>
+		<NextbookShell tree={storyTree} loaders={loaders}>
+			{children}
+		</NextbookShell>
 	)
 }
 `,

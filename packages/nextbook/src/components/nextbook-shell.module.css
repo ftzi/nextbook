@@ -1,0 +1,26 @@
+/*
+ * NextbookShell - Main application shell
+ * Provides the primary layout structure
+ */
+
+@import "../styles/tokens.css";
+
+.shell {
+	display: flex;
+	height: 100vh;
+	background: var(--nb-bg-app);
+	color: var(--nb-text-primary);
+	font-family: var(--nb-font-sans);
+	font-size: var(--nb-text-sm);
+	line-height: var(--nb-leading-normal);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+	flex: 1;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	background: var(--nb-bg-canvas);
+}

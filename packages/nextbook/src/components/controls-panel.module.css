@@ -1,0 +1,208 @@
+/*
+ * ControlsPanel - Form controls for story props
+ * Features: Text, number, boolean, select inputs with modern styling
+ */
+
+@import "../styles/tokens.css";
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * PANEL CONTAINER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.panel {
+	background: var(--nb-bg-panel);
+	border-top: 1px solid var(--nb-border-subtle);
+	flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * HEADER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--nb-space-3) var(--nb-space-4);
+	border-bottom: 1px solid var(--nb-border-subtle);
+}
+
+.headerTitle {
+	font-size: var(--nb-text-sm);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-secondary);
+}
+
+.resetButton {
+	font-size: var(--nb-text-xs);
+	font-family: var(--nb-font-sans);
+	color: var(--nb-text-tertiary);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: var(--nb-space-1) var(--nb-space-2);
+	border-radius: var(--nb-radius-sm);
+	transition:
+		color var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.resetButton:hover {
+	color: var(--nb-text-primary);
+	background: var(--nb-bg-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * CONTROLS LIST
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.controlsList {
+	max-height: var(--nb-controls-max-height);
+	overflow-y: auto;
+	padding: var(--nb-space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--nb-space-4);
+
+	/* Custom scrollbar */
+	scrollbar-width: thin;
+	scrollbar-color: var(--nb-neutral-300) transparent;
+}
+
+.controlsList::-webkit-scrollbar {
+	width: 6px;
+}
+
+.controlsList::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.controlsList::-webkit-scrollbar-thumb {
+	background: var(--nb-neutral-300);
+	border-radius: var(--nb-radius-full);
+}
+
+@media (prefers-color-scheme: dark) {
+	.controlsList {
+		scrollbar-color: var(--nb-neutral-700) transparent;
+	}
+
+	.controlsList::-webkit-scrollbar-thumb {
+		background: var(--nb-neutral-700);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * CONTROL FIELD
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--nb-space-1-5);
+}
+
+.label {
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-tertiary);
+	text-transform: uppercase;
+	letter-spacing: 0.025em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * INPUT STYLES
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.input {
+	width: 100%;
+	padding: var(--nb-space-2) var(--nb-space-3);
+	font-size: var(--nb-text-sm);
+	font-family: var(--nb-font-sans);
+	color: var(--nb-text-primary);
+	background: var(--nb-bg-input);
+	border: 1px solid var(--nb-border-default);
+	border-radius: var(--nb-radius-md);
+	outline: none;
+	transition:
+		border-color var(--nb-transition-fast),
+		box-shadow var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.input:hover {
+	border-color: var(--nb-border-strong);
+}
+
+.input:focus {
+	border-color: var(--nb-border-focus);
+	box-shadow: var(--nb-ring);
+	background: var(--nb-bg-elevated);
+}
+
+.input::placeholder {
+	color: var(--nb-text-muted);
+}
+
+/* Select specific */
+.select {
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23737373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	padding-right: var(--nb-space-8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * TOGGLE SWITCH (Boolean)
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.toggle {
+	position: relative;
+	width: 44px;
+	height: 24px;
+	border-radius: var(--nb-radius-full);
+	background: var(--nb-neutral-300);
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	transition: background var(--nb-transition-base);
+}
+
+.toggle:hover {
+	background: var(--nb-neutral-400);
+}
+
+.toggleActive {
+	background: var(--nb-primary-500);
+}
+
+.toggleActive:hover {
+	background: var(--nb-primary-600);
+}
+
+.toggleKnob {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 20px;
+	height: 20px;
+	border-radius: var(--nb-radius-full);
+	background: white;
+	box-shadow: var(--nb-shadow-sm);
+	transition: transform var(--nb-transition-base);
+}
+
+.toggleKnobActive {
+	transform: translateX(20px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.toggle {
+		background: var(--nb-neutral-700);
+	}
+
+	.toggle:hover {
+		background: var(--nb-neutral-600);
+	}
+}

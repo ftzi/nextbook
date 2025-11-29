@@ -3,7 +3,7 @@ STILL WIP!
 STAY TUNED!
 
 <p align="center">
-  <img src="./logo.svg" alt="Nextbook" width="400" />
+  <img src="./assets/logo.svg" alt="Nextbook" width="400" />
 </p>
 
 <h3 align="center">
@@ -22,7 +22,22 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 - **Lazy Loading** - Stories load on-demand for fast startup
 - **Background Switcher** - Toggle between default, striped, and magenta backgrounds to spot component imperfections
 
-## Installation
+## Quick Start
+
+```bash
+npx nextbook
+# or
+bunx nextbook
+```
+
+This scaffolds the required files in `app/ui/` and creates an example story.
+
+Then visit `http://localhost:3000/ui` to see your stories.
+
+<details>
+<summary>Manual Setup</summary>
+
+### 1. Install
 
 ```bash
 npm install nextbook
@@ -30,9 +45,7 @@ npm install nextbook
 bun add nextbook
 ```
 
-## Quick Start
-
-### 1. Register your stories
+### 2. Register your stories
 
 ```tsx
 // app/ui/stories/index.ts
@@ -51,11 +64,11 @@ export const { storyTree, loaders } = createStoryRegistry({
 
 Keys become sidebar paths: `forms.input` → `Forms / Input`
 
-### 2. Create the layout
+### 3. Create the layout
 
 ```tsx
 // app/ui/layout.tsx
-import "./globals.css";
+import "@/app/globals.css";
 import { NextbookShell } from "nextbook";
 import { loaders, storyTree } from "./stories";
 
@@ -65,18 +78,16 @@ export default function NextbookLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <NextbookShell tree={storyTree} loaders={loaders}>
-          {children}
-        </NextbookShell>
-      </body>
-    </html>
+    <NextbookShell tree={storyTree} loaders={loaders}>
+      {children}
+    </NextbookShell>
   );
 }
 ```
 
-### 3. Create the page
+> **Note:** Don't add `<html>` or `<body>` tags here - Next.js layouts nest, so your root layout already provides them.
+
+### 4. Create the page
 
 ```tsx
 // app/ui/[[...path]]/page.tsx
@@ -93,7 +104,9 @@ export default async function Page({
 }
 ```
 
-### 4. Write stories
+</details>
+
+## Writing Stories
 
 ```tsx
 // app/ui/stories/button.story.tsx
@@ -103,28 +116,16 @@ import { Button } from "@/components/ui/button";
 export const Default = story({
   render: () => <Button>Click me</Button>,
 });
-
-export const Secondary = story({
-  render: () => <Button variant="secondary">Secondary</Button>,
-});
 ```
 
-## Story API
-
-### Simple Story
-
-```tsx
-export const Default = story({
-  render: () => <MyComponent />,
-});
-```
-
-### Story with Zod Controls
+### With Zod Controls
 
 Use Zod schemas to auto-generate interactive controls:
 
 ```tsx
+import { story } from "nextbook";
 import { z } from "zod";
+import { Button } from "@/components/ui/button";
 
 export const Interactive = story({
   schema: z.object({
@@ -178,27 +179,29 @@ export const Secondary = story({ ... }) // → "Button / Secondary"
 
 ## Layout Isolation
 
-Nextbook provides its own layout via `NextbookShell` but needs `<html>` and `<body>` from your layout file (required by Next.js for Server Components).
-
-If your root layout has providers that conflict, use `useSelectedLayoutSegment` to skip them:
+If your root layout has providers that conflict with Nextbook, use `useSelectedLayoutSegment` to skip them for the `/ui` route:
 
 ```tsx
-// components/root-layout-wrapper.tsx
+// app/layout.tsx
 "use client";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Providers } from "./providers";
 
-export function RootLayoutWrapper({ children, fontClasses }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
 
-  // Skip for Nextbook - it provides its own html/body
+  // Skip providers for Nextbook
   if (segment === "ui") {
-    return <>{children}</>;
+    return (
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    );
   }
 
   return (
     <html lang="en">
-      <body className={fontClasses}>
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>
@@ -221,19 +224,17 @@ Block in production if needed:
 ```tsx
 // app/ui/layout.tsx
 import { notFound } from "next/navigation";
+import { NextbookShell } from "nextbook";
+import { loaders, storyTree } from "./stories";
 
-export default function NextbookLayout({ children }) {
+export default function NextbookLayout({ children }: { children: React.ReactNode }) {
   if (process.env.NODE_ENV === "production") {
     notFound();
   }
   return (
-    <html lang="en">
-      <body>
-        <NextbookShell tree={storyTree} loaders={loaders}>
-          {children}
-        </NextbookShell>
-      </body>
-    </html>
+    <NextbookShell tree={storyTree} loaders={loaders}>
+      {children}
+    </NextbookShell>
   );
 }
 ```
@@ -248,7 +249,8 @@ export default function NextbookLayout({ children }) {
 | Bundle size        | Large                | Minimal     |
 | Hot reload         | Separate process     | Same as app |
 
-## Development
+<details>
+<summary>Development</summary>
 
 ```bash
 # Install dependencies
@@ -263,6 +265,8 @@ bun ok
 # Run visual regression tests
 bun test:e2e
 ```
+
+</details>
 
 ## License
 

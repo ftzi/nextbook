@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react"
 import type { StoryTreeNode } from "../types"
+import styles from "./nextbook-shell.module.css"
 import { Sidebar } from "./sidebar"
 
 type StoryLoaders = Record<string, () => Promise<Record<string, unknown>>>
@@ -38,9 +39,9 @@ type NextbookShellProps = {
  */
 export function NextbookShell({ children, tree, loaders, basePath = "/ui" }: NextbookShellProps) {
 	return (
-		<div className="flex h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+		<div className={styles.shell}>
 			<Sidebar tree={tree} loaders={loaders} basePath={basePath} />
-			<main className="flex-1 overflow-hidden">{children}</main>
+			<main className={styles.main}>{children}</main>
 		</div>
 	)
 }

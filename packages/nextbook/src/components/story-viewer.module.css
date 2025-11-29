@@ -1,0 +1,168 @@
+/*
+ * StoryViewer - Main story display area
+ * Features: Header, canvas with backgrounds, error states
+ */
+
+@import "../styles/tokens.css";
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * CONTAINER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: var(--nb-bg-canvas);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * HEADER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--nb-space-4) var(--nb-space-6);
+	background: var(--nb-bg-elevated);
+	border-bottom: 1px solid var(--nb-border-subtle);
+	flex-shrink: 0;
+}
+
+.title {
+	font-size: var(--nb-text-lg);
+	font-weight: var(--nb-font-semibold);
+	color: var(--nb-text-primary);
+	margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * BACKGROUND SWITCHER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.backgroundSwitcher {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-2);
+}
+
+.bgButton {
+	position: relative;
+	width: 28px;
+	height: 28px;
+	border-radius: var(--nb-radius-md);
+	border: 2px solid var(--nb-border-default);
+	overflow: hidden;
+	cursor: pointer;
+	transition:
+		border-color var(--nb-transition-fast),
+		box-shadow var(--nb-transition-fast),
+		transform var(--nb-transition-fast);
+	background: none;
+	padding: 0;
+}
+
+.bgButton:hover {
+	border-color: var(--nb-border-strong);
+	transform: scale(1.05);
+}
+
+.bgButtonActive {
+	border-color: var(--nb-text-brand);
+	box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.bgButtonInner {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.bgDefault {
+	background: var(--nb-neutral-100);
+	font-size: 10px;
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+	.bgDefault {
+		background: var(--nb-neutral-800);
+	}
+}
+
+.bgStriped {
+	background-image: repeating-linear-gradient(-45deg, #fff, #fff 2px, #e5e5e5 2px, #e5e5e5 4px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.bgStriped {
+		background-image: repeating-linear-gradient(-45deg, #262626, #262626 2px, #404040 2px, #404040 4px);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * CANVAS AREA
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.canvas {
+	flex: 1;
+	overflow: auto;
+	padding: var(--nb-space-6);
+}
+
+.canvasDefault {
+	background: var(--nb-bg-canvas);
+}
+
+.canvasStriped {
+	background-image: repeating-linear-gradient(-45deg, #fff, #fff 10px, #e5e5e5 10px, #e5e5e5 20px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.canvasStriped {
+		background-image: repeating-linear-gradient(-45deg, #262626, #262626 10px, #404040 10px, #404040 20px);
+	}
+}
+
+.canvasInner {
+	display: flex;
+	min-height: 100%;
+	align-items: flex-start;
+	justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * STORY FRAME
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.storyFrame {
+	padding: var(--nb-space-8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * ERROR STATES
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.error {
+	padding: var(--nb-space-4);
+	border-radius: var(--nb-radius-md);
+	border: 1px solid var(--nb-error-border);
+	background: var(--nb-error-light);
+}
+
+.errorTitle {
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-error-text);
+	margin: 0 0 var(--nb-space-1) 0;
+}
+
+.errorMessage {
+	font-size: var(--nb-text-sm);
+	color: var(--nb-error-text);
+	opacity: 0.9;
+	margin: 0;
+}

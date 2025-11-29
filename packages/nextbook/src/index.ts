@@ -13,5 +13,4 @@ export { isStory, story } from "./story"
 export type { ControlConfig, ControlType, Story, StoryConfig, StoryMeta, StoryTreeNode } from "./types"
 
 // Utilities
-export { cn } from "./utils/cn"
 export { getSchemaDefaults, schemaToControls } from "./utils/schema"

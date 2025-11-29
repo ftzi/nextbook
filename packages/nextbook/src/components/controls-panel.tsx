@@ -1,7 +1,7 @@
 "use client"
 
 import type { ControlConfig } from "../types"
-import { cn } from "../utils/cn"
+import styles from "./controls-panel.module.css"
 
 type ControlsPanelProps = {
 	controls: ControlConfig[]
@@ -16,18 +16,14 @@ export function ControlsPanel({ controls, values, onChange, onReset }: ControlsP
 	}
 
 	return (
-		<div className="border-neutral-200 border-t bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900">
-			<div className="flex items-center justify-between border-neutral-200 border-b px-4 py-2 dark:border-neutral-800">
-				<span className="font-medium text-neutral-700 text-sm dark:text-neutral-300">Controls</span>
-				<button
-					type="button"
-					onClick={onReset}
-					className="text-neutral-500 text-xs transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
-				>
+		<div className={styles.panel}>
+			<div className={styles.header}>
+				<span className={styles.headerTitle}>Controls</span>
+				<button type="button" onClick={onReset} className={styles.resetButton}>
 					Reset
 				</button>
 			</div>
-			<div className="max-h-64 space-y-4 overflow-y-auto p-4">
+			<div className={styles.controlsList}>
 				{controls.map((control) => (
 					<ControlField
 						key={control.name}
@@ -51,8 +47,8 @@ function ControlField({ control, value, onChange }: ControlFieldProps) {
 	const { type, name, label } = control
 
 	return (
-		<div className="space-y-1">
-			<label htmlFor={`control-${name}`} className="block font-medium text-neutral-600 text-xs dark:text-neutral-400">
+		<div className={styles.field}>
+			<label htmlFor={`control-${name}`} className={styles.label}>
 				{label}
 			</label>
 			{type === "text" && (
@@ -61,13 +57,7 @@ function ControlField({ control, value, onChange }: ControlFieldProps) {
 					type="text"
 					value={String(value ?? "")}
 					onChange={(e) => onChange(e.target.value)}
-					className={cn(
-						"w-full rounded border px-2 py-1.5 text-sm",
-						"border-neutral-300 dark:border-neutral-600",
-						"bg-white dark:bg-neutral-800",
-						"text-neutral-900 dark:text-neutral-100",
-						"focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
-					)}
+					className={styles.input}
 				/>
 			)}
 			{type === "number" && (
@@ -76,13 +66,7 @@ function ControlField({ control, value, onChange }: ControlFieldProps) {
 					type="number"
 					value={Number(value ?? 0)}
 					onChange={(e) => onChange(Number(e.target.value))}
-					className={cn(
-						"w-full rounded border px-2 py-1.5 text-sm",
-						"border-neutral-300 dark:border-neutral-600",
-						"bg-white dark:bg-neutral-800",
-						"text-neutral-900 dark:text-neutral-100",
-						"focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
-					)}
+					className={styles.input}
 				/>
 			)}
 			{type === "boolean" && (
@@ -90,17 +74,9 @@ function ControlField({ control, value, onChange }: ControlFieldProps) {
 					type="button"
 					id={`control-${name}`}
 					onClick={() => onChange(!value)}
-					className={cn(
-						"relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-						value ? "bg-blue-500" : "bg-neutral-300 dark:bg-neutral-600",
-					)}
+					className={`${styles.toggle} ${value ? styles.toggleActive : ""}`}
 				>
-					<span
-						className={cn(
-							"inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
-							value ? "translate-x-6" : "translate-x-1",
-						)}
-					/>
+					<span className={`${styles.toggleKnob} ${value ? styles.toggleKnobActive : ""}`} />
 				</button>
 			)}
 			{type === "select" && control.options && (
@@ -108,13 +84,7 @@ function ControlField({ control, value, onChange }: ControlFieldProps) {
 					id={`control-${name}`}
 					value={String(value ?? "")}
 					onChange={(e) => onChange(e.target.value)}
-					className={cn(
-						"w-full rounded border px-2 py-1.5 text-sm",
-						"border-neutral-300 dark:border-neutral-600",
-						"bg-white dark:bg-neutral-800",
-						"text-neutral-900 dark:text-neutral-100",
-						"focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500",
-					)}
+					className={`${styles.input} ${styles.select}`}
 				>
 					{control.options.map((option) => (
 						<option key={option} value={option}>

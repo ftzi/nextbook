@@ -6,42 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Workflow Rule:** Always run `bun ok` after finishing a task or when facing issues. This command runs type checking and linting across the entire codebase and must fully pass before considering a task complete.
 
-## AI Assistant Workflow
-
-**Sub-Agent Usage (Proactive):**
-Use specialized sub-agents automatically for these scenarios - do NOT run direct searches:
-
-- **Explore Agent** - For codebase exploration and understanding:
-  - "Where is X handled?" / "How does Y work?" / "What's the structure of Z?"
-  - Questions about multiple files or complex patterns
-  - Use `thoroughness: "medium"` by default, `"very thorough"` for complex investigations
-
-- **Plan Agent** - Before implementing multi-step changes:
-  - Adding new features that touch multiple files
-  - Refactoring that affects multiple domains
-  - Complex migrations or architectural changes
-  - Use this BEFORE starting implementation to break down work
-
-- **General-Purpose Agent** - For complex searches requiring iteration:
-  - Finding patterns across the codebase that may require multiple search attempts
-  - When the first search attempt doesn't yield clear results
-  - Open-ended investigations that need refinement
-
-**Implementation Pattern:**
-
-1. For exploratory questions → Spawn Explore agent first
-2. For complex implementations → Use Plan agent to break down work
-3. Track all work with TodoWrite tool
-4. Implement step-by-step
-5. ALWAYS run `bun ok` after completion
-
-**Task Tracking:**
-
-- Use TodoWrite for all multi-step tasks (3+ steps)
-- Mark tasks `in_progress` before starting work
-- Mark `completed` immediately after finishing each task
-- Keep descriptions clear and actionable
-
 ## Maintaining This File
 
 Update CLAUDE.md when you make changes that affect:
@@ -133,6 +97,24 @@ Stories are loaded on-demand, NOT at initialization:
 2. Sidebar expansion - When a story file node is expanded, exports are loaded to show variants.
 3. Story viewing - When navigating to a story, the module is loaded to render it.
 
+**Styling Architecture:**
+
+- **CSS Modules** - All component styles use `.module.css` files for complete isolation
+- **No Tailwind dependency** - Works regardless of user's CSS setup (Tailwind, vanilla, Sass, etc.)
+- **CSS Custom Properties** - Design tokens defined in `styles/tokens.css` for consistent theming
+- **Dark mode** - Automatic via `prefers-color-scheme` media query
+- **User-proof** - Scoped class names prevent style conflicts with user's application
+
+**UI Design Philosophy:**
+
+The nextbook UI should be **AMAZING**, **MODERN**, **PROFESSIONAL**, **NEXT-GEN**, and **GAME-CHANGING**:
+
+- Clean, minimal interface with purposeful whitespace
+- Subtle glassmorphism and depth effects
+- Smooth micro-interactions and transitions
+- Professional color palette with excellent contrast
+- Polished details that delight users
+
 **File Structure:**
 
 ```
@@ -143,13 +125,18 @@ packages/nextbook/src/
 │   ├── init.test.ts       # CLI tests
 │   └── templates.ts       # File templates (MUST match current API!)
 ├── components/
-│   ├── controls-panel.tsx # Zod-generated controls UI
-│   ├── nextbook-shell.tsx # Main shell (client component)
-│   ├── sidebar.tsx        # Navigation sidebar (client component)
-│   ├── story-page.tsx     # Story rendering with error boundary
-│   └── story-viewer.tsx   # Individual story viewer
+│   ├── controls-panel.tsx      # Zod-generated controls UI
+│   ├── controls-panel.module.css
+│   ├── nextbook-shell.tsx      # Main shell (client component)
+│   ├── nextbook-shell.module.css
+│   ├── sidebar.tsx             # Navigation sidebar (client component)
+│   ├── sidebar.module.css
+│   ├── story-page.tsx          # Story rendering with error boundary
+│   ├── story-viewer.tsx        # Individual story viewer
+│   └── story-viewer.module.css
+├── styles/
+│   └── tokens.css         # CSS custom properties (design tokens)
 ├── utils/
-│   ├── cn.ts              # Class name utility
 │   └── schema.ts          # Zod schema introspection
 ├── index.ts               # Public exports
 ├── registry.tsx           # createStoryRegistry implementation
@@ -160,7 +147,7 @@ packages/nextbook/src/
 **Common Pitfalls:**
 
 1. **Forgetting "use client" on stories/index.ts** - Loaders contain functions that can't cross server→client boundary
-2. **Trying to render html/body in NextbookShell** - Client Components cannot render these; user's layout must provide them
+2. **Adding html/body in the nextbook layout** - Next.js layouts nest; the root layout already provides these tags. The `/ui` layout should only contain `<NextbookShell>`.
 3. **Making createStoryRegistry async** - It was async before but caused boundary issues; now synchronous
 4. **CLI templates out of sync** - `src/cli/templates.ts` MUST match current API when making changes
 
@@ -199,13 +186,13 @@ packages/nextbook/src/
 
 - **ALWAYS use `bun ok`** for type checking and linting - never use `bun ts`, `bun lint`, or `tsc` directly
 - **NEVER run `tsc` directly** - not even for single files - always use `bun ok`
+- **NEVER run `bun build` or `bun run build`** - only use `bun ok` for verification
 - **CRITICAL: `bun ok` MUST ALWAYS be run from the project root directory**
   - NEVER run it from subdirectories like `apps/example` or `packages/*`
   - Always navigate to the root first: `cd /Users/ftzi/dev/nextbook && bun ok`
   - This is a Turborepo monorepo - the command must run from root to check all packages
 - `bun ok` runs both type checking and linting, leverages Turbo cache, and is always preferred
 - NEVER commit or push code - all git operations must be explicitly requested by the user
-- **Use sub-agents proactively** - Spawn Explore agents for codebase questions, Plan agents for complex implementations
 
 **Code Principles:** Follow Clean Code + SOLID + KISS + YAGNI
 
@@ -274,6 +261,7 @@ packages/nextbook/src/
   2. **Immediately update the root README.md to reflect those changes**
   3. Verify code examples in README are copy-paste correct
 - The root README is the primary documentation for users
+- **Manual Setup must match CLI output** - The manual setup steps in README must produce the same result as `npx nextbook init`. When updating CLI templates (`src/cli/templates.ts`), also update the README manual setup section to match.
 
 ## Important Notes
 

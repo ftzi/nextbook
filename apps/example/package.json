@@ -18,6 +18,7 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
+		"babel-plugin-react-compiler": "19.1.0-rc.2",
 		"@playwright/test": "1.52.0",
 		"@tailwindcss/postcss": "4.1.10",
 		"@types/react": "catalog:",
