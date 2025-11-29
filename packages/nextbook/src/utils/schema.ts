@@ -1,5 +1,5 @@
 import type { z } from "zod"
-import type { ControlConfig, ControlType } from "../types"
+import type { ControlConfig, ControlType, PropCombination } from "../types"
 
 // Regex patterns (moved to top level for performance)
 const CAMEL_CASE_REGEX = /([a-z])([A-Z])/g
@@ -239,4 +239,188 @@ export function getSchemaDefaults(schema: z.ZodObject<z.ZodRawShape>): Record<st
 
 		return defaults
 	}
+}
+
+/** Maximum number of combinations before pagination kicks in */
+const MAX_COMBINATIONS = 100
+
+type FieldValues = {
+	name: string
+	values: unknown[]
+}
+
+/**
+ * Extract all enumerable values for each field in a Zod object schema.
+ * - Boolean: [true, false]
+ * - Enum: all enum values
+ * - Literal: [the literal value]
+ * - String/Number: [default value] (not enumerable, use single default)
+ */
+export function getEnumerableValues(schema: z.ZodObject<z.ZodRawShape>): FieldValues[] {
+	const result: FieldValues[] = []
+	const shape = schema.shape
+
+	for (const [name, fieldSchema] of Object.entries(shape)) {
+		const values = extractFieldValues(name, fieldSchema as z.ZodType)
+		if (values.length > 0) {
+			result.push({ name, values })
+		}
+	}
+
+	return result
+}
+
+/**
+ * Extract all possible values for a single field.
+ */
+function extractFieldValues(_name: string, schema: z.ZodType): unknown[] {
+	const { innerSchema, defaultValue } = unwrapSchema(schema)
+	const typeName = getTypeName(innerSchema)
+	const def = getZodDef(innerSchema)
+
+	switch (typeName) {
+		case "ZodBoolean":
+			return [false, true]
+
+		case "ZodEnum": {
+			const values = def?.values ?? (innerSchema as { options?: unknown }).options
+			if (Array.isArray(values) && values.length > 0) {
+				return values as unknown[]
+			}
+			return []
+		}
+
+		case "ZodLiteral": {
+			const value = def?.value
+			if (value !== undefined) {
+				return [value]
+			}
+			return []
+		}
+
+		case "ZodString":
+			return [defaultValue ?? ""]
+
+		case "ZodNumber":
+			return [defaultValue ?? 0]
+
+		default:
+			// Unsupported type - use default if available
+			if (defaultValue !== undefined) {
+				return [defaultValue]
+			}
+			return []
+	}
+}
+
+/**
+ * Generate all combinations of prop values from a Zod object schema.
+ * Returns the Cartesian product of all enumerable field values.
+ *
+ * @param schema - A Zod object schema
+ * @param limit - Maximum number of combinations to return (default: 100)
+ * @returns Object with combinations array and metadata
+ */
+export function generateCombinations(
+	schema: z.ZodObject<z.ZodRawShape>,
+	limit = MAX_COMBINATIONS,
+): {
+	combinations: PropCombination[]
+	total: number
+	truncated: boolean
+} {
+	const fieldValues = getEnumerableValues(schema)
+
+	if (fieldValues.length === 0) {
+		return {
+			combinations: [{ values: {}, label: "(no props)" }],
+			total: 1,
+			truncated: false,
+		}
+	}
+
+	const total = fieldValues.reduce((acc, field) => acc * field.values.length, 1)
+	const truncated = total > limit
+
+	const combinations = buildCombinations(fieldValues, limit)
+	return { combinations, total, truncated }
+}
+
+/**
+ * Build the Cartesian product of field values up to the given limit.
+ */
+function buildCombinations(fieldValues: FieldValues[], limit: number): PropCombination[] {
+	const combinations: PropCombination[] = []
+	const indices: number[] = new Array(fieldValues.length).fill(0)
+
+	while (combinations.length < limit) {
+		const combo = buildSingleCombination(fieldValues, indices)
+		combinations.push(combo)
+
+		if (!incrementIndices(fieldValues, indices)) {
+			break
+		}
+	}
+
+	return combinations
+}
+
+/**
+ * Build a single combination from current indices.
+ */
+function buildSingleCombination(fieldValues: FieldValues[], indices: number[]): PropCombination {
+	const values: Record<string, unknown> = {}
+	const labelParts: string[] = []
+
+	for (let i = 0; i < fieldValues.length; i++) {
+		const field = fieldValues[i]
+		if (field) {
+			const idx = indices[i] ?? 0
+			const value = field.values[idx]
+			values[field.name] = value
+			labelParts.push(formatValueLabel(field.name, value))
+		}
+	}
+
+	return { values, label: labelParts.join(", ") }
+}
+
+/**
+ * Increment indices array like a mixed-radix counter.
+ * Returns false if we've wrapped around (all combinations generated).
+ */
+function incrementIndices(fieldValues: FieldValues[], indices: number[]): boolean {
+	for (let i = fieldValues.length - 1; i >= 0; i--) {
+		const field = fieldValues[i]
+		if (!field) {
+			return false
+		}
+		const currentIdx = indices[i] ?? 0
+		const newIdx = currentIdx + 1
+		indices[i] = newIdx
+		if (newIdx < field.values.length) {
+			return true
+		}
+		indices[i] = 0
+	}
+	return false
+}
+
+/**
+ * Format a value for display in the matrix cell label.
+ */
+function formatValueLabel(name: string, value: unknown): string {
+	if (typeof value === "boolean") {
+		return value ? name : `!${name}`
+	}
+	if (typeof value === "string") {
+		// Truncate long strings
+		const maxLen = 15
+		const display = value.length > maxLen ? `${value.slice(0, maxLen)}…` : value
+		return `${display}`
+	}
+	if (typeof value === "number") {
+		return String(value)
+	}
+	return String(value)
 }

@@ -114,13 +114,15 @@
   <!-- <rect x="-60" y="-60" width="3000" height="520" fill="url(#bgGradient)"/> -->
 
   <!-- Outer 45 degree square - OUTLINE ONLY (static, no animation) -->
-  <g transform="rotate(45 200 200)">
-    <rect x="115" y="115" width="170" height="170"
-          fill="none"
-          stroke="url(#outerGradient)"
-          stroke-width="70"
-          filter="url(#glow)"
-          opacity="0.9"/>
+  <g transform="translate(50, 0)">
+    <g transform="rotate(45 200 200)">
+      <rect x="115" y="115" width="170" height="170"
+            fill="none"
+            stroke="url(#outerGradient)"
+            stroke-width="70"
+            filter="url(#glow)"
+            opacity="0.9"/>
+    </g>
   </g>
 
   <!-- "Next" text - static -->

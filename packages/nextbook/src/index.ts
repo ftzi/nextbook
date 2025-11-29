@@ -8,9 +8,20 @@ export { StoryPage } from "./components/story-page"
 export { StoryViewer } from "./components/story-viewer"
 export { createStoryRegistry } from "./registry"
 export { isStory, story } from "./story"
+export { isMatrixStory, storyMatrix } from "./story-matrix"
 
 // Types
-export type { ControlConfig, ControlType, Story, StoryConfig, StoryMeta, StoryTreeNode } from "./types"
+export type {
+	ControlConfig,
+	ControlType,
+	MatrixStory,
+	MatrixStoryConfig,
+	PropCombination,
+	Story,
+	StoryConfig,
+	StoryMeta,
+	StoryTreeNode,
+} from "./types"
 
 // Utilities
-export { getSchemaDefaults, schemaToControls } from "./utils/schema"
+export { generateCombinations, getSchemaDefaults, schemaToControls } from "./utils/schema"

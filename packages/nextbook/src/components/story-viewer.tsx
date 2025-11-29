@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
+import { isMatrixStory } from "../story-matrix"
 import type { ControlConfig, Story } from "../types"
 import { getSchemaDefaults, schemaToControls } from "../utils/schema"
 import { ControlsPanel, DEFAULT_SIZE_BOTTOM, DEFAULT_SIZE_RIGHT } from "./controls-panel"
+import { MatrixViewer } from "./matrix-viewer"
 import styles from "./story-viewer.module.css"
 import { Tooltip } from "./tooltip"
 
@@ -24,6 +26,7 @@ const ZOOM_STEP = 0.1
 
 export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 	const [story, setStory] = useState<Story<z.ZodType | undefined> | null>(null)
+	const [isMatrix, setIsMatrix] = useState(false)
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 	const [controls, setControls] = useState<ControlConfig[]>([])
@@ -136,6 +139,7 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 	useEffect(() => {
 		setLoading(true)
 		setError(null)
+		setIsMatrix(false)
 
 		loader()
 			.then((mod) => {
@@ -143,7 +147,13 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 				const exportedStory = matchingKey ? mod[matchingKey] : undefined
 
 				if (exportedStory && typeof exportedStory === "object" && "__nextbook" in exportedStory) {
-					setStory(exportedStory as Story<z.ZodType | undefined>)
+					// Check if it's a matrix story
+					if (isMatrixStory(exportedStory)) {
+						setIsMatrix(true)
+						setStory(null) // MatrixViewer handles its own loading
+					} else {
+						setStory(exportedStory as Story<z.ZodType | undefined>)
+					}
 				} else {
 					setError(`Export "${exportName}" not found or not a valid story`)
 				}
@@ -227,6 +237,11 @@ export function StoryViewer({ loader, exportName, title }: StoryViewerProps) {
 				</div>
 			)
 		}
+	}
+
+	// Render MatrixViewer for matrix stories
+	if (isMatrix) {
+		return <MatrixViewer loader={loader} exportName={exportName} title={title} />
 	}
 
 	const canvasClassName = `${styles.canvas ?? ""} ${background === "striped" ? (styles.canvasStriped ?? "") : (styles.canvasDefault ?? "")} ${isDragging ? (styles.canvasDragging ?? "") : ""}`

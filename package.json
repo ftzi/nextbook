@@ -3,7 +3,7 @@
 	"packageManager": "bun@1.3.3",
 	"private": true,
 	"scripts": {
-		"dev": "bun i && turbo dev",
+		"dev": "bun i && bun run --cwd packages/nextbook svg && turbo dev",
 		"build": "turbo build",
 		"lint": "bunx biome check --write --unsafe . --error-on-warnings",
 		"ts": "turbo ts",

@@ -18,6 +18,7 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 - **Zero Config** - Uses your Next.js app's existing setup
 - **Path-Based Hierarchy** - Keys become sidebar structure automatically
 - **Zod Controls** - Auto-generate interactive controls from Zod schemas
+- **Story Matrix** - Auto-generate ALL prop combinations from Zod schemas (game-changer)
 - **Type Safe** - Full TypeScript support with IntelliSense
 - **Lazy Loading** - Stories load on-demand for fast startup
 - **Background Switcher** - Toggle between default and striped backgrounds to spot component imperfections
@@ -153,6 +154,49 @@ export const Controlled = story({
 - `.default(value)` - Sets initial control value
 - `.describe("Label")` - Sets control label
 
+### Story Matrix (Automatic Combinatorial Testing)
+
+This is the killer feature. Instead of manually writing dozens of story variants, let Nextbook generate ALL combinations automatically:
+
+```tsx
+import { storyMatrix } from "nextbook";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+
+// This single export generates 12 visual tests automatically!
+// (3 variants × 2 sizes × 2 disabled states = 12 combinations)
+export const AllVariants = storyMatrix({
+  schema: z.object({
+    variant: z.enum(["primary", "secondary", "ghost"]),
+    size: z.enum(["sm", "lg"]),
+    disabled: z.boolean(),
+  }),
+  render: (props) => <Button {...props}>Click me</Button>,
+});
+```
+
+The matrix view displays all combinations in a grid:
+
+```
+┌─────────────────────┬─────────────────────┬─────────────────────┐
+│ primary, sm, false  │ secondary, sm, false│ ghost, sm, false    │
+│     [Button]        │     [Button]        │     [Button]        │
+├─────────────────────┼─────────────────────┼─────────────────────┤
+│ primary, sm, true   │ secondary, sm, true │ ghost, sm, true     │
+│     [Button]        │     [Button]        │     [Button]        │
+├─────────────────────┼─────────────────────┼─────────────────────┤
+│ primary, lg, false  │ secondary, lg, false│ ghost, lg, false    │
+│     [Button]        │     [Button]        │     [Button]        │
+└─────────────────────┴─────────────────────┴─────────────────────┘
+... and so on
+```
+
+**Why this matters:**
+- **Zero boilerplate** - No more writing `PrimarySmall`, `PrimaryLarge`, `SecondarySmall`...
+- **Complete coverage** - Never miss a combination again
+- **Always in sync** - Add a new variant? The matrix updates automatically
+- **Visual regression at scale** - See every state at once, catch issues instantly
+
 ## File Organization
 
 Stories are organized by the keys you provide to `createStoryRegistry`:
@@ -242,13 +286,50 @@ export default function NextbookLayout({ children }: { children: React.ReactNode
 
 ## Why Nextbook?
 
-| Feature            | Storybook            | Nextbook    |
-| ------------------ | -------------------- | ----------- |
-| Setup time         | ~30 min              | ~5 min      |
-| Separate build     | Yes                  | No          |
-| Config duplication | Yes (Tailwind, etc.) | No          |
-| Bundle size        | Large                | Minimal     |
-| Hot reload         | Separate process     | Same as app |
+### The Storybook Problem
+
+With Storybook, you manually write each variant:
+
+```tsx
+// Storybook: Write EVERY combination by hand 😩
+export const Primary = () => <Button variant="primary" />
+export const Secondary = () => <Button variant="secondary" />
+export const Ghost = () => <Button variant="ghost" />
+export const PrimarySmall = () => <Button variant="primary" size="sm" />
+export const PrimaryLarge = () => <Button variant="primary" size="lg" />
+export const PrimaryDisabled = () => <Button variant="primary" disabled />
+export const SecondarySmall = () => <Button variant="secondary" size="sm" />
+export const SecondaryLarge = () => <Button variant="secondary" size="lg" />
+export const SecondaryDisabled = () => <Button variant="secondary" disabled />
+// ... 20+ more exports, and you STILL missed some combinations
+```
+
+### The Nextbook Solution
+
+```tsx
+// Nextbook: ONE line generates ALL 12 combinations 🎉
+export const AllVariants = storyMatrix({
+  schema: z.object({
+    variant: z.enum(["primary", "secondary", "ghost"]),
+    size: z.enum(["sm", "lg"]),
+    disabled: z.boolean(),
+  }),
+  render: (props) => <Button {...props}>Click me</Button>,
+});
+```
+
+### Feature Comparison
+
+| Feature                 | Storybook                    | Nextbook                     |
+| ----------------------- | ---------------------------- | ---------------------------- |
+| Setup time              | ~30 min                      | ~5 min                       |
+| Separate build          | Yes                          | No                           |
+| Config duplication      | Yes (Tailwind, etc.)         | No                           |
+| Bundle size             | Large                        | Minimal                      |
+| Hot reload              | Separate process             | Same as app                  |
+| **Combinatorial testing** | Manual (write each variant) | **Automatic (storyMatrix)** |
+| Variant coverage        | Whatever you remember        | **100% guaranteed**          |
+| Maintenance burden      | High (keep variants in sync) | **Zero (schema is truth)**  |
 
 ## AI-Ready
 

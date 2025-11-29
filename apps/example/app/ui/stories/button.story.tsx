@@ -1,4 +1,4 @@
-import { story } from "nextbook"
+import { story, storyMatrix } from "nextbook"
 import { z } from "zod"
 
 export const Default = story({
@@ -65,6 +65,39 @@ export const Controlled = story({
 				className={`rounded-md ${variantStyles[variant]} ${sizeStyles[size]} ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
 			>
 				{label}
+			</button>
+		)
+	},
+})
+
+/**
+ * Matrix story - automatically generates ALL 18 combinations!
+ * (3 variants × 3 sizes × 2 disabled states = 18)
+ */
+export const AllVariants = storyMatrix({
+	schema: z.object({
+		variant: z.enum(["primary", "secondary", "outline"]),
+		size: z.enum(["sm", "md", "lg"]),
+		disabled: z.boolean(),
+	}),
+	render: ({ variant, size, disabled }) => {
+		const variantStyles = {
+			primary: "bg-blue-600 text-white hover:bg-blue-700",
+			secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+			outline: "border-2 border-blue-600 bg-transparent text-blue-600 hover:bg-blue-50",
+		}
+		const sizeStyles = {
+			sm: "px-2 py-1 text-sm",
+			md: "px-4 py-2",
+			lg: "px-6 py-3 text-lg",
+		}
+		return (
+			<button
+				type="button"
+				disabled={disabled}
+				className={`rounded-md ${variantStyles[variant]} ${sizeStyles[size]} ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+			>
+				Button
 			</button>
 		)
 	},

@@ -48,6 +48,41 @@ export type Story<TSchema extends z.ZodType | undefined = undefined> = {
 }
 
 /**
+ * Configuration for a matrix story that generates all prop combinations.
+ */
+export type MatrixStoryConfig<TSchema extends z.ZodObject<z.ZodRawShape>> = {
+	/** Zod object schema for generating combinations. Must include enums or booleans for meaningful variation. */
+	schema: TSchema
+	/** Render function that receives typed props from the schema */
+	render: (props: z.output<TSchema>) => ReactNode
+}
+
+/**
+ * A matrix story object created by the storyMatrix() function.
+ * Contains metadata for Nextbook to detect and render as a matrix view.
+ */
+export type MatrixStory<TSchema extends z.ZodObject<z.ZodRawShape>> = {
+	/** Marker for Nextbook to identify story objects */
+	readonly __nextbook: true
+	/** Marker to identify matrix stories */
+	readonly __nextbook_matrix: true
+	/** The Zod object schema */
+	readonly schema: TSchema
+	/** The render function */
+	readonly render: (props: z.output<TSchema>) => ReactNode
+}
+
+/**
+ * A single combination of prop values for matrix rendering.
+ */
+export type PropCombination = {
+	/** The prop values for this combination */
+	values: Record<string, unknown>
+	/** Human-readable label for this combination */
+	label: string
+}
+
+/**
  * Metadata about a discovered story for the sidebar and routing.
  */
 export type StoryMeta = {

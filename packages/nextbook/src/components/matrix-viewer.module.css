@@ -1,0 +1,411 @@
+/*
+ * MatrixViewer - Grid display for all prop combinations
+ * Features: Responsive grid, cell labels, click to expand, background switcher
+ */
+
+@import "../styles/tokens.css";
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * CONTAINER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background: var(--nb-bg-canvas);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * HEADER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--nb-space-3) var(--nb-space-6);
+	background: var(--nb-bg-elevated);
+	border-bottom: 1px solid var(--nb-border-subtle);
+	flex-shrink: 0;
+	gap: var(--nb-space-4);
+}
+
+.headerLeft {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-3);
+	min-width: 0;
+}
+
+.title {
+	font-size: var(--nb-text-base);
+	font-weight: var(--nb-font-semibold);
+	color: var(--nb-text-primary);
+	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--nb-space-1) var(--nb-space-2);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-brand);
+	background: var(--nb-bg-active);
+	border-radius: var(--nb-radius-full);
+	white-space: nowrap;
+}
+
+.divider {
+	width: 1px;
+	height: 20px;
+	background: var(--nb-border-default);
+	flex-shrink: 0;
+}
+
+.headerControls {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-3);
+	flex-shrink: 0;
+}
+
+.backButton {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1-5);
+	padding: var(--nb-space-1-5) var(--nb-space-3);
+	font-size: var(--nb-text-sm);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-secondary);
+	background: var(--nb-bg-hover);
+	border: none;
+	border-radius: var(--nb-radius-md);
+	cursor: pointer;
+	transition:
+		background var(--nb-transition-fast),
+		color var(--nb-transition-fast);
+}
+
+.backButton:hover {
+	background: var(--nb-bg-active);
+	color: var(--nb-text-brand);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * WARNING BANNER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.warning {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-2);
+	padding: var(--nb-space-2) var(--nb-space-6);
+	font-size: var(--nb-text-sm);
+	color: var(--nb-text-secondary);
+	background: var(--nb-primary-50);
+	border-bottom: 1px solid var(--nb-primary-100);
+}
+
+@media (prefers-color-scheme: dark) {
+	.warning {
+		background: rgba(99, 102, 241, 0.1);
+		border-color: rgba(99, 102, 241, 0.2);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * GRID LAYOUT
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.grid {
+	flex: 1;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: var(--nb-space-4);
+	padding: var(--nb-space-6);
+	overflow-y: auto;
+	align-content: start;
+	background: var(--nb-bg-canvas);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * GRID CELLS
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.cell {
+	display: flex;
+	flex-direction: column;
+	background: var(--nb-bg-elevated);
+	border: 1px solid var(--nb-border-subtle);
+	border-radius: var(--nb-radius-lg);
+	overflow: hidden;
+	cursor: pointer;
+	transition:
+		border-color var(--nb-transition-fast),
+		box-shadow var(--nb-transition-fast),
+		transform var(--nb-transition-fast);
+	text-align: left;
+	padding: 0;
+}
+
+.cell:hover {
+	border-color: var(--nb-border-strong);
+	box-shadow: var(--nb-shadow-md);
+	transform: translateY(-1px);
+}
+
+.cell:focus-visible {
+	outline: none;
+	box-shadow: var(--nb-ring);
+}
+
+.cellLabel {
+	padding: var(--nb-space-2) var(--nb-space-3);
+	font-size: var(--nb-text-xs);
+	font-family: var(--nb-font-mono);
+	color: var(--nb-text-tertiary);
+	background: var(--nb-bg-panel);
+	border-bottom: 1px solid var(--nb-border-subtle);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cellContent {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--nb-space-4);
+	min-height: 80px;
+}
+
+.cellContentDefault {
+	background: var(--nb-bg-elevated);
+}
+
+.cellContentStriped {
+	background-image: repeating-linear-gradient(-45deg, #fff, #fff 6px, #e5e5e5 6px, #e5e5e5 12px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.cellContentStriped {
+		background-image: repeating-linear-gradient(-45deg, #262626, #262626 6px, #404040 6px, #404040 12px);
+	}
+}
+
+.cellContentCheckered {
+	background-color: #fff;
+	background-image:
+		linear-gradient(45deg, #e5e5e5 25%, transparent 25%), linear-gradient(-45deg, #e5e5e5 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #e5e5e5 75%), linear-gradient(-45deg, transparent 75%, #e5e5e5 75%);
+	background-size: 16px 16px;
+	background-position:
+		0 0,
+		0 8px,
+		8px -8px,
+		-8px 0px;
+}
+
+@media (prefers-color-scheme: dark) {
+	.cellContentCheckered {
+		background-color: #262626;
+		background-image:
+			linear-gradient(45deg, #404040 25%, transparent 25%), linear-gradient(-45deg, #404040 25%, transparent 25%),
+			linear-gradient(45deg, transparent 75%, #404040 75%), linear-gradient(-45deg, transparent 75%, #404040 75%);
+	}
+}
+
+.cellError {
+	color: var(--nb-error-text);
+	font-size: var(--nb-text-sm);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * SELECTED VIEW (EXPANDED CELL)
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.selectedView {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.selectedLabel {
+	padding: var(--nb-space-2) var(--nb-space-6);
+	font-size: var(--nb-text-sm);
+	font-family: var(--nb-font-mono);
+	color: var(--nb-text-secondary);
+	background: var(--nb-bg-panel);
+	border-bottom: 1px solid var(--nb-border-subtle);
+}
+
+.selectedCanvas {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: auto;
+}
+
+.canvasDefault {
+	background: var(--nb-bg-canvas);
+}
+
+.canvasStriped {
+	background-image: repeating-linear-gradient(-45deg, #fff, #fff 10px, #e5e5e5 10px, #e5e5e5 20px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.canvasStriped {
+		background-image: repeating-linear-gradient(-45deg, #262626, #262626 10px, #404040 10px, #404040 20px);
+	}
+}
+
+.canvasCheckered {
+	background-color: #fff;
+	background-image:
+		linear-gradient(45deg, #e5e5e5 25%, transparent 25%), linear-gradient(-45deg, #e5e5e5 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #e5e5e5 75%), linear-gradient(-45deg, transparent 75%, #e5e5e5 75%);
+	background-size: 20px 20px;
+	background-position:
+		0 0,
+		0 10px,
+		10px -10px,
+		-10px 0px;
+}
+
+@media (prefers-color-scheme: dark) {
+	.canvasCheckered {
+		background-color: #262626;
+		background-image:
+			linear-gradient(45deg, #404040 25%, transparent 25%), linear-gradient(-45deg, #404040 25%, transparent 25%),
+			linear-gradient(45deg, transparent 75%, #404040 75%), linear-gradient(-45deg, transparent 75%, #404040 75%);
+	}
+}
+
+.selectedFrame {
+	padding: var(--nb-space-8);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * BACKGROUND SWITCHER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.backgroundSwitcher {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1);
+}
+
+.bgButton {
+	position: relative;
+	width: 28px;
+	height: 28px;
+	border-radius: var(--nb-radius-md);
+	border: 2px solid var(--nb-border-default);
+	overflow: hidden;
+	cursor: pointer;
+	transition:
+		border-color var(--nb-transition-fast),
+		box-shadow var(--nb-transition-fast);
+	background: none;
+	padding: 0;
+}
+
+.bgButton:hover {
+	border-color: var(--nb-border-strong);
+}
+
+.bgButtonActive {
+	border-color: var(--nb-text-brand);
+	box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.bgButtonInner {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.bgDefault {
+	background: var(--nb-neutral-100);
+}
+
+@media (prefers-color-scheme: dark) {
+	.bgDefault {
+		background: var(--nb-neutral-800);
+	}
+}
+
+.bgStriped {
+	background-image: repeating-linear-gradient(-45deg, #fff, #fff 2px, #e5e5e5 2px, #e5e5e5 4px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.bgStriped {
+		background-image: repeating-linear-gradient(-45deg, #262626, #262626 2px, #404040 2px, #404040 4px);
+	}
+}
+
+.bgCheckered {
+	background-color: #fff;
+	background-image:
+		linear-gradient(45deg, #e5e5e5 25%, transparent 25%), linear-gradient(-45deg, #e5e5e5 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #e5e5e5 75%), linear-gradient(-45deg, transparent 75%, #e5e5e5 75%);
+	background-size: 8px 8px;
+	background-position:
+		0 0,
+		0 4px,
+		4px -4px,
+		-4px 0px;
+}
+
+@media (prefers-color-scheme: dark) {
+	.bgCheckered {
+		background-color: #262626;
+		background-image:
+			linear-gradient(45deg, #404040 25%, transparent 25%), linear-gradient(-45deg, #404040 25%, transparent 25%),
+			linear-gradient(45deg, transparent 75%, #404040 75%), linear-gradient(-45deg, transparent 75%, #404040 75%);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * LOADING & ERROR STATES
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.loading {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--nb-text-tertiary);
+}
+
+.error {
+	margin: var(--nb-space-6);
+	padding: var(--nb-space-4);
+	border-radius: var(--nb-radius-md);
+	border: 1px solid var(--nb-error-border);
+	background: var(--nb-error-light);
+}
+
+.errorTitle {
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-error-text);
+	margin: 0 0 var(--nb-space-1) 0;
+}
+
+.errorMessage {
+	font-size: var(--nb-text-sm);
+	color: var(--nb-error-text);
+	opacity: 0.9;
+	margin: 0;
+}

@@ -1,8 +1,8 @@
 "use client"
 
 import { Component, type ReactNode } from "react"
-import logoAnimatedSvg from "../../assets/logo-animated.svg"
 import type { StoryTreeNode } from "../types"
+import LogoAnimated from "./icons/logo-animated"
 import styles from "./story-page.module.css"
 import { StoryViewer } from "./story-viewer"
 
@@ -196,6 +196,5 @@ export function StoryPage({ path, storyTree, loaders }: StoryPageProps) {
 }
 
 function AnimatedLogo({ className }: { className?: string }) {
-	// biome-ignore lint/performance/noImgElement: Using img for SVG with animations - this is a library, not always Next.js
-	return <img src={logoAnimatedSvg} alt="" className={className} aria-hidden="true" />
+	return <LogoAnimated className={className} />
 }

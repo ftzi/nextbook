@@ -19,6 +19,7 @@
 		"nextbook": "./src/cli/index.ts"
 	},
 	"scripts": {
+		"svg": "svgr --out-dir src/components/icons --config-file svgr.config.js assets",
 		"ts": "tsc --noEmit",
 		"test": "bun test"
 	},
@@ -32,6 +33,7 @@
 		"zod": ">=3"
 	},
 	"devDependencies": {
+		"@svgr/cli": "^8.1.0",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@workspace/typescript-config": "workspace:*",
