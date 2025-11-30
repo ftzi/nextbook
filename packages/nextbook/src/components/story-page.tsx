@@ -2,7 +2,7 @@
 
 import { Component, type ReactNode, useEffect, useState } from "react"
 import type { Stories, StoryTreeNode } from "../types"
-import LogoAnimated from "./icons/logo-animated"
+import Logo from "./icons/logo"
 import styles from "./story-page.module.css"
 import { extractStoryExports, StoryTabs } from "./story-tabs"
 import { StoryViewer } from "./story-viewer"
@@ -219,11 +219,7 @@ function TabbedStoryView({ loader, filePath, componentName, requestedExport, bas
 	}, [loader])
 
 	if (loading) {
-		return (
-			<div className={styles.loading}>
-				<div className={styles.loadingSpinner} />
-			</div>
-		)
+		return <LoadingSkeleton />
 	}
 
 	if (error || !module) {
@@ -273,5 +269,48 @@ function TabbedStoryView({ loader, filePath, componentName, requestedExport, bas
 }
 
 function AnimatedLogo({ className }: { className?: string }) {
-	return <LogoAnimated className={className} />
+	return <Logo className={className} />
+}
+
+function LoadingSkeleton() {
+	return (
+		<div className={styles.loadingSkeleton}>
+			{/* Skeleton tab bar */}
+			<div className={styles.skeletonTabs}>
+				<div className={`${styles.skeleton} ${styles.skeletonTab}`} style={{ width: 80 }} />
+				<div className={`${styles.skeleton} ${styles.skeletonTab}`} style={{ width: 100 }} />
+				<div className={`${styles.skeleton} ${styles.skeletonTab}`} style={{ width: 70 }} />
+			</div>
+
+			{/* Skeleton header */}
+			<div className={styles.skeletonHeader}>
+				<div className={`${styles.skeleton} ${styles.skeletonTitle}`} />
+				<div className={styles.skeletonControls}>
+					{/* Pan toggle */}
+					<div className={`${styles.skeleton} ${styles.skeletonButton}`} />
+					<div className={styles.skeletonDivider} />
+					{/* Zoom controls */}
+					<div className={styles.skeletonZoomGroup}>
+						<div className={`${styles.skeleton} ${styles.skeletonButton}`} />
+						<div className={`${styles.skeleton} ${styles.skeletonZoomInput}`} />
+						<div className={`${styles.skeleton} ${styles.skeletonButton}`} />
+						<div className={`${styles.skeleton} ${styles.skeletonButton}`} />
+					</div>
+					<div className={styles.skeletonDivider} />
+					{/* Background switcher */}
+					<div className={`${styles.skeleton} ${styles.skeletonButton}`} />
+					<div className={`${styles.skeleton} ${styles.skeletonButton}`} />
+				</div>
+			</div>
+
+			{/* Skeleton canvas */}
+			<div className={styles.skeletonCanvas}>
+				<div className={styles.skeletonContent}>
+					<div className={`${styles.skeleton} ${styles.skeletonContentBlock} ${styles.skeletonContentLarge}`} />
+					<div className={`${styles.skeleton} ${styles.skeletonContentBlock} ${styles.skeletonContentMedium}`} />
+					<div className={`${styles.skeleton} ${styles.skeletonContentBlock} ${styles.skeletonContentSmall}`} />
+				</div>
+			</div>
+		</div>
+	)
 }

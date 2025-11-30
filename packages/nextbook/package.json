@@ -1,7 +1,7 @@
 {
 	"name": "nextbook",
 	"version": "0.1.0",
-	"description": "Zero-config component stories for Next.js",
+	"description": "Next-gen component stories for Next.js",
 	"type": "module",
 	"license": "MIT",
 	"repository": {
@@ -30,14 +30,14 @@
 		"dist"
 	],
 	"scripts": {
-		"dev": "bun run svg",
-		"build": "bun run svg && rm -rf dist && tsc -p tsconfig.build.json && cp src/components/*.css dist/components/ && cp -r src/styles dist/",
-		"svg": "svgr --out-dir src/components/icons --config-file svgr.config.js ../../assets",
+		"dev": "bun scripts/dev.ts --watch",
+		"build": "bun scripts/dev.ts",
 		"ts": "tsc --noEmit",
 		"test": "bun test"
 	},
 	"dependencies": {
-		"citty": "0.1.6"
+		"citty": "0.1.6",
+		"lucide-react": "^0.555.0"
 	},
 	"peerDependencies": {
 		"next": ">=15",

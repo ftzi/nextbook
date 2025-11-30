@@ -24,6 +24,7 @@ const MIN_ZOOM = 0.25
 const MAX_ZOOM = 3
 const ZOOM_STEP = 0.1
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: component manages multiple related states (zoom, pan, controls, background)
 export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 	const [controls, setControls] = useState<ControlConfig[]>([])
 	const [values, setValues] = useState<Record<string, unknown>>({})
@@ -340,12 +341,13 @@ function ZoomControls({
 				<button type="button" onClick={onReset} className={styles.zoomButton} disabled={isDefaultView}>
 					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
 						<path
-							d="M2 7a5 5 0 1 1 1.5 3.5M2 11V7h4"
+							d="M2.5 2.5v3h3"
 							stroke="currentColor"
 							strokeWidth="1.5"
 							strokeLinecap="round"
 							strokeLinejoin="round"
 						/>
+						<path d="M2.5 7a4.5 4.5 0 1 1 1.32 3.18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
 					</svg>
 				</button>
 			</Tooltip>

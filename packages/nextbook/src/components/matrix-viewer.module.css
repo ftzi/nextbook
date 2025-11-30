@@ -31,11 +31,27 @@
 	gap: var(--nb-space-4);
 }
 
+/* Mobile: smaller padding, wrap to multiple lines */
+@media (max-width: 767px) {
+	.header {
+		padding: var(--nb-space-2) var(--nb-space-3);
+		gap: var(--nb-space-2);
+		flex-wrap: wrap;
+	}
+}
+
 .headerLeft {
 	display: flex;
 	align-items: center;
 	gap: var(--nb-space-3);
 	min-width: 0;
+}
+
+/* Mobile: tighter spacing */
+@media (max-width: 767px) {
+	.headerLeft {
+		gap: var(--nb-space-2);
+	}
 }
 
 .title {
@@ -46,6 +62,13 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* Mobile: smaller title */
+@media (max-width: 767px) {
+	.title {
+		font-size: var(--nb-text-sm);
+	}
 }
 
 .badge {
@@ -67,11 +90,25 @@
 	flex-shrink: 0;
 }
 
+/* Mobile: hide dividers */
+@media (max-width: 767px) {
+	.divider {
+		display: none;
+	}
+}
+
 .headerControls {
 	display: flex;
 	align-items: center;
 	gap: var(--nb-space-3);
 	flex-shrink: 0;
+}
+
+/* Mobile: tighter spacing */
+@media (max-width: 767px) {
+	.headerControls {
+		gap: var(--nb-space-1);
+	}
 }
 
 .backButton {
@@ -131,6 +168,15 @@
 	overflow-y: auto;
 	align-content: start;
 	background: var(--nb-bg-canvas);
+}
+
+/* Mobile: smaller cards and padding */
+@media (max-width: 767px) {
+	.grid {
+		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: var(--nb-space-3);
+		padding: var(--nb-space-3);
+	}
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Blocks, Sparkles } from "lucide-react"
+import { ArrowRight, Blocks, Github, Sparkles } from "lucide-react"
 import { Container } from "@/components/shared/container"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -49,7 +49,9 @@ export function Hero() {
 						transition={{ duration: 0.5, delay: 0.1 }}
 						className="font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl"
 					>
-						Zero-config component stories <span className="gradient-text">for Next.js</span>
+						Next-gen component stories
+						<br />
+						<span className="gradient-text">for Next.js</span>
 					</motion.h1>
 
 					{/* Subheadline */}
@@ -70,7 +72,7 @@ export function Hero() {
 						transition={{ duration: 0.5, delay: 0.3 }}
 						className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
 					>
-						<Button size="lg" asChild className="gradient-border">
+						<Button size="lg" asChild>
 							<a href="#quickstart">
 								Get Started
 								<ArrowRight className="size-4" />
@@ -79,11 +81,12 @@ export function Hero() {
 						<Button size="lg" variant="outline" asChild>
 							<a href="/ui">
 								<Blocks className="size-4" />
-								View Components
+								Live Demo
 							</a>
 						</Button>
-						<Button size="lg" variant="ghost" asChild>
+						<Button size="lg" variant="outline" asChild>
 							<a href={externalLinks.github} target="_blank" rel="noopener noreferrer">
+								<Github className="size-4" />
 								GitHub
 							</a>
 						</Button>

@@ -43,6 +43,14 @@
 	gap: var(--nb-space-4);
 }
 
+/* Mobile: smaller padding */
+@media (max-width: 767px) {
+	.header {
+		padding: var(--nb-space-2) var(--nb-space-3);
+		gap: var(--nb-space-2);
+	}
+}
+
 .title {
 	font-size: var(--nb-text-base);
 	font-weight: var(--nb-font-semibold);
@@ -51,6 +59,14 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+/* Mobile: smaller title */
+@media (max-width: 767px) {
+	.title {
+		font-size: var(--nb-text-sm);
+	}
 }
 
 .headerControls {
@@ -60,10 +76,24 @@
 	flex-shrink: 0;
 }
 
+/* Mobile: tighter spacing */
+@media (max-width: 767px) {
+	.headerControls {
+		gap: var(--nb-space-1);
+	}
+}
+
 .divider {
 	width: 1px;
 	height: 20px;
 	background: var(--nb-border-default);
+}
+
+/* Mobile: hide dividers */
+@media (max-width: 767px) {
+	.divider {
+		display: none;
+	}
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

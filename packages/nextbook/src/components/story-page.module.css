@@ -111,29 +111,151 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
- * LOADING STATE
+ * LOADING SKELETON
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
-.loading {
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+.skeleton {
+	background: linear-gradient(90deg, var(--nb-neutral-200) 0%, var(--nb-neutral-100) 50%, var(--nb-neutral-200) 100%);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s ease-in-out infinite;
+	border-radius: var(--nb-radius-sm);
+}
+
+@media (prefers-color-scheme: dark) {
+	.skeleton {
+		background: linear-gradient(90deg, var(--nb-neutral-800) 0%, var(--nb-neutral-700) 50%, var(--nb-neutral-800) 100%);
+		background-size: 200% 100%;
+	}
+}
+
+.loadingSkeleton {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	flex-direction: column;
 	height: 100%;
 }
 
-.loadingSpinner {
-	width: 32px;
-	height: 32px;
-	border: 3px solid var(--nb-border-subtle);
-	border-top-color: var(--nb-text-brand);
-	border-radius: 50%;
-	animation: spin 0.8s linear infinite;
+/* Skeleton tab bar */
+.skeletonTabs {
+	display: flex;
+	gap: var(--nb-space-1);
+	padding: var(--nb-space-2) var(--nb-space-4);
+	border-bottom: 1px solid var(--nb-border-subtle);
+	background: var(--nb-bg-elevated);
 }
 
-@keyframes spin {
-	to {
-		transform: rotate(360deg);
+.skeletonTab {
+	height: 32px;
+	border-radius: var(--nb-radius-md);
+}
+
+/* Skeleton header */
+.skeletonHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--nb-space-3) var(--nb-space-6);
+	background: var(--nb-bg-elevated);
+	border-bottom: 1px solid var(--nb-border-subtle);
+	gap: var(--nb-space-4);
+}
+
+@media (max-width: 767px) {
+	.skeletonHeader {
+		padding: var(--nb-space-2) var(--nb-space-3);
+		gap: var(--nb-space-2);
 	}
+}
+
+.skeletonTitle {
+	height: 20px;
+	width: 120px;
+}
+
+.skeletonControls {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-3);
+}
+
+@media (max-width: 767px) {
+	.skeletonControls {
+		gap: var(--nb-space-2);
+	}
+}
+
+.skeletonButton {
+	width: 28px;
+	height: 28px;
+	border-radius: var(--nb-radius-sm);
+}
+
+.skeletonZoomGroup {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1);
+}
+
+.skeletonZoomInput {
+	width: 52px;
+	height: 24px;
+	border-radius: var(--nb-radius-sm);
+}
+
+.skeletonDivider {
+	width: 1px;
+	height: 20px;
+	background: var(--nb-border-default);
+}
+
+@media (max-width: 767px) {
+	.skeletonDivider {
+		display: none;
+	}
+}
+
+/* Skeleton canvas */
+.skeletonCanvas {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--nb-bg-canvas);
+	padding: var(--nb-space-8);
+}
+
+.skeletonContent {
+	width: 100%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: column;
+	gap: var(--nb-space-4);
+}
+
+.skeletonContentBlock {
+	border-radius: var(--nb-radius-md);
+}
+
+.skeletonContentLarge {
+	height: 120px;
+}
+
+.skeletonContentMedium {
+	height: 40px;
+	width: 70%;
+}
+
+.skeletonContentSmall {
+	height: 24px;
+	width: 50%;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

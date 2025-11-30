@@ -1,6 +1,9 @@
 // Core API
 
 export { ControlsPanel } from "./components/controls-panel"
+// Icons
+export { default as Icon } from "./components/icons/icon"
+export { default as Logo } from "./components/icons/logo"
 // Components
 export { NextbookShell } from "./components/nextbook-shell"
 export { Sidebar } from "./components/sidebar"

@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion"
 import { Check, Copy } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { codeToHtml } from "shiki"
 import { Container } from "@/components/shared/container"
 import { Section } from "@/components/shared/section"
 import { Button } from "@/components/ui/button"
@@ -53,6 +54,14 @@ export const Matrix = storyMatrix({
 
 function CodeBlock({ code }: { code: string }) {
 	const [copied, setCopied] = useState(false)
+	const [html, setHtml] = useState<string>("")
+
+	useEffect(() => {
+		void codeToHtml(code, {
+			lang: "tsx",
+			theme: "github-dark",
+		}).then(setHtml)
+	}, [code])
 
 	const handleCopy = async () => {
 		await navigator.clipboard.writeText(code)
@@ -65,14 +74,15 @@ function CodeBlock({ code }: { code: string }) {
 			<Button
 				variant="ghost"
 				size="icon"
-				className="absolute top-3 right-3 size-8 opacity-50 hover:opacity-100"
+				className="absolute top-3 right-3 z-10 size-8 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
 				onClick={handleCopy}
 			>
 				{copied ? <Check className="size-4 text-green-400" /> : <Copy className="size-4" />}
 			</Button>
-			<pre className="overflow-x-auto rounded-lg bg-zinc-950 p-6 font-mono text-sm leading-relaxed">
-				<code className="text-zinc-300">{code}</code>
-			</pre>
+			<div
+				className="[&_pre]:!bg-transparent overflow-x-auto [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-sm [&_pre]:leading-relaxed"
+				dangerouslySetInnerHTML={{ __html: html }}
+			/>
 		</div>
 	)
 }
@@ -91,42 +101,45 @@ export function CodeDemo() {
 				</div>
 
 				<div className="mx-auto mt-12 max-w-3xl">
-					{/* Tabs */}
-					<div className="mb-4 flex gap-2 rounded-lg bg-muted/50 p-1">
-						{tabs.map((tab) => (
-							<button
-								type="button"
-								key={tab.id}
-								onClick={() => setActiveTab(tab.id)}
-								className={cn(
-									"relative flex-1 rounded-md px-4 py-2 font-medium text-sm transition-colors",
-									activeTab === tab.id ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-								)}
-							>
-								{activeTab === tab.id && (
-									<motion.div
-										layoutId="activeTab"
-										className="absolute inset-0 rounded-md bg-background shadow-sm"
-										transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-									/>
-								)}
-								<span className="relative z-10">{tab.label}</span>
-							</button>
-						))}
-					</div>
+					{/* Code block with tabs */}
+					<div className="overflow-hidden rounded-xl border border-border/50 bg-zinc-950">
+						{/* Tab bar */}
+						<div className="flex border-border/30 border-b bg-zinc-900/50">
+							{tabs.map((tab) => (
+								<button
+									type="button"
+									key={tab.id}
+									onClick={() => setActiveTab(tab.id)}
+									className={cn(
+										"relative cursor-pointer px-5 py-3 font-medium text-sm transition-colors",
+										activeTab === tab.id ? "text-brand-cyan" : "text-zinc-500 hover:text-zinc-300",
+									)}
+								>
+									{activeTab === tab.id && (
+										<motion.div
+											layoutId="activeTab"
+											className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-brand-cyan to-brand-purple"
+											transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+										/>
+									)}
+									<span className="relative z-10">{tab.label}</span>
+								</button>
+							))}
+						</div>
 
-					{/* Code */}
-					<AnimatePresence mode="wait">
-						<motion.div
-							key={activeTab}
-							initial={{ opacity: 0, y: 10 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -10 }}
-							transition={{ duration: 0.2 }}
-						>
-							<CodeBlock code={codeExamples[activeTab]} />
-						</motion.div>
-					</AnimatePresence>
+						{/* Code */}
+						<AnimatePresence mode="wait">
+							<motion.div
+								key={activeTab}
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -10 }}
+								transition={{ duration: 0.2 }}
+							>
+								<CodeBlock code={codeExamples[activeTab]} />
+							</motion.div>
+						</AnimatePresence>
+					</div>
 
 					{/* Feature highlight for matrix */}
 					{activeTab === "matrix" && (

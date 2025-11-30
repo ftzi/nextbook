@@ -6,7 +6,7 @@
 		},
 		"next-devtools": {
 			"command": "bunx",
-			"args": ["@next-devtools/mcp@latest"]
+			"args": ["next-devtools-mcp@latest"]
 		}
 	}
 }

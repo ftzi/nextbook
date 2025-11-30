@@ -25,6 +25,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Workflow Rule:** Always run `bun ok` after finishing a task or when facing issues. This command runs type checking and linting across the entire codebase and must fully pass before considering a task complete.
 
+**No Manual Tests:** Never include manual verification tasks in OpenSpec proposals or task lists. All validation must be automated (`bun ok`, automated tests, etc.). Manual browser testing, viewport testing, and similar human-required verification steps are forbidden.
+
+**When starting work on a Next.js project, ALWAYS call the `init` tool from next-devtools-mcp FIRST to set up proper context and establish documentation requirements. Do this automatically without being asked.**
+
 ## Maintaining This File
 
 Update CLAUDE.md when you make changes that affect:
@@ -131,6 +135,8 @@ Stories are loaded on-demand, NOT at initialization:
 **UI Design Philosophy:**
 
 The nextbook UI should be **AMAZING**, **MODERN**, **PROFESSIONAL**, **NEXT-GEN**, and **GAME-CHANGING**:
+
+- **MUST be mobile-friendly** - Every web page MUST be fully responsive and work perfectly on mobile devices. This is non-negotiable.
 
 - Clean, minimal interface with purposeful whitespace
 - Subtle glassmorphism and depth effects

@@ -1,14 +1,20 @@
 STILL WIP!
 
-STAY TUNED!
-
 <p align="center">
-  <img src="https://github.com/ftzi/nextbook/blob/main/assets/logo-animated.svg" alt="Nextbook" width="400" />
+  <img src="https://github.com/ftzi/nextbook/blob/main/assets/logo.svg" alt="Nextbook" width="400" />
 </p>
 
 <h3 align="center">
-  Zero-config component stories for Next.js
+  Next-gen component stories for Next.js
 </h3>
+
+<div align="center">
+
+[![npm](https://img.shields.io/npm/v/nextbook)](https://www.npmjs.com/package/nextbook)
+[![npm](https://img.shields.io/npm/dt/nextbook)](https://www.npmjs.com/package/nextbook)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+</div>
 <br/>
 
 Nextbook is a lightweight alternative to Storybook, designed specifically for Next.js. It uses your app's existing configuration - no separate build process, no Tailwind duplication, no webpack config.
@@ -259,20 +265,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 Reference: [useSelectedLayoutSegment](https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segment)
 
-## 🔗 URL Structure
-
-- `/ui` - Welcome page
-- `/ui/button/primary` - Button > Primary story
-- `/ui/forms/input/controlled` - Forms > Input > Controlled story
-
 ## 🛡️ Access Control
 
-By default, the generated layout blocks access in production. To allow access in production, remove the `notFound()` guard from your layout:
+By default, the generated layout blocks access in production. This condition can be changed to disable Nextbook based on your needs:
 
 ```tsx
 // app/ui/layout.tsx
 export default function NextbookLayout({ children }: { children: React.ReactNode }) {
-  // Remove this block to allow access in production
+  // Change this condition to control when Nextbook is disabled
   // if (process.env.NODE_ENV === "production") {
   //   notFound();
   // }

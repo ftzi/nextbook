@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* Pointer cursor on non-disabled buttons: https://github.com/shadcn-ui/ui/issues/6843#issuecomment-2698105214 */
+@layer base {
+	button:not([disabled]),
+	[role="button"]:not([disabled]) {
+		cursor: pointer;
+	}
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
 @theme {
 	/* Brand colors matching the nextbook logo gradient: cyan -> purple -> pink */
 	--color-brand-cyan: #06b6d4;

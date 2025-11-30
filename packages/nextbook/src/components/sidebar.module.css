@@ -18,7 +18,24 @@
 	border-right: 1px solid var(--nb-border-subtle);
 	transition:
 		background var(--nb-transition-base),
-		border-color var(--nb-transition-base);
+		border-color var(--nb-transition-base),
+		transform var(--nb-transition-base);
+}
+
+/* Mobile: sidebar slides in from left */
+@media (max-width: 767px) {
+	.sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 50;
+		transform: translateX(-100%);
+	}
+
+	.sidebarOpen {
+		transform: translateX(0);
+	}
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
@@ -34,24 +51,24 @@
 }
 
 .logo {
-	font-size: var(--nb-text-lg);
-	font-weight: var(--nb-font-semibold);
-	color: var(--nb-text-primary);
-	text-decoration: none;
-	transition: color var(--nb-transition-fast);
 	display: inline-flex;
 	align-items: center;
-	gap: var(--nb-space-2);
+	text-decoration: none;
+	transition: opacity var(--nb-transition-fast);
+	overflow: visible;
+	min-width: 0;
 }
 
 .logo:hover {
-	color: var(--nb-text-brand);
+	opacity: 0.8;
 }
 
 .logoIcon {
-	width: 22px;
-	height: 22px;
+	height: 28px;
+	width: auto;
 	flex-shrink: 0;
+	min-width: 120px;
+	display: block;
 }
 
 .githubLink {
@@ -244,11 +261,6 @@
 }
 
 .chevron {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 16px;
-	height: 16px;
 	flex-shrink: 0;
 	transition: transform var(--nb-transition-fast);
 	color: var(--nb-text-muted);
@@ -258,6 +270,41 @@
 	transform: rotate(90deg);
 }
 
+.childrenContainer {
+	position: relative;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.childrenContainer::before {
+	content: "";
+	position: absolute;
+	left: var(--indent);
+	top: 0;
+	bottom: 0;
+	width: 1px;
+	background: var(--nb-neutral-300);
+}
+
+@media (prefers-color-scheme: dark) {
+	.childrenContainer::before {
+		background: var(--nb-neutral-700);
+	}
+}
+
+.chevronSpacer {
+	width: 12px;
+	flex-shrink: 0;
+}
+
+.folderIcon {
+	flex-shrink: 0;
+}
+
+.storyIcon {
+	flex-shrink: 0;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════════
  * STORY LINKS
  * ═══════════════════════════════════════════════════════════════════════════════ */
@@ -265,7 +312,7 @@
 .storyLink {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: var(--nb-space-1-5);
 	padding: var(--nb-space-1-5) var(--nb-space-2);
 	font-size: var(--nb-text-sm);
 	color: var(--nb-text-secondary);
@@ -274,6 +321,10 @@
 	transition:
 		color var(--nb-transition-fast),
 		background var(--nb-transition-fast);
+}
+
+.storyLink .storyName {
+	flex: 1;
 }
 
 .storyLink:hover {
@@ -293,11 +344,6 @@
 }
 
 .chevronRight {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 16px;
-	height: 16px;
 	flex-shrink: 0;
 	opacity: 0;
 	color: var(--nb-text-muted);

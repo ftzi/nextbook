@@ -41,14 +41,16 @@ export function CTA() {
 						<Button size="lg" variant="outline" asChild>
 							<a href={externalLinks.github} target="_blank" rel="noopener noreferrer">
 								<Github className="size-4" />
-								Star on GitHub
+								GitHub
 							</a>
 						</Button>
 					</div>
 
 					{/* npm badge */}
-					<div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/50 px-4 py-2">
-						<code className="font-mono text-sm">npm install nextbook</code>
+					<div className="mt-8 inline-flex items-center gap-2 rounded-full border border-brand-purple/30 bg-brand-purple/10 px-4 py-2">
+						<code className="font-mono text-sm">
+							<span className="text-brand-cyan">npx</span> <span className="gradient-text">nextbook</span>
+						</code>
 					</div>
 				</motion.div>
 			</Container>
