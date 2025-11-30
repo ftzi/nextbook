@@ -1,4 +1,4 @@
-<svg viewBox="-60 -60 3000 520" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="-60 -60 2720 520" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <!-- Static gradient for icon (no animation) -->
     <linearGradient id="outerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -57,10 +57,10 @@
   <!-- Background -->
   <!-- <rect x="-60" y="-60" width="3000" height="520" fill="url(#bgGradient)"/> -->
 
-  <!-- Outer 45 degree square - OUTLINE ONLY (static, no animation) -->
-  <g >
-    <g transform="rotate(45 200 200)">
-      <rect x="115" y="115" width="150" height="150"
+  <!-- Icon group -->
+  <g transform="translate(0, 135)">
+    <g transform="rotate(45 85 85)">
+      <rect x="0" y="0" width="130" height="130"
             fill="none"
             stroke="url(#outerGradient)"
             stroke-width="50"
@@ -70,7 +70,7 @@
   </g>
 
   <!-- Text group -->
-  <g transform="translate(340, 0)">
+  <g transform="translate(210, 0)">
     <!-- "Next" text - static -->
     <text x="0" y="245"
           font-family="'Helvetica Neue'"
@@ -95,7 +95,7 @@
             dominant-baseline="middle"
             fill="none"
             stroke="url(#bookGradient)"
-            stroke-width="11">book</text>
+            stroke-width="15">book</text>
     </g>
   </g>
 </svg>
