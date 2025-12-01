@@ -115,8 +115,7 @@ describe("nextbook init", () => {
 
 		const layout = readFileSync(join(TEST_DIR, "app/ui/layout.tsx"), "utf-8")
 		expect(layout).toContain("NextbookShell")
-		expect(layout).toContain("storyTree")
-		expect(layout).toContain("loaders")
+		expect(layout).toContain("stories")
 		expect(layout).toContain("export default function")
 	})
 
@@ -127,21 +126,19 @@ describe("nextbook init", () => {
 
 		const page = readFileSync(join(TEST_DIR, "app/ui/[[...path]]/page.tsx"), "utf-8")
 		expect(page).toContain("StoryPage")
-		expect(page).toContain("storyTree")
-		expect(page).toContain("loaders")
+		expect(page).toContain("stories")
 		expect(page).toContain("params")
 		expect(page).toContain("path")
 	})
 
-	test("stories index uses createStoryRegistry", () => {
+	test("stories index uses createStories", () => {
 		mkdirSync(join(TEST_DIR, "app"), { recursive: true })
 
 		init({ cwd: TEST_DIR })
 
 		const index = readFileSync(join(TEST_DIR, "app/ui/stories/index.ts"), "utf-8")
-		expect(index).toContain("createStoryRegistry")
-		expect(index).toContain("storyTree")
-		expect(index).toContain("loaders")
+		expect(index).toContain("createStories")
+		expect(index).toContain("use client")
 		expect(index).toContain("example.story")
 	})
 
@@ -165,7 +162,7 @@ describe("nextbook init", () => {
 		const agents = readFileSync(join(TEST_DIR, "app/ui/AGENTS.md"), "utf-8")
 		expect(agents).toContain("Nextbook")
 		expect(agents).toContain("use client")
-		expect(agents).toContain("createStoryRegistry")
+		expect(agents).toContain("createStories")
 		expect(agents).toContain("Adding New Stories")
 	})
 

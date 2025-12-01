@@ -255,13 +255,30 @@ type ControlFieldProps = {
 	onChange: (value: unknown) => void
 }
 
+function DescriptionIcon({ description }: { description?: string }) {
+	if (!description) return null
+
+	return (
+		<Tooltip content={description}>
+			<span className={styles.infoIcon}>
+				<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+					<circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
+					<path d="M6 5.5V8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+					<circle cx="6" cy="3.75" r="0.75" fill="currentColor" />
+				</svg>
+			</span>
+		</Tooltip>
+	)
+}
+
 function TextControl({ control, value, onChange }: ControlFieldProps) {
-	const { type, name, label } = control
+	const { type, name, label, description } = control
 
 	return (
 		<div className={styles.field}>
 			<label htmlFor={`control-${name}`} className={styles.label}>
 				{label}
+				<DescriptionIcon description={description} />
 			</label>
 			<input
 				id={`control-${name}`}
@@ -275,12 +292,13 @@ function TextControl({ control, value, onChange }: ControlFieldProps) {
 }
 
 function SelectControl({ control, value, onChange }: ControlFieldProps) {
-	const { name, label, options } = control
+	const { name, label, description, options } = control
 
 	return (
 		<div className={styles.field}>
 			<label htmlFor={`control-${name}`} className={styles.label}>
 				{label}
+				<DescriptionIcon description={description} />
 			</label>
 			<select
 				id={`control-${name}`}
@@ -299,12 +317,13 @@ function SelectControl({ control, value, onChange }: ControlFieldProps) {
 }
 
 function SwitchControl({ control, value, onChange }: ControlFieldProps) {
-	const { name, label } = control
+	const { name, label, description } = control
 
 	return (
 		<div className={styles.switchField}>
 			<label htmlFor={`control-${name}`} className={styles.label}>
 				{label}
+				<DescriptionIcon description={description} />
 			</label>
 			<button
 				type="button"

@@ -14,15 +14,15 @@ import type { z } from "zod"
  * // Story with Zod schema for interactive controls
  * story({
  *   schema: z.object({
- *     variant: z.enum(['primary', 'secondary']).default('primary').describe('Button style'),
- *     disabled: z.boolean().default(false).describe('Disabled state'),
+ *     variant: z.enum(['primary', 'secondary']).default('primary').describe('Visual style of the button'),
+ *     disabled: z.boolean().default(false).describe('Whether the button is disabled'),
  *   }),
  *   render: (props) => <Button {...props}>Click me</Button>,
  * })
  */
 export type StoryConfig<TSchema extends z.ZodType | undefined = undefined> = TSchema extends z.ZodType
 	? {
-			/** Zod schema for auto-generating controls. Use .default() for initial values and .describe() for labels. */
+			/** Zod schema for auto-generating controls. Use .default() for initial values and .describe() for optional descriptions. */
 			schema: TSchema
 			/** Render function that receives typed props from the schema */
 			render: (props: z.output<TSchema>) => ReactNode
@@ -125,8 +125,10 @@ export type ControlConfig = {
 	type: ControlType
 	/** Field name/key */
 	name: string
-	/** Display label (from .describe()) */
+	/** Display label (derived from prop name) */
 	label: string
+	/** Optional description of the property (from .describe()) */
+	description?: string
 	/** Default value (from .default()) */
 	defaultValue: unknown
 	/** Options for select controls */

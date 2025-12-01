@@ -161,7 +161,7 @@ export const Controlled = story({
 | `z.enum([...])` | Select dropdown |
 
 - `.default(value)` - Sets initial control value
-- `.describe("Label")` - Sets control label
+- `.describe("...")` - Adds optional description (shown as tooltip on ℹ️ icon)
 
 ### Story Matrix (Automatic Combinatorial Testing)
 

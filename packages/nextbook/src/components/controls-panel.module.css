@@ -211,11 +211,27 @@
 }
 
 .label {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--nb-space-1);
 	font-size: var(--nb-text-xs);
 	font-weight: var(--nb-font-medium);
 	color: var(--nb-text-tertiary);
 	text-transform: uppercase;
 	letter-spacing: 0.025em;
+}
+
+.infoIcon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--nb-text-muted);
+	cursor: help;
+	transition: color var(--nb-transition-fast);
+}
+
+.infoIcon:hover {
+	color: var(--nb-text-secondary);
 }
 
 /* Switch field - vertical layout with label above */

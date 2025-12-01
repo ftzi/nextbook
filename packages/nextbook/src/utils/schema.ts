@@ -42,7 +42,8 @@ function fieldSchemaToControl(name: string, schema: z.ZodType): ControlConfig | 
 	const control: ControlConfig = {
 		type: controlType.type,
 		name,
-		label: description || formatLabel(name),
+		label: formatLabel(name),
+		description,
 		defaultValue: defaultValue ?? controlType.defaultValue,
 	}
 
@@ -69,11 +70,8 @@ function unwrapSchema(schema: z.ZodType): UnwrapResult {
 	let defaultValue: unknown
 	let description: string | undefined
 
-	// Extract description from the schema if available
-	const def = getZodDef(current)
-	if (def?.description && typeof def.description === "string") {
-		description = def.description
-	}
+	// Extract description - Zod 4 uses a .description getter, Zod 3 uses _def.description
+	description = getDescription(current)
 
 	// Unwrap wrapper types - max 10 iterations to prevent infinite loops
 	for (let i = 0; i < 10; i++) {
@@ -97,14 +95,34 @@ function unwrapSchema(schema: z.ZodType): UnwrapResult {
 			}
 		} else {
 			// Check for description on inner schemas too
-			if (!description && innerDef?.description && typeof innerDef.description === "string") {
-				description = innerDef.description
+			if (!description) {
+				description = getDescription(current)
 			}
 			break
 		}
 	}
 
 	return { innerSchema: current, defaultValue, description }
+}
+
+/**
+ * Get the description from a Zod schema.
+ * Works with both Zod 3 (_def.description) and Zod 4 (.description getter).
+ */
+function getDescription(schema: z.ZodType): string | undefined {
+	// Zod 4 - has a .description getter property
+	const zod4Description = (schema as unknown as { description?: string }).description
+	if (zod4Description && typeof zod4Description === "string") {
+		return zod4Description
+	}
+
+	// Zod 3 - stored in _def.description
+	const def = getZodDef(schema)
+	if (def?.description && typeof def.description === "string") {
+		return def.description
+	}
+
+	return undefined
 }
 
 type ControlTypeResult = {

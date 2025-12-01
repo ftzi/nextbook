@@ -167,7 +167,8 @@ packages/nextbook/src/
 ├── styles/
 │   └── tokens.css         # CSS custom properties (design tokens)
 ├── utils/
-│   └── schema.ts          # Zod schema introspection
+│   ├── schema.ts          # Zod schema introspection
+│   └── schema.test.ts     # Unit tests for schema utilities
 ├── index.ts               # Public exports
 ├── registry.tsx           # createStories implementation
 ├── story.ts               # story() function and isStory()
@@ -329,6 +330,9 @@ The website includes placeholder areas for screenshots that need to be captured:
 
 **Testing:**
 
+- **Unit tests are REQUIRED** - Always add unit tests when adding or modifying functions/utilities. Tests ensure a solid and reliable product.
+- Test files should be co-located with source files (e.g., `schema.ts` → `schema.test.ts`)
+- Run `bun test` to execute all unit tests
 - NEVER use `timeout` parameters when running tests - run tests normally without artificial timeouts
 - Trust the test framework's default timeout behavior
 
