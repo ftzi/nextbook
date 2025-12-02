@@ -93,7 +93,6 @@ function addUniqueIds(filePath: string) {
 	newContent = newContent.replace(TEMPLATE_LITERAL_PATTERN, "={`$1`}")
 
 	writeFileSync(filePath, newContent)
-	console.log(`[svg] Added useId() to ${filePath}`)
 }
 
 function generateSVG() {
@@ -120,7 +119,10 @@ async function build() {
 	await rm(distDir, { recursive: true, force: true })
 
 	// Run tsc
-	const tsc = spawnSync("tsc", ["-p", "tsconfig.build.json"], { cwd: root, stdio: "inherit" })
+	const tsc = spawnSync("tsc", ["-p", "tsconfig.build.json"], {
+		cwd: root,
+		stdio: "inherit",
+	})
 	if (tsc.status !== 0) process.exit(1)
 
 	// Copy CSS
@@ -161,7 +163,6 @@ async function dev() {
 		if (filename?.endsWith(".svg")) {
 			if (svgTimeout) clearTimeout(svgTimeout)
 			svgTimeout = setTimeout(() => {
-				console.log(`[svg] ${filename}`)
 				generateSVG()
 				svgTimeout = null
 			}, 100)

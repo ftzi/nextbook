@@ -518,7 +518,7 @@ function FilterChip({ dimension, selectedValues, onFilterChange, onClearFilter }
 					<div className={styles.filterOptions}>
 						{dimension.values.map((value, i) => {
 							const isChecked = selectedValues.has(value)
-							const valueStr = formatValueForDisplay(value)
+							const valueStr = formatValueForDisplay(value, dimension.name)
 							return (
 								<label key={i} className={styles.filterOption}>
 									<input
@@ -643,7 +643,10 @@ function SortMenu({ dimensions, sortItems, onAddSort, onRemoveSort, onToggleDire
 	)
 }
 
-function formatValueForDisplay(value: unknown): string {
+function formatValueForDisplay(value: unknown, name?: string): string {
+	if (typeof value === "boolean" && name) {
+		return value ? name : `!${name}`
+	}
 	if (typeof value === "boolean") {
 		return value ? "true" : "false"
 	}

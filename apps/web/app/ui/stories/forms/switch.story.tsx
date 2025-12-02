@@ -7,10 +7,10 @@ import { Switch } from "@/components/ui/switch"
 
 export const Matrix = storyMatrix({
 	schema: z.object({
-		checked: z.enum(["false", "true"]),
-		disabled: z.enum(["false", "true"]),
+		checked: z.boolean(),
+		disabled: z.boolean(),
 	}),
-	render: ({ checked, disabled }) => <Switch defaultChecked={checked === "true"} disabled={disabled === "true"} />,
+	render: ({ checked, disabled }) => <Switch defaultChecked={checked} disabled={disabled} />,
 })
 
 export const Controlled = story({

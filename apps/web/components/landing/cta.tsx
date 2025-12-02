@@ -8,13 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { externalLinks } from "@/lib/public-routes"
 
-const command = "npx nextbook"
-
 export function CTA() {
 	const [copied, setCopied] = useState(false)
 
 	const handleCopy = async () => {
-		await navigator.clipboard.writeText(command)
+		await navigator.clipboard.writeText("npx nextbook")
 		setCopied(true)
 		setTimeout(() => setCopied(false), 2000)
 	}

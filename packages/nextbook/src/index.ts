@@ -1,31 +1,19 @@
-// Core API
-
-export { ControlsPanel } from "./components/controls-panel"
-// Icons
+// Components
 export { default as Icon } from "./components/icons/icon"
 export { default as Logo } from "./components/icons/logo"
-// Components
 export { NextbookShell } from "./components/nextbook-shell"
-export { Sidebar } from "./components/sidebar"
 export { StoryPage } from "./components/story-page"
-export { StoryViewer } from "./components/story-viewer"
+
+// Functions
 export { createStories } from "./registry"
-export { isStory, story } from "./story"
-export { isMatrixStory, storyMatrix } from "./story-matrix"
+export { story } from "./story"
+export { storyMatrix } from "./story-matrix"
 
 // Types
 export type {
-	ControlConfig,
-	ControlType,
 	MatrixStory,
 	MatrixStoryConfig,
-	PropCombination,
 	Stories,
 	Story,
 	StoryConfig,
-	StoryMeta,
-	StoryTreeNode,
 } from "./types"
-
-// Utilities
-export { generateCombinations, getSchemaDefaults, schemaToControls } from "./utils/schema"

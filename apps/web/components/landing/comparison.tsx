@@ -19,10 +19,29 @@ const comparisons: ComparisonRow[] = [
 	{ feature: "Separate build", storybook: true, nextbook: false },
 	{ feature: "Config duplication", storybook: true, nextbook: false },
 	{ feature: "Bundle size", storybook: "Large", nextbook: "Minimal" },
-	{ feature: "Hot reload", storybook: "Separate process", nextbook: "Same as app" },
-	{ feature: "Combinatorial testing", storybook: "Manual", nextbook: "Automatic", highlight: true },
-	{ feature: "Variant coverage", storybook: "What you remember", nextbook: "100% guaranteed", highlight: true },
-	{ feature: "Maintenance burden", storybook: "High", nextbook: "Zero", highlight: true },
+	{
+		feature: "Hot reload",
+		storybook: "Separate process",
+		nextbook: "Same as app",
+	},
+	{
+		feature: "Combinatorial testing",
+		storybook: "Manual",
+		nextbook: "Automatic",
+		highlight: true,
+	},
+	{
+		feature: "Variant coverage",
+		storybook: "What you remember",
+		nextbook: "100% guaranteed",
+		highlight: true,
+	},
+	{
+		feature: "Maintenance burden",
+		storybook: "High",
+		nextbook: "Zero",
+		highlight: true,
+	},
 ]
 
 function ValueCell({ value, isNextbook }: { value: string | boolean; isNextbook: boolean }) {
@@ -42,7 +61,9 @@ export function Comparison() {
 		<Section id="comparison">
 			<Container>
 				<div className="mx-auto max-w-2xl text-center">
-					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">Why Nextbook over Storybook?</h2>
+					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
+						Why <span className="gradient-text">Nextbook</span> over Storybook?
+					</h2>
 					<p className="mt-4 text-lg text-muted-foreground">Built specifically for Next.js. No compromises.</p>
 				</div>
 

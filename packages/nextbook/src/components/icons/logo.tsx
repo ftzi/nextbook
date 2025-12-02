@@ -26,7 +26,7 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => {
           }}
         />
         <stop
-          offset="50%"
+          offset="70%"
           style={{
             stopColor: "#7c3aed",
             stopOpacity: 1,
