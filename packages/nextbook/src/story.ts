@@ -28,6 +28,7 @@ export function story<TSchema extends z.ZodType | undefined = undefined>(config:
 		__nextbook: true,
 		schema: config.schema as TSchema,
 		render: config.render as Story<TSchema>["render"],
+		mocks: config.mocks as Story<TSchema>["mocks"],
 	}
 }
 

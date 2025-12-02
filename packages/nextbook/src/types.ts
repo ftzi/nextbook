@@ -1,5 +1,18 @@
+import type { RequestHandler } from "msw"
 import type { ReactNode } from "react"
 import type { z } from "zod"
+
+/**
+ * MSW request handler type.
+ * When users have MSW installed, they get full type safety from MSW's types.
+ */
+export type MockHandler = RequestHandler
+
+/**
+ * Mock handlers for a story - either a static array or a factory function.
+ * Factory functions receive the current control values and can return dynamic mocks.
+ */
+export type StoryMocks<TProps = never> = MockHandler[] | ((props: TProps) => MockHandler[])
 
 /**
  * Configuration for a story with optional Zod schema for auto-generated controls.
@@ -26,12 +39,16 @@ export type StoryConfig<TSchema extends z.ZodType | undefined = undefined> = TSc
 			schema: TSchema
 			/** Render function that receives typed props from the schema */
 			render: (props: z.output<TSchema>) => ReactNode
+			/** Optional MSW request handlers for mocking API calls. Can be a static array or a factory function that receives control values. */
+			mocks?: StoryMocks<z.output<TSchema>>
 		}
 	: {
 			/** Optional Zod schema - omit for simple stories without controls */
 			schema?: undefined
 			/** Render function for the story */
 			render: () => ReactNode
+			/** Optional MSW request handlers for mocking API calls. */
+			mocks?: MockHandler[]
 		}
 
 /**
@@ -45,6 +62,8 @@ export type Story<TSchema extends z.ZodType | undefined = undefined> = {
 	readonly schema: TSchema
 	/** The render function */
 	readonly render: TSchema extends z.ZodType ? (props: z.output<TSchema>) => ReactNode : () => ReactNode
+	/** Optional MSW request handlers for mocking API calls */
+	readonly mocks?: TSchema extends z.ZodType ? StoryMocks<z.output<TSchema>> : MockHandler[]
 }
 
 /**
@@ -70,6 +89,8 @@ export type MatrixStory<TSchema extends z.ZodObject<z.ZodRawShape>> = {
 	readonly schema: TSchema
 	/** The render function */
 	readonly render: (props: z.output<TSchema>) => ReactNode
+	/** Optional MSW request handlers for mocking API calls (not typically used with matrix stories) */
+	readonly mocks?: StoryMocks<z.output<TSchema>>
 }
 
 /**

@@ -32,9 +32,7 @@ npm-debug.log*
 tsconfig.tsbuildinfo
 
 # Playwright
-playwright-report/
-test-results/
-playwright/.cache/
+**/e2e/.output/
 
 # Claude Code
 .claude/activity.log

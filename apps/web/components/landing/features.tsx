@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import type { LucideIcon } from "lucide-react"
-import { Bot, Grid3X3, Layers, Settings2, Sparkles, Zap } from "lucide-react"
+import { Bot, Grid3X3, Layers, Plug, Settings2, Sparkles, Zap } from "lucide-react"
 
 import { Container } from "@/components/shared/container"
 import { Section } from "@/components/shared/section"
@@ -41,6 +41,11 @@ const features: Feature[] = [
 		title: "Background Switcher",
 		description:
 			"Toggle between default and striped backgrounds to spot component imperfections and transparency issues.",
+	},
+	{
+		icon: Plug,
+		title: "API Mocking",
+		description: "Optional MSW integration to mock API endpoints in stories. Test components without real backends.",
 	},
 	{
 		icon: Bot,

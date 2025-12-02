@@ -130,6 +130,39 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
+ * MOCKS INDICATOR
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.mocksIndicator {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1);
+	padding: var(--nb-space-1) var(--nb-space-2);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-success-text);
+	background: var(--nb-success-light);
+	border: 1px solid var(--nb-success-border);
+	border-radius: var(--nb-radius-full);
+	white-space: nowrap;
+}
+
+.mocksIndicator svg {
+	flex-shrink: 0;
+}
+
+/* Mobile: hide text, show only icon */
+@media (max-width: 767px) {
+	.mocksIndicator span {
+		display: none;
+	}
+
+	.mocksIndicator {
+		padding: var(--nb-space-1);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
  * ZOOM CONTROLS
  * ═══════════════════════════════════════════════════════════════════════════════ */
 

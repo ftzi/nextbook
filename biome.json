@@ -17,8 +17,9 @@
 			"!**/.turbo",
 			"!**/coverage",
 			"!**/.cache",
-			"!**/playwright-report",
-			"!**/test-results"
+			"!**/e2e/.output",
+			"!**/e2e/.snapshots",
+			"!**/mockServiceWorker.js"
 		]
 	},
 	"formatter": {

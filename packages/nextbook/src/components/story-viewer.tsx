@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { z } from "zod"
+import { useMswWorker } from "../hooks/msw-context"
 import { isMatrixStory } from "../story-matrix"
-import type { ControlConfig, MatrixStory, Story } from "../types"
+import type { ControlConfig, MatrixStory, MockHandler, Story } from "../types"
 import { getSchemaDefaults, schemaToControls } from "../utils/schema"
 import { ControlsPanel, DEFAULT_SIZE_BOTTOM, DEFAULT_SIZE_RIGHT } from "./controls-panel"
 import { MatrixViewer } from "./matrix-viewer"
@@ -24,12 +25,16 @@ const MIN_ZOOM = 0.25
 const MAX_ZOOM = 3
 const ZOOM_STEP = 0.1
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: component manages multiple related states (zoom, pan, controls, background)
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: component manages multiple related states (zoom, pan, controls, background, mocks)
 export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 	const [controls, setControls] = useState<ControlConfig[]>([])
 	const [values, setValues] = useState<Record<string, unknown>>({})
 	const [defaultValues, setDefaultValues] = useState<Record<string, unknown>>({})
 	const [background, setBackground] = useState<BackgroundType>("default")
+	const [mocksActive, setMocksActive] = useState(false)
+
+	// MSW worker for mocking
+	const { worker, isReady: mswReady } = useMswWorker()
 
 	// Controls panel state
 	const [panelPosition, setPanelPosition] = useState<PanelPosition>("bottom")
@@ -162,6 +167,41 @@ export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 		resetView()
 	}, [resetView])
 
+	// Apply MSW mocks when story or control values change
+	useEffect(() => {
+		if (!mswReady) return
+
+		// Reset handlers first
+		worker?.resetHandlers()
+
+		// Check if story has mocks
+		const storyMocks = story.mocks
+		if (!storyMocks) {
+			setMocksActive(false)
+			return
+		}
+
+		// If MSW is not installed but story has mocks, warn
+		if (!worker) {
+			console.warn(
+				"[nextbook] Story has mocks but MSW is not installed. " +
+					"Install msw to enable mocking: npm install msw --save-dev",
+			)
+			setMocksActive(false)
+			return
+		}
+
+		// Compute handlers (static array or factory function)
+		const handlers: MockHandler[] = typeof storyMocks === "function" ? storyMocks(values) : storyMocks
+
+		if (handlers.length > 0) {
+			worker.use(...handlers)
+			setMocksActive(true)
+		} else {
+			setMocksActive(false)
+		}
+	}, [story.mocks, values, worker, mswReady])
+
 	const handleChange = (name: string, value: unknown) => {
 		setValues((prev) => ({ ...prev, [name]: value }))
 	}
@@ -204,6 +244,8 @@ export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 				<header className={styles.header}>
 					<h1 className={styles.title}>{title}</h1>
 					<div className={styles.headerControls}>
+						{mocksActive && <MocksIndicator />}
+						{mocksActive && <div className={styles.divider} />}
 						<PanToggle enabled={isPanEnabled} onChange={setIsPanEnabled} />
 						<div className={styles.divider} />
 						<ZoomControls
@@ -400,6 +442,26 @@ function PanToggle({ enabled, onChange }: { enabled: boolean; onChange: (enabled
 					/>
 				</svg>
 			</button>
+		</Tooltip>
+	)
+}
+
+function MocksIndicator() {
+	return (
+		<Tooltip content="API requests are being intercepted by MSW mocks">
+			<div className={styles.mocksIndicator}>
+				<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+					{/* Plug/connection icon */}
+					<path
+						d="M4 1v2M8 1v2M3 5h6M4 5v3a2 2 0 0 0 2 2v0a2 2 0 0 0 2-2V5"
+						stroke="currentColor"
+						strokeWidth="1.2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+				<span>Mocks</span>
+			</div>
 		</Tooltip>
 	)
 }

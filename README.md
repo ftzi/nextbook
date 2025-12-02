@@ -29,6 +29,7 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 - **Lazy Loading** - Stories load on-demand for fast startup
 - **Background Switcher** - Toggle between default and striped backgrounds to spot component imperfections
 - **AI-Ready** - Simple, predictable API that AI assistants can use to generate stories instantly
+- **API Mocking** - Optional MSW integration to mock API endpoints in stories
 
 ## 🚀 Quick Start
 
@@ -231,6 +232,118 @@ export const Primary = story({ ... })   // → "Button > Primary"
 export const Secondary = story({ ... }) // → "Button > Secondary"
 ```
 
+## 🔌 Mocking API Requests
+
+Nextbook supports [MSW (Mock Service Worker)](https://mswjs.io/) for mocking API endpoints in your stories. This is useful for testing components that fetch data without hitting real backends.
+
+### Setup MSW
+
+```bash
+# Install MSW
+npm install msw --save-dev
+
+# Initialize service worker (creates public/mockServiceWorker.js)
+npx msw init public
+```
+
+### Basic Mocking
+
+Add a `mocks` array to your story to intercept network requests:
+
+```tsx
+import { story } from "nextbook";
+import { http, HttpResponse } from "msw";
+
+export const WithMockedData = story({
+  mocks: [
+    http.get("/api/user", () => HttpResponse.json({ name: "John Doe" })),
+    http.get("/api/posts", () => HttpResponse.json([
+      { id: 1, title: "First Post" },
+      { id: 2, title: "Second Post" },
+    ])),
+  ],
+  render: () => <UserDashboard />,
+});
+```
+
+When viewing this story, a "Mocks" indicator appears in the header showing that API requests are being intercepted.
+
+### Mock Factories (Dynamic Mocks)
+
+Mocks can be a function that receives control values, allowing dynamic mock responses:
+
+```tsx
+export const Configurable = story({
+  schema: z.object({
+    userName: z.string().default("Jane"),
+    shouldError: z.boolean().default(false).describe("Simulate API error"),
+  }),
+  mocks: ({ userName, shouldError }) => [
+    http.get("/api/user", () => {
+      if (shouldError) {
+        return new HttpResponse(null, { status: 500 });
+      }
+      return HttpResponse.json({ name: userName });
+    }),
+  ],
+  render: () => <UserProfile />,
+});
+```
+
+Now you can toggle `shouldError` in the controls panel to test error states!
+
+### Testing Loading States
+
+```tsx
+import { delay } from "msw";
+
+export const Loading = story({
+  mocks: [
+    http.get("/api/user", async () => {
+      await delay("infinite"); // Never resolves
+      return HttpResponse.json({});
+    }),
+  ],
+  render: () => <UserProfile />,
+});
+```
+
+### Alternative: Prop-Based Mocking
+
+For simpler cases, you can pass mock functions as props (no MSW needed):
+
+```tsx
+export const WithMockFetcher = story({
+  schema: z.object({
+    fetchUser: z.function().returns(z.promise(z.object({ name: z.string() }))),
+  }),
+  render: ({ fetchUser }) => <UserProfile fetchUser={fetchUser} />,
+});
+```
+
+This approach requires your component to accept the fetcher as a prop.
+
+### Generating Mock Data
+
+For generating realistic mock data from Zod schemas, check out [@anatine/zod-mock](https://github.com/anatine/zod-plugins/tree/main/packages/zod-mock):
+
+```tsx
+import { generateMock } from "@anatine/zod-mock";
+
+const userSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  email: z.string().email(),
+});
+
+export const WithGeneratedData = story({
+  mocks: [
+    http.get("/api/user", () => HttpResponse.json(generateMock(userSchema))),
+  ],
+  render: () => <UserProfile />,
+});
+```
+
 ## 🔒 Layout Isolation
 
 If your root layout has providers that conflict with Nextbook, use `useSelectedLayoutSegment` to skip them for the `/ui` route:
@@ -332,6 +445,7 @@ export const Matrix = storyMatrix({
 | **Combinatorial testing** | Manual (write each variant) | **Automatic (storyMatrix)** |
 | Variant coverage        | Whatever you remember        | **100% guaranteed**          |
 | Maintenance burden      | High (keep variants in sync) | **Zero (schema is truth)**  |
+| API Mocking             | Addon (msw-storybook-addon)  | Built-in (optional MSW)      |
 
 ## 🤖 AI-Ready
 

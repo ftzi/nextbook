@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { type ReactNode, useState } from "react"
+import { MswProvider } from "../hooks/msw-context"
 import type { Stories } from "../types"
 import Logo from "./icons/logo"
 import styles from "./nextbook-shell.module.css"
@@ -42,41 +43,43 @@ export function NextbookShell({ children, stories, basePath = "/ui" }: NextbookS
 	const closeSidebar = () => setSidebarOpen(false)
 
 	return (
-		<div className={styles.shell}>
-			{/* Mobile header */}
-			<div className={styles.mobileHeader}>
-				<Link href={basePath} className={styles.mobileHeaderLogo}>
-					<Logo className={styles.mobileHeaderLogoIcon} />
-				</Link>
-				<button
-					type="button"
-					className={styles.menuButton}
-					onClick={() => setSidebarOpen(!sidebarOpen)}
-					aria-label={sidebarOpen ? "Close menu" : "Open menu"}
-				>
-					{sidebarOpen ? (
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-							<path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-						</svg>
-					) : (
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-							<path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-						</svg>
-					)}
-				</button>
+		<MswProvider>
+			<div className={styles.shell}>
+				{/* Mobile header */}
+				<div className={styles.mobileHeader}>
+					<Link href={basePath} className={styles.mobileHeaderLogo}>
+						<Logo className={styles.mobileHeaderLogoIcon} />
+					</Link>
+					<button
+						type="button"
+						className={styles.menuButton}
+						onClick={() => setSidebarOpen(!sidebarOpen)}
+						aria-label={sidebarOpen ? "Close menu" : "Open menu"}
+					>
+						{sidebarOpen ? (
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+								<path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+							</svg>
+						) : (
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+								<path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+							</svg>
+						)}
+					</button>
+				</div>
+
+				{/* Mobile overlay - dismisses sidebar when clicked */}
+				{/* biome-ignore lint/a11y/noStaticElementInteractions: overlay is a click target for dismissing the sidebar */}
+				<div
+					className={`${styles.overlay} ${sidebarOpen ? styles.overlayVisible : ""}`}
+					onClick={closeSidebar}
+					onKeyDown={(e) => e.key === "Escape" && closeSidebar()}
+					role="presentation"
+				/>
+
+				<Sidebar tree={stories.tree} basePath={basePath} isOpen={sidebarOpen} onLinkClick={closeSidebar} />
+				<main className={styles.main}>{children}</main>
 			</div>
-
-			{/* Mobile overlay - dismisses sidebar when clicked */}
-			{/* biome-ignore lint/a11y/noStaticElementInteractions: overlay is a click target for dismissing the sidebar */}
-			<div
-				className={`${styles.overlay} ${sidebarOpen ? styles.overlayVisible : ""}`}
-				onClick={closeSidebar}
-				onKeyDown={(e) => e.key === "Escape" && closeSidebar()}
-				role="presentation"
-			/>
-
-			<Sidebar tree={stories.tree} basePath={basePath} isOpen={sidebarOpen} onLinkClick={closeSidebar} />
-			<main className={styles.main}>{children}</main>
-		</div>
+		</MswProvider>
 	)
 }

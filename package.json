@@ -9,7 +9,7 @@
 		"ts": "turbo ts",
 		"ok": "turbo ts && bun lint",
 		"test": "turbo test",
-		"e2e": "bun run --cwd apps/example e2e"
+		"e2e": "bun run --cwd apps/web e2e"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.7",

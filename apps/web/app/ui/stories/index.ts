@@ -30,4 +30,7 @@ export const stories = createStories({
 		progress: () => import("./feedback/progress.story"),
 		slider: () => import("./feedback/slider.story"),
 	},
+	"data-fetching": {
+		"user-card": () => import("./data-fetching/user-card.story"),
+	},
 })

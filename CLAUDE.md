@@ -53,9 +53,7 @@ Keep entries brief and structural. Focus on "why" and "how the pieces fit togeth
 Nextbook is a zero-config component stories library for Next.js. This monorepo contains:
 
 - **packages/nextbook** - The main library (publishable as `nextbook` on npm)
-- **apps/example** - Example Next.js app demonstrating nextbook features
-- **apps/web** - Marketing website for nextbook.dev
-- **Playwright tests** - Visual regression tests to prevent UI regressions
+- **apps/web** - Marketing website for nextbook.dev (also includes nextbook `/ui` stories and Playwright tests)
 
 **AI-Ready Design:** Nextbook is designed to be AI-friendly. The simple, predictable API (`story()` function + Zod schemas) makes it easy for AI assistants to generate stories for components instantly. When working with users, AI can quickly scaffold comprehensive stories with interactive controls - no complex configuration needed.
 
@@ -84,8 +82,7 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 This is a Turborepo monorepo with two main workspace types:
 
 - **apps/** - Application projects
-  - **example/** - Next.js 16 example app demonstrating nextbook
-  - **web/** - Marketing website for nextbook.dev
+  - **web/** - Marketing website for nextbook.dev (includes `/ui` stories and Playwright tests)
 
 - **packages/** - Shared packages
   - **nextbook/** - The main nextbook library
@@ -182,19 +179,9 @@ packages/nextbook/src/
 3. **Making createStories async** - It was async before but caused boundary issues; now synchronous
 4. **CLI templates out of sync** - `src/cli/templates.ts` MUST match current API when making changes
 
-### Example App (apps/example/)
-
-**Purpose:** Demonstrates nextbook features and provides visual regression test fixtures
-
-**Structure:**
-
-- `app/ui/` - Nextbook integration (layout, page, stories)
-- `app/ui/stories/` - Example stories (button, card, forms)
-- `tests/` - Playwright visual regression tests
-
 ### Marketing Website (apps/web/)
 
-**Purpose:** Public-facing marketing website at nextbook.dev
+**Purpose:** Public-facing marketing website at nextbook.dev + nextbook `/ui` stories for testing
 
 **Tech Stack:**
 
@@ -202,6 +189,8 @@ packages/nextbook/src/
 - Tailwind CSS 4 with shadcn/ui components
 - Framer Motion for animations
 - Vercel Analytics for usage tracking
+- Playwright for e2e testing
+- MSW for API mocking in stories
 
 **Key Features:**
 
@@ -209,6 +198,8 @@ packages/nextbook/src/
 - Dynamic OG images using Next.js ImageResponse API
 - SEO infrastructure (sitemap.ts, robots.ts)
 - Responsive design with dark mode default
+- Nextbook stories at `/ui` demonstrating component library
+- Playwright visual regression tests in `tests/`
 
 **File Structure:**
 
@@ -218,20 +209,24 @@ apps/web/
 │   ├── layout.tsx           # Root layout (Geist fonts, metadata, Analytics)
 │   ├── page.tsx             # Landing page
 │   ├── globals.css          # Tailwind CSS 4 + design tokens
-│   ├── opengraph-image.tsx  # OG image generation
-│   ├── twitter-image.tsx    # Twitter card image
-│   ├── sitemap.ts           # SEO sitemap
-│   └── robots.ts            # Crawler rules
+│   ├── ui/                  # Nextbook stories UI
+│   │   ├── layout.tsx       # Nextbook shell wrapper
+│   │   ├── [[...path]]/     # Dynamic story routes
+│   │   └── stories/         # Story definitions
+│   └── ...                  # OG images, sitemap, robots
 ├── components/
 │   ├── landing/             # Landing page sections (hero, features, etc.)
 │   ├── shared/              # Header, footer, logo, container, section
-│   └── ui/                  # shadcn/ui components (button, badge, card)
-├── lib/
-│   ├── env.ts               # Type-safe environment variables
-│   ├── public-routes.ts     # Centralized route definitions
-│   ├── utils.ts             # cn() utility
-│   └── opengraph/           # OG image utilities
-└── public/images/           # Logo assets (copied from /assets)
+│   ├── ui/                  # shadcn/ui components (button, badge, card)
+│   └── demo/                # Demo components for stories (e.g., UserCard)
+├── tests/                   # Playwright e2e tests
+│   ├── sidebar.spec.ts      # Sidebar navigation tests
+│   ├── story-viewer.spec.ts # Story rendering tests
+│   ├── controls-panel.spec.ts # Controls panel tests
+│   ├── mocking.spec.ts      # MSW mocking tests
+│   └── matrix.spec.ts       # Matrix story tests
+├── playwright.config.ts     # Playwright configuration
+└── public/images/           # Logo assets
 ```
 
 **Design Philosophy:**
@@ -335,6 +330,15 @@ The website includes placeholder areas for screenshots that need to be captured:
 - Run `bun test` to execute all unit tests
 - NEVER use `timeout` parameters when running tests - run tests normally without artificial timeouts
 - Trust the test framework's default timeout behavior
+
+**E2E Testing (Playwright):**
+
+- **Use e2e tests for UI verification** - Playwright tests in `apps/web/tests/` verify the nextbook `/ui` interface works correctly
+- Run `bun test:e2e` to execute all e2e tests (starts dev server automatically)
+- **Write e2e tests for new UI features** - When adding user-facing functionality (controls, indicators, interactions), add corresponding Playwright tests
+- **Visual snapshots catch regressions** - Use `toHaveScreenshot()` for components where visual appearance matters
+- **Test real user flows** - E2e tests should simulate actual user interactions (clicks, typing, navigation) rather than implementation details
+- **Keep tests fast and focused** - Each test should verify one behavior; use `test.describe` to group related tests
 
 **Implementation Standards:**
 
