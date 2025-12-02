@@ -13,6 +13,8 @@
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	min-height: 0;
+	overflow: hidden;
 	background: var(--nb-bg-canvas);
 }
 
@@ -134,6 +136,351 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
+ * HEADER FILTERS - Inline filter chips
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.headerFilters {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-2);
+	flex: 1;
+	min-width: 0;
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+.headerFilters::-webkit-scrollbar {
+	display: none;
+}
+
+/* Mobile: scroll filters horizontally */
+@media (max-width: 767px) {
+	.headerFilters {
+		gap: var(--nb-space-1-5);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * FILTER CHIPS - Compact filter dropdowns
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.filterChipWrapper {
+	position: relative;
+	flex-shrink: 0;
+}
+
+.filterChip {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1);
+	padding: var(--nb-space-1) var(--nb-space-2-5);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-secondary);
+	background: var(--nb-bg-hover);
+	border: 1px solid transparent;
+	border-radius: var(--nb-radius-full);
+	cursor: pointer;
+	transition:
+		background var(--nb-transition-fast),
+		border-color var(--nb-transition-fast),
+		color var(--nb-transition-fast);
+	white-space: nowrap;
+}
+
+.filterChip:hover {
+	background: var(--nb-bg-active);
+	color: var(--nb-text-primary);
+}
+
+.filterChipActive {
+	background: var(--nb-bg-active);
+	border-color: var(--nb-text-brand);
+	color: var(--nb-text-brand);
+}
+
+.filterChipLabel {
+	font-weight: var(--nb-font-medium);
+}
+
+.filterCountBadge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 16px;
+	height: 16px;
+	padding: 0 var(--nb-space-1);
+	font-size: 10px;
+	font-weight: var(--nb-font-bold);
+	color: white;
+	background: var(--nb-text-brand);
+	border-radius: var(--nb-radius-full);
+}
+
+.chipChevron {
+	flex-shrink: 0;
+	opacity: 0.5;
+	transition: transform var(--nb-transition-fast);
+}
+
+.chipChevronOpen {
+	transform: rotate(180deg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * FILTER MENU - Dropdown with checkboxes
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.filterMenu {
+	position: absolute;
+	top: calc(100% + var(--nb-space-1));
+	left: 0;
+	min-width: 180px;
+	background: var(--nb-bg-elevated);
+	border: 1px solid var(--nb-border-default);
+	border-radius: var(--nb-radius-lg);
+	box-shadow: var(--nb-shadow-xl);
+	z-index: 50;
+	overflow: hidden;
+}
+
+.filterMenuHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--nb-space-2) var(--nb-space-3);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-tertiary);
+	border-bottom: 1px solid var(--nb-border-subtle);
+}
+
+.menuClearButton {
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-brand);
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+}
+
+.menuClearButton:hover {
+	text-decoration: underline;
+}
+
+.filterOptions {
+	display: flex;
+	flex-direction: column;
+	max-height: 200px;
+	overflow-y: auto;
+	padding: var(--nb-space-1) 0;
+}
+
+.filterOption {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-2);
+	padding: var(--nb-space-1-5) var(--nb-space-3);
+	cursor: pointer;
+	transition: background var(--nb-transition-fast);
+}
+
+.filterOption:hover {
+	background: var(--nb-bg-hover);
+}
+
+.filterCheckbox {
+	width: 14px;
+	height: 14px;
+	flex-shrink: 0;
+	accent-color: var(--nb-text-brand);
+	cursor: pointer;
+}
+
+.filterOptionLabel {
+	font-size: var(--nb-text-sm);
+	color: var(--nb-text-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * SORT MENU - Separate sort dropdown
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.sortMenuWrapper {
+	position: relative;
+	flex-shrink: 0;
+}
+
+.sortButton {
+	display: flex;
+	align-items: center;
+	gap: var(--nb-space-1-5);
+	padding: var(--nb-space-1) var(--nb-space-2-5);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-secondary);
+	background: var(--nb-bg-hover);
+	border: 1px solid transparent;
+	border-radius: var(--nb-radius-full);
+	cursor: pointer;
+	transition:
+		background var(--nb-transition-fast),
+		border-color var(--nb-transition-fast),
+		color var(--nb-transition-fast);
+	white-space: nowrap;
+}
+
+.sortButton:hover {
+	background: var(--nb-bg-active);
+	color: var(--nb-text-primary);
+}
+
+.sortButtonActive {
+	background: var(--nb-bg-active);
+	border-color: var(--nb-text-brand);
+	color: var(--nb-text-brand);
+}
+
+.sortMenu {
+	position: absolute;
+	top: calc(100% + var(--nb-space-1));
+	right: 0;
+	min-width: 200px;
+	background: var(--nb-bg-elevated);
+	border: 1px solid var(--nb-border-default);
+	border-radius: var(--nb-radius-lg);
+	box-shadow: var(--nb-shadow-xl);
+	z-index: 50;
+	overflow: hidden;
+}
+
+.sortMenuHeader {
+	padding: var(--nb-space-2) var(--nb-space-3);
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-tertiary);
+	border-bottom: 1px solid var(--nb-border-subtle);
+}
+
+.sortOptions {
+	display: flex;
+	flex-direction: column;
+	padding: var(--nb-space-1) 0;
+}
+
+.sortOption {
+	display: flex;
+	align-items: center;
+}
+
+.sortOptionButton {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--nb-space-2);
+	padding: var(--nb-space-2) var(--nb-space-3);
+	font-size: var(--nb-text-sm);
+	font-weight: var(--nb-font-normal);
+	color: var(--nb-text-primary);
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-align: left;
+	transition: background var(--nb-transition-fast);
+}
+
+.sortOptionButton:hover {
+	background: var(--nb-bg-hover);
+}
+
+.sortOptionActive {
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-brand);
+}
+
+.sortOptionLabel {
+	flex: 1;
+}
+
+.sortDirectionBadge {
+	font-size: var(--nb-text-xs);
+	font-weight: var(--nb-font-medium);
+	color: var(--nb-text-brand);
+	padding: var(--nb-space-0-5) var(--nb-space-1-5);
+	background: var(--nb-bg-active);
+	border-radius: var(--nb-radius-sm);
+}
+
+.sortRemoveButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	margin-right: var(--nb-space-1);
+	color: var(--nb-text-tertiary);
+	background: none;
+	border: none;
+	border-radius: var(--nb-radius-md);
+	cursor: pointer;
+	transition:
+		color var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.sortRemoveButton:hover {
+	color: var(--nb-error-text);
+	background: var(--nb-bg-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * RESET BUTTON
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.resetButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	color: var(--nb-text-tertiary);
+	background: var(--nb-bg-hover);
+	border: none;
+	border-radius: var(--nb-radius-md);
+	cursor: pointer;
+	transition:
+		color var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.resetButton:hover {
+	color: var(--nb-error-text);
+	background: var(--nb-bg-active);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * EMPTY STATE
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.emptyState {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--nb-space-4);
+	padding: var(--nb-space-8);
+	color: var(--nb-text-tertiary);
+}
+
+.emptyState p {
+	margin: 0;
+	font-size: var(--nb-text-base);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
  * WARNING BANNER
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
@@ -156,26 +503,54 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
- * GRID LAYOUT
+ * GRID CONTAINER (scrollable area for virtualization)
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
-.grid {
+.gridContainer {
 	flex: 1;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: var(--nb-space-4);
-	padding: var(--nb-space-6);
+	min-height: 0;
 	overflow-y: auto;
-	align-content: start;
+	padding: var(--nb-space-6);
 	background: var(--nb-bg-canvas);
 }
 
-/* Mobile: smaller cards and padding */
+/* Mobile: smaller padding */
 @media (max-width: 767px) {
-	.grid {
-		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-		gap: var(--nb-space-3);
+	.gridContainer {
 		padding: var(--nb-space-3);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * VIRTUAL GRID (row-based virtualization)
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.virtualGrid {
+	position: relative;
+	width: 100%;
+}
+
+.virtualRow {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * FULL GRID (for fullRender mode / screenshots)
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.fullGrid {
+	display: grid;
+	gap: var(--nb-space-4);
+	align-content: start;
+}
+
+/* Mobile: smaller gap */
+@media (max-width: 767px) {
+	.fullGrid {
+		gap: var(--nb-space-3);
 	}
 }
 
@@ -197,6 +572,12 @@
 		transform var(--nb-transition-fast);
 	text-align: left;
 	padding: 0;
+}
+
+/* Cells in virtual grid use absolute positioning */
+.virtualRow .cell {
+	position: absolute;
+	top: 0;
 }
 
 .cell:hover {

@@ -142,6 +142,15 @@ The nextbook UI should be **AMAZING**, **MODERN**, **PROFESSIONAL**, **NEXT-GEN*
 - Polished details that delight users
 - **Use Tooltips liberally** - Add tooltips to icons, buttons, and controls to help developers discover functionality and maximize usability. The `Tooltip` component has a 200ms delay before showing.
 
+**Matrix Viewer (Virtualization):**
+
+The matrix viewer (`storyMatrix()`) displays all prop combinations in a grid. Key implementation details:
+
+- **Virtualized rendering** - Uses `@tanstack/react-virtual` to only render visible rows
+- **Cell measurement** - Starts with default dimensions (220x140), measures actual first cell after render
+- **Full render mode** - Add `?fullRender=true` to URL to render all cells (for Playwright screenshots)
+- **Accessible cells** - Uses `<div role="button" tabIndex={0}>` instead of `<button>` to avoid nested button HTML errors when story content contains buttons
+
 **File Structure:**
 
 ```
@@ -154,6 +163,8 @@ packages/nextbook/src/
 ├── components/
 │   ├── controls-panel.tsx      # Zod-generated controls UI
 │   ├── controls-panel.module.css
+│   ├── matrix-viewer.tsx       # Virtualized matrix grid (storyMatrix)
+│   ├── matrix-viewer.module.css
 │   ├── nextbook-shell.tsx      # Main shell (client component)
 │   ├── nextbook-shell.module.css
 │   ├── sidebar.tsx             # Navigation sidebar (client component)

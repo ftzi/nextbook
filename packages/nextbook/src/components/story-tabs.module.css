@@ -11,8 +11,58 @@
 
 .container {
 	position: relative;
+	display: flex;
+	align-items: center;
 	border-bottom: 1px solid var(--nb-border-subtle);
 	background: var(--nb-bg-elevated);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * NAVIGATION BUTTONS
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.navButtons {
+	display: flex;
+	align-items: center;
+	padding-left: var(--nb-space-2);
+	flex-shrink: 0;
+}
+
+.navButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: none;
+	border-radius: var(--nb-radius-sm);
+	background: transparent;
+	color: var(--nb-text-tertiary);
+	cursor: pointer;
+	transition:
+		color var(--nb-transition-fast),
+		background var(--nb-transition-fast);
+}
+
+.navButton:hover:not(:disabled) {
+	color: var(--nb-text-primary);
+	background: var(--nb-bg-hover);
+}
+
+.navButton:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * TABS WRAPPER
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.tabsWrapper {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
@@ -117,23 +167,4 @@
 /* Badge colors for different story types */
 .tabActive .badge {
 	color: var(--nb-text-brand);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════════
- * ANIMATIONS
- * ═══════════════════════════════════════════════════════════════════════════════ */
-
-@keyframes tabFadeIn {
-	from {
-		opacity: 0;
-		transform: translateY(-2px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-.tab {
-	animation: tabFadeIn 150ms ease-out;
 }

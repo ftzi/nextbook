@@ -1,6 +1,6 @@
 "use client"
 
-import { story } from "nextbook"
+import { story, storyMatrix } from "nextbook"
 import { z } from "zod"
 import { Label } from "@/components/ui/label"
 import {
@@ -13,7 +13,44 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 
-export const Default = story({
+export const Matrix = storyMatrix({
+	schema: z.object({
+		disabled: z.enum(["false", "true"]),
+	}),
+	render: ({ disabled }) => (
+		<Select disabled={disabled === "true"}>
+			<SelectTrigger className="w-[180px]">
+				<SelectValue placeholder="Select option" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="option1">Option 1</SelectItem>
+				<SelectItem value="option2">Option 2</SelectItem>
+				<SelectItem value="option3">Option 3</SelectItem>
+			</SelectContent>
+		</Select>
+	),
+})
+
+export const Controlled = story({
+	schema: z.object({
+		placeholder: z.string().default("Select an option").describe("Placeholder text"),
+		disabled: z.boolean().default(false).describe("Disabled state"),
+	}),
+	render: ({ placeholder, disabled }) => (
+		<Select disabled={disabled}>
+			<SelectTrigger className="w-[200px]">
+				<SelectValue placeholder={placeholder} />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="option1">Option 1</SelectItem>
+				<SelectItem value="option2">Option 2</SelectItem>
+				<SelectItem value="option3">Option 3</SelectItem>
+			</SelectContent>
+		</Select>
+	),
+})
+
+export const WithGroups = story({
 	render: () => (
 		<Select>
 			<SelectTrigger className="w-[180px]">
@@ -49,37 +86,5 @@ export const WithLabel = story({
 				</SelectContent>
 			</Select>
 		</div>
-	),
-})
-
-export const Disabled = story({
-	render: () => (
-		<Select disabled>
-			<SelectTrigger className="w-[180px]">
-				<SelectValue placeholder="Disabled" />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value="1">Option 1</SelectItem>
-			</SelectContent>
-		</Select>
-	),
-})
-
-export const Controlled = story({
-	schema: z.object({
-		placeholder: z.string().default("Select an option").describe("Placeholder text"),
-		disabled: z.boolean().default(false).describe("Disabled state"),
-	}),
-	render: ({ placeholder, disabled }) => (
-		<Select disabled={disabled}>
-			<SelectTrigger className="w-[200px]">
-				<SelectValue placeholder={placeholder} />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value="option1">Option 1</SelectItem>
-				<SelectItem value="option2">Option 2</SelectItem>
-				<SelectItem value="option3">Option 3</SelectItem>
-			</SelectContent>
-		</Select>
 	),
 })

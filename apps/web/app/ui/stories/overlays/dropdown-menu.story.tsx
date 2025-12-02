@@ -33,11 +33,27 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export const Default = story({
+export const Simple = story({
 	render: () => (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="outline">Open Menu</Button>
+				<Button variant="outline">Actions</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuItem>Edit</DropdownMenuItem>
+				<DropdownMenuItem>Duplicate</DropdownMenuItem>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	),
+})
+
+export const Full = story({
+	render: () => (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant="outline">My Account</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -118,22 +134,6 @@ export const Default = story({
 					<span>Log out</span>
 					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
 				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
-	),
-})
-
-export const Simple = story({
-	render: () => (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button variant="outline">Actions</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent>
-				<DropdownMenuItem>Edit</DropdownMenuItem>
-				<DropdownMenuItem>Duplicate</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	),

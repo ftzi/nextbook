@@ -7,11 +7,32 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
-export const Default = story({
+export const Controlled = story({
+	schema: z.object({
+		triggerText: z.string().default("Open popover").describe("Trigger button text"),
+		title: z.string().default("Popover Title").describe("Popover title"),
+		content: z.string().default("This is the popover content.").describe("Popover content"),
+	}),
+	render: ({ triggerText, title, content }) => (
+		<Popover>
+			<PopoverTrigger asChild>
+				<Button variant="outline">{triggerText}</Button>
+			</PopoverTrigger>
+			<PopoverContent>
+				<div className="space-y-2">
+					<h4 className="font-medium leading-none">{title}</h4>
+					<p className="text-muted-foreground text-sm">{content}</p>
+				</div>
+			</PopoverContent>
+		</Popover>
+	),
+})
+
+export const WithForm = story({
 	render: () => (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button variant="outline">Open popover</Button>
+				<Button variant="outline">Set Dimensions</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-80">
 				<div className="grid gap-4">
@@ -33,40 +54,6 @@ export const Default = story({
 							<Input id="height" defaultValue="25px" className="col-span-2 h-8" />
 						</div>
 					</div>
-				</div>
-			</PopoverContent>
-		</Popover>
-	),
-})
-
-export const Simple = story({
-	render: () => (
-		<Popover>
-			<PopoverTrigger asChild>
-				<Button variant="outline">Click me</Button>
-			</PopoverTrigger>
-			<PopoverContent>
-				<p className="text-sm">This is a simple popover content.</p>
-			</PopoverContent>
-		</Popover>
-	),
-})
-
-export const Controlled = story({
-	schema: z.object({
-		triggerText: z.string().default("Open popover").describe("Trigger button text"),
-		title: z.string().default("Popover Title").describe("Popover title"),
-		content: z.string().default("This is the popover content.").describe("Popover content"),
-	}),
-	render: ({ triggerText, title, content }) => (
-		<Popover>
-			<PopoverTrigger asChild>
-				<Button variant="outline">{triggerText}</Button>
-			</PopoverTrigger>
-			<PopoverContent>
-				<div className="space-y-2">
-					<h4 className="font-medium leading-none">{title}</h4>
-					<p className="text-muted-foreground text-sm">{content}</p>
 				</div>
 			</PopoverContent>
 		</Popover>

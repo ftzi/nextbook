@@ -1,59 +1,23 @@
 "use client"
 
-import { story } from "nextbook"
+import { story, storyMatrix } from "nextbook"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
-export const Default = story({
-	render: () => (
+export const Matrix = storyMatrix({
+	schema: z.object({
+		side: z.enum(["top", "right", "bottom", "left"]),
+	}),
+	render: ({ side }) => (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<Button variant="outline">Hover me</Button>
+				<Button variant="outline">{side}</Button>
 			</TooltipTrigger>
-			<TooltipContent>
-				<p>Add to library</p>
+			<TooltipContent side={side}>
+				<p>Tooltip on {side}</p>
 			</TooltipContent>
 		</Tooltip>
-	),
-})
-
-export const Sides = story({
-	render: () => (
-		<div className="flex gap-4">
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button variant="outline">Top</Button>
-				</TooltipTrigger>
-				<TooltipContent side="top">
-					<p>Top tooltip</p>
-				</TooltipContent>
-			</Tooltip>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button variant="outline">Right</Button>
-				</TooltipTrigger>
-				<TooltipContent side="right">
-					<p>Right tooltip</p>
-				</TooltipContent>
-			</Tooltip>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button variant="outline">Bottom</Button>
-				</TooltipTrigger>
-				<TooltipContent side="bottom">
-					<p>Bottom tooltip</p>
-				</TooltipContent>
-			</Tooltip>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button variant="outline">Left</Button>
-				</TooltipTrigger>
-				<TooltipContent side="left">
-					<p>Left tooltip</p>
-				</TooltipContent>
-			</Tooltip>
-		</div>
 	),
 })
 

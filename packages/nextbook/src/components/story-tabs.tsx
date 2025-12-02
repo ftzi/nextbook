@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { z } from "zod"
 import { isStory } from "../story"
 import { isMatrixStory } from "../story-matrix"
@@ -23,9 +24,56 @@ type StoryTabsProps = {
 }
 
 export function StoryTabs({ exports, activeStory, basePath, filePath }: StoryTabsProps) {
+	const router = useRouter()
 	const tabsRef = useRef<HTMLDivElement>(null)
 	const [showLeftFade, setShowLeftFade] = useState(false)
 	const [showRightFade, setShowRightFade] = useState(false)
+
+	// Find current index and compute prev/next
+	const currentIndex = useMemo(
+		() => exports.findIndex((exp) => exp.name.toLowerCase() === activeStory.toLowerCase()),
+		[exports, activeStory],
+	)
+	const hasPrev = currentIndex > 0
+	const hasNext = currentIndex < exports.length - 1
+
+	const getHref = useCallback((name: string) => `${basePath}/${filePath}/${name}`.toLowerCase(), [basePath, filePath])
+
+	const goToPrev = useCallback(() => {
+		const prevExport = exports[currentIndex - 1]
+		if (hasPrev && prevExport) {
+			router.push(getHref(prevExport.name))
+		}
+	}, [hasPrev, router, getHref, exports, currentIndex])
+
+	const goToNext = useCallback(() => {
+		const nextExport = exports[currentIndex + 1]
+		if (hasNext && nextExport) {
+			router.push(getHref(nextExport.name))
+		}
+	}, [hasNext, router, getHref, exports, currentIndex])
+
+	// Handle keyboard navigation
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			// Don't trigger if focus is in an input/textarea
+			const target = e.target as HTMLElement
+			if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+				return
+			}
+
+			if (e.key === "ArrowLeft") {
+				e.preventDefault()
+				goToPrev()
+			} else if (e.key === "ArrowRight") {
+				e.preventDefault()
+				goToNext()
+			}
+		}
+
+		window.addEventListener("keydown", handleKeyDown)
+		return () => window.removeEventListener("keydown", handleKeyDown)
+	}, [goToPrev, goToNext])
 
 	// Check for overflow and update fade indicators
 	useEffect(() => {
@@ -61,39 +109,68 @@ export function StoryTabs({ exports, activeStory, basePath, filePath }: StoryTab
 
 	return (
 		<div className={styles.container}>
-			{showLeftFade && <div className={styles.fadeLeft} />}
-			<div ref={tabsRef} className={styles.tabs}>
-				{exports.map((exp) => {
-					const isActive = exp.name.toLowerCase() === activeStory.toLowerCase()
-					const href = `${basePath}/${filePath}/${exp.name}`.toLowerCase()
-
-					return (
-						<Link
-							key={exp.name}
-							href={href}
-							className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
-							data-active={isActive}
-						>
-							<span className={styles.tabName}>{exp.name}</span>
-							{exp.type === "controlled" && (
-								<Tooltip content="Interactive controls">
-									<span className={styles.badge}>
-										<SlidersIcon />
-									</span>
-								</Tooltip>
-							)}
-							{exp.type === "matrix" && (
-								<Tooltip content="Matrix view">
-									<span className={styles.badge}>
-										<GridIcon />
-									</span>
-								</Tooltip>
-							)}
-						</Link>
-					)
-				})}
+			{/* Navigation buttons */}
+			<div className={styles.navButtons}>
+				<Tooltip content="Previous variant (←)">
+					<button
+						type="button"
+						onClick={goToPrev}
+						disabled={!hasPrev}
+						className={styles.navButton}
+						aria-label="Previous variant"
+					>
+						<ChevronLeftIcon />
+					</button>
+				</Tooltip>
+				<Tooltip content="Next variant (→)">
+					<button
+						type="button"
+						onClick={goToNext}
+						disabled={!hasNext}
+						className={styles.navButton}
+						aria-label="Next variant"
+					>
+						<ChevronRightIcon />
+					</button>
+				</Tooltip>
 			</div>
-			{showRightFade && <div className={styles.fadeRight} />}
+
+			{/* Tabs area */}
+			<div className={styles.tabsWrapper}>
+				{showLeftFade && <div className={styles.fadeLeft} />}
+				<div ref={tabsRef} className={styles.tabs}>
+					{exports.map((exp) => {
+						const isActive = exp.name.toLowerCase() === activeStory.toLowerCase()
+						const href = getHref(exp.name)
+
+						return (
+							<Link
+								key={exp.name}
+								href={href}
+								className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
+								data-active={isActive}
+							>
+								<span className={styles.tabName}>{exp.name}</span>
+								{exp.type === "controlled" && (
+									<Tooltip content="Interactive controls">
+										<span className={styles.badge}>
+											<SlidersIcon />
+										</span>
+									</Tooltip>
+								)}
+								{exp.type === "matrix" && (
+									<Tooltip content="Matrix view">
+										<span className={styles.badge}>
+											<GridIcon />
+										</span>
+									</Tooltip>
+								)}
+							</Link>
+						)
+					})}
+				</div>
+				{showRightFade && <div className={styles.fadeRight} />}
+			</div>
 		</div>
 	)
 }
@@ -137,22 +214,38 @@ export function extractStoryExports(module: Record<string, unknown>): StoryExpor
 	return exports
 }
 
+function ChevronLeftIcon() {
+	return (
+		<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+			<path d="M9 3L5 7l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+		</svg>
+	)
+}
+
+function ChevronRightIcon() {
+	return (
+		<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+			<path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+		</svg>
+	)
+}
+
 function SlidersIcon() {
 	return (
 		<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-			{/* Top slider - cyan to purple gradient */}
-			<path d="M1.5 3H4M8 3H10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-			<rect x="4" y="2" width="4" height="2" rx="1" fill="url(#sliderGrad1)" />
-			{/* Bottom slider - purple to pink gradient */}
-			<path d="M1.5 9H4M8 9H10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-			<rect x="4" y="8" width="4" height="2" rx="1" fill="url(#sliderGrad2)" />
+			{/* Top slider with circle handle - cyan/purple like Matrix */}
+			<path d="M1 3.5H4.5M7.5 3.5H11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+			<circle cx="6" cy="3.5" r="2" fill="url(#sliderGrad1)" />
+			{/* Bottom slider with circle handle - amber/pink like Matrix */}
+			<path d="M1 8.5H4.5M7.5 8.5H11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+			<circle cx="6" cy="8.5" r="2" fill="url(#sliderGrad2)" />
 			<defs>
-				<linearGradient id="sliderGrad1" x1="4" y1="3" x2="8" y2="3" gradientUnits="userSpaceOnUse">
+				<linearGradient id="sliderGrad1" x1="4" y1="3.5" x2="8" y2="3.5" gradientUnits="userSpaceOnUse">
 					<stop stopColor="#06B6D4" />
 					<stop offset="1" stopColor="#8B5CF6" />
 				</linearGradient>
-				<linearGradient id="sliderGrad2" x1="4" y1="9" x2="8" y2="9" gradientUnits="userSpaceOnUse">
-					<stop stopColor="#8B5CF6" />
+				<linearGradient id="sliderGrad2" x1="4" y1="8.5" x2="8" y2="8.5" gradientUnits="userSpaceOnUse">
+					<stop stopColor="#F59E0B" />
 					<stop offset="1" stopColor="#EC4899" />
 				</linearGradient>
 			</defs>

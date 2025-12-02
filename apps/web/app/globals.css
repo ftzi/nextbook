@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* Pointer cursor on non-disabled buttons: https://github.com/shadcn-ui/ui/issues/6843#issuecomment-2698105214 */
 @layer base {
@@ -10,53 +13,6 @@
 
 html {
 	scroll-behavior: smooth;
-}
-
-@theme {
-	/* Brand colors matching the nextbook logo gradient: cyan -> purple -> pink */
-	--color-brand-cyan: #06b6d4;
-	--color-brand-indigo: #4f46e5;
-	--color-brand-purple: #7c3aed;
-	--color-brand-pink: #ec4899;
-
-	/* Fonts */
-	--font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-	--font-mono: var(--font-geist-mono), ui-monospace, monospace;
-
-	/* Animation timing */
-	--animate-fade-in: fade-in 0.5s ease-out;
-	--animate-slide-up: slide-up 0.5s ease-out;
-	--animate-gradient: gradient 8s ease infinite;
-
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
-	@keyframes slide-up {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@keyframes gradient {
-		0%,
-		100% {
-			background-position: 0% 50%;
-		}
-		50% {
-			background-position: 100% 50%;
-		}
-	}
 }
 
 /* shadcn/ui CSS variables for light mode */
@@ -116,15 +72,95 @@ html {
 	--chart-5: oklch(0.645 0.246 16.439);
 }
 
-/* Base styles */
-* {
-	border-color: var(--border);
+/* Tailwind v4 theme configuration - maps CSS variables to Tailwind colors */
+@theme inline {
+	/* Brand colors matching the nextbook logo gradient: cyan -> purple -> pink */
+	--color-brand-cyan: #06b6d4;
+	--color-brand-indigo: #4f46e5;
+	--color-brand-purple: #7c3aed;
+	--color-brand-pink: #ec4899;
+
+	/* shadcn/ui color tokens */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+
+	/* Radius tokens */
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+
+	/* Fonts */
+	--font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+	--font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+	/* Custom animations */
+	--animate-fade-in: fade-in 0.5s ease-out;
+	--animate-slide-up: slide-up 0.5s ease-out;
+	--animate-gradient: gradient 8s ease infinite;
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes slide-up {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes gradient {
+		0%,
+		100% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+	}
 }
 
-body {
-	background: var(--background);
-	color: var(--foreground);
-	font-family: var(--font-sans);
+/* Base styles */
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground;
+		font-family: var(--font-sans);
+	}
 }
 
 /* Custom utility classes */

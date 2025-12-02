@@ -1,5 +1,12 @@
-import type { SVGProps } from "react";
-const SvgIcon = (props: SVGProps<SVGSVGElement>) => (
+"use client"
+
+import { useId, type SVGProps } from "react";
+const SvgIcon = (props: SVGProps<SVGSVGElement>) => {
+	const id = useId();
+	const id0 = `${id}-icon_svg__a`;
+	const id1 = `${id}-icon_svg__b`;
+
+	return (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 400 400"
@@ -7,7 +14,7 @@ const SvgIcon = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <defs>
-      <linearGradient id="icon_svg__a" x1="0%" x2="100%" y1="0%" y2="100%">
+      <linearGradient id={id0} x1="0%" x2="100%" y1="0%" y2="100%">
         <stop
           offset="0%"
           style={{
@@ -30,7 +37,7 @@ const SvgIcon = (props: SVGProps<SVGSVGElement>) => (
           }}
         />
       </linearGradient>
-      <filter id="icon_svg__b" width="200%" height="200%" x="-50%" y="-50%">
+      <filter id={id1} width="200%" height="200%" x="-50%" y="-50%">
         <feGaussianBlur result="coloredBlur" stdDeviation={6} />
         <feMerge>
           <feMergeNode in="coloredBlur" />
@@ -40,13 +47,14 @@ const SvgIcon = (props: SVGProps<SVGSVGElement>) => (
     </defs>
     <path
       fill="none"
-      stroke="url(#icon_svg__a)"
+      stroke={`url(#${id0})`}
       strokeWidth={50}
       d="M115 115h170v170H115z"
-      filter="url(#icon_svg__b)"
+      filter={`url(#${id1})`}
       opacity={0.9}
       transform="rotate(45 200 200)"
     />
   </svg>
 );
+};
 export default SvgIcon;

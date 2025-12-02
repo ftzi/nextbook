@@ -84,12 +84,12 @@
     </text>
 
     <!-- "book" text -->
-    <g transform="translate(1160, 0)">
+    <g transform="translate(1170, 0)">
       <text x="0" y="245"
             font-family="'Helvetica Neue'"
             font-size="550"
             font-weight="700"
-            letter-spacing="-20"
+             letter-spacing="-16"
             filter="url(#mirageB)"
             opacity="0.9"
             dominant-baseline="middle"

@@ -8,7 +8,33 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export const Default = story({
+export const Controlled = story({
+	schema: z.object({
+		tab1Label: z.string().default("Overview").describe("First tab label"),
+		tab2Label: z.string().default("Analytics").describe("Second tab label"),
+		tab3Label: z.string().default("Reports").describe("Third tab label"),
+	}),
+	render: ({ tab1Label, tab2Label, tab3Label }) => (
+		<Tabs defaultValue="tab1" className="w-[400px]">
+			<TabsList>
+				<TabsTrigger value="tab1">{tab1Label}</TabsTrigger>
+				<TabsTrigger value="tab2">{tab2Label}</TabsTrigger>
+				<TabsTrigger value="tab3">{tab3Label}</TabsTrigger>
+			</TabsList>
+			<TabsContent value="tab1" className="p-4">
+				Content for {tab1Label}
+			</TabsContent>
+			<TabsContent value="tab2" className="p-4">
+				Content for {tab2Label}
+			</TabsContent>
+			<TabsContent value="tab3" className="p-4">
+				Content for {tab3Label}
+			</TabsContent>
+		</Tabs>
+	),
+})
+
+export const WithCards = story({
 	render: () => (
 		<Tabs defaultValue="account" className="w-[400px]">
 			<TabsList className="grid w-full grid-cols-2">
@@ -56,53 +82,6 @@ export const Default = story({
 						<Button>Save password</Button>
 					</CardFooter>
 				</Card>
-			</TabsContent>
-		</Tabs>
-	),
-})
-
-export const Simple = story({
-	render: () => (
-		<Tabs defaultValue="tab1" className="w-[400px]">
-			<TabsList>
-				<TabsTrigger value="tab1">Tab 1</TabsTrigger>
-				<TabsTrigger value="tab2">Tab 2</TabsTrigger>
-				<TabsTrigger value="tab3">Tab 3</TabsTrigger>
-			</TabsList>
-			<TabsContent value="tab1" className="p-4">
-				Content for Tab 1
-			</TabsContent>
-			<TabsContent value="tab2" className="p-4">
-				Content for Tab 2
-			</TabsContent>
-			<TabsContent value="tab3" className="p-4">
-				Content for Tab 3
-			</TabsContent>
-		</Tabs>
-	),
-})
-
-export const Controlled = story({
-	schema: z.object({
-		tab1Label: z.string().default("Overview").describe("First tab label"),
-		tab2Label: z.string().default("Analytics").describe("Second tab label"),
-		tab3Label: z.string().default("Reports").describe("Third tab label"),
-	}),
-	render: ({ tab1Label, tab2Label, tab3Label }) => (
-		<Tabs defaultValue="tab1" className="w-[400px]">
-			<TabsList>
-				<TabsTrigger value="tab1">{tab1Label}</TabsTrigger>
-				<TabsTrigger value="tab2">{tab2Label}</TabsTrigger>
-				<TabsTrigger value="tab3">{tab3Label}</TabsTrigger>
-			</TabsList>
-			<TabsContent value="tab1" className="p-4">
-				Content for {tab1Label}
-			</TabsContent>
-			<TabsContent value="tab2" className="p-4">
-				Content for {tab2Label}
-			</TabsContent>
-			<TabsContent value="tab3" className="p-4">
-				Content for {tab3Label}
 			</TabsContent>
 		</Tabs>
 	),

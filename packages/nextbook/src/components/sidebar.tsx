@@ -1,14 +1,17 @@
 "use client"
 
-import { ChevronRight, Component, Folder, FolderOpen, Search } from "lucide-react"
+import { ChevronRight, ChevronsDownUp, Component, Folder, FolderOpen, Search } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 import type { StoryTreeNode } from "../types"
 import { GitHubIcon } from "./icons/github"
 import Logo from "./icons/logo"
 import styles from "./sidebar.module.css"
 import { Tooltip } from "./tooltip"
+
+// Context to trigger collapse all from parent
+const CollapseContext = createContext<number>(0)
 
 type SidebarProps = {
 	tree: StoryTreeNode[]
@@ -19,57 +22,78 @@ type SidebarProps = {
 
 export function Sidebar({ tree, basePath = "/ui", isOpen = false, onLinkClick }: SidebarProps) {
 	const [search, setSearch] = useState("")
+	const [collapseSignal, setCollapseSignal] = useState(0)
 
 	const filteredTree = useMemo(() => {
 		if (!search.trim()) return tree
 		return filterTree(tree, search.toLowerCase())
 	}, [tree, search])
 
+	const totalCount = useMemo(() => countStories(tree), [tree])
+	const filteredCount = useMemo(() => countStories(filteredTree), [filteredTree])
+
 	const sidebarClassName = `${styles.sidebar} ${isOpen ? styles.sidebarOpen : ""}`
 
+	const handleCollapseAll = () => {
+		setCollapseSignal((prev) => prev + 1)
+	}
+
 	return (
-		<aside className={sidebarClassName}>
-			{/* Header */}
-			<div className={styles.header}>
-				<Link href={basePath} className={styles.logo}>
-					<Logo className={styles.logoIcon} />
-				</Link>
-				<Tooltip content="View on GitHub">
-					<a
-						href="https://github.com/ftzi/nextbook"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={styles.githubLink}
-						aria-label="View on GitHub"
-					>
-						<GitHubIcon className={styles.githubIcon} />
-					</a>
-				</Tooltip>
-			</div>
-
-			{/* Search */}
-			<div className={styles.searchContainer}>
-				<div className={styles.searchWrapper}>
-					<Search size={14} className={styles.searchIcon} aria-hidden="true" />
-					<input
-						type="text"
-						placeholder="Search stories..."
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						className={styles.searchInput}
-					/>
+		<CollapseContext.Provider value={collapseSignal}>
+			<aside className={sidebarClassName}>
+				{/* Header */}
+				<div className={styles.header}>
+					<Link href={basePath} className={styles.logo}>
+						<Logo className={styles.logoIcon} />
+					</Link>
+					<Tooltip content="View on GitHub">
+						<a
+							href="https://github.com/ftzi/nextbook"
+							target="_blank"
+							rel="noopener noreferrer"
+							className={styles.githubLink}
+							aria-label="View on GitHub"
+						>
+							<GitHubIcon className={styles.githubIcon} />
+						</a>
+					</Tooltip>
 				</div>
-			</div>
 
-			{/* Tree */}
-			<nav className={styles.nav}>
-				{filteredTree.length > 0 ? (
-					<TreeNodes nodes={filteredTree} basePath={basePath} depth={0} onLinkClick={onLinkClick} />
-				) : (
-					<p className={styles.emptyMessage}>No stories found</p>
-				)}
-			</nav>
-		</aside>
+				{/* Search */}
+				<div className={styles.searchContainer}>
+					<div className={styles.searchWrapper}>
+						<Search size={14} className={styles.searchIcon} aria-hidden="true" />
+						<input
+							type="text"
+							placeholder="Search stories..."
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+							className={styles.searchInput}
+						/>
+						<span className={styles.storyCount}>{search ? `${filteredCount}/${totalCount}` : totalCount}</span>
+					</div>
+					<Tooltip content="Collapse all">
+						<button
+							type="button"
+							onClick={handleCollapseAll}
+							className={styles.collapseButton}
+							aria-label="Collapse all folders"
+						>
+							<ChevronsDownUp size={14} />
+						</button>
+					</Tooltip>
+				</div>
+
+				{/* Tree */}
+				<nav className={styles.nav}>
+					{filteredTree.length > 0 ? (
+						<TreeNodes nodes={filteredTree} basePath={basePath} depth={0} onLinkClick={onLinkClick} />
+					) : (
+						<p className={styles.emptyMessage}>No stories found</p>
+					)}
+				</nav>
+			</aside>
+		</CollapseContext.Provider>
 	)
 }
 
@@ -93,6 +117,18 @@ function filterTree(nodes: StoryTreeNode[], query: string): StoryTreeNode[] {
 	}
 
 	return result
+}
+
+function countStories(nodes: StoryTreeNode[]): number {
+	let count = 0
+	for (const node of nodes) {
+		if (node.filePath) {
+			count++
+		} else if (node.children) {
+			count += countStories(node.children)
+		}
+	}
+	return count
 }
 
 type TreeNodesProps = {
@@ -141,6 +177,7 @@ type TreeNodeProps = {
 
 function TreeNode({ node, basePath, depth, parentPath, onLinkClick }: TreeNodeProps) {
 	const pathname = usePathname()
+	const collapseSignal = useContext(CollapseContext)
 	const currentPath = [...parentPath, node.segment]
 	const paddingLeft = depth * 12 + 8
 	const pathPrefix = `${basePath}/${currentPath.join("/").toLowerCase()}`
@@ -148,6 +185,13 @@ function TreeNode({ node, basePath, depth, parentPath, onLinkClick }: TreeNodePr
 
 	// Directories start collapsed, but auto-expand if they contain the active item
 	const [isOpen, setIsOpen] = useState(isActiveOrAncestor)
+
+	// Collapse when signal changes (skip initial mount)
+	useEffect(() => {
+		if (collapseSignal > 0) {
+			setIsOpen(false)
+		}
+	}, [collapseSignal])
 
 	// Auto-expand when navigation changes to a child
 	useEffect(() => {

@@ -262,6 +262,18 @@ export function getSchemaDefaults(schema: z.ZodObject<z.ZodRawShape>): Record<st
 /** Maximum number of combinations before pagination kicks in */
 const MAX_COMBINATIONS = 100
 
+/**
+ * Dimension metadata for matrix filtering and sorting.
+ */
+export type DimensionInfo = {
+	/** Field name */
+	name: string
+	/** Human-readable label */
+	label: string
+	/** All possible values for this dimension */
+	values: unknown[]
+}
+
 type FieldValues = {
 	name: string
 	values: unknown[]
@@ -332,6 +344,19 @@ function extractFieldValues(_name: string, schema: z.ZodType): unknown[] {
 }
 
 /**
+ * Get dimension info from a Zod object schema for filtering and sorting.
+ * Returns metadata about each enumerable dimension including label and possible values.
+ */
+export function getDimensions(schema: z.ZodObject<z.ZodRawShape>): DimensionInfo[] {
+	const fieldValues = getEnumerableValues(schema)
+	return fieldValues.map((field) => ({
+		name: field.name,
+		label: formatLabel(field.name),
+		values: field.values,
+	}))
+}
+
+/**
  * Generate all combinations of prop values from a Zod object schema.
  * Returns the Cartesian product of all enumerable field values.
  *
@@ -346,14 +371,21 @@ export function generateCombinations(
 	combinations: PropCombination[]
 	total: number
 	truncated: boolean
+	dimensions: DimensionInfo[]
 } {
 	const fieldValues = getEnumerableValues(schema)
+	const dimensions: DimensionInfo[] = fieldValues.map((field) => ({
+		name: field.name,
+		label: formatLabel(field.name),
+		values: field.values,
+	}))
 
 	if (fieldValues.length === 0) {
 		return {
 			combinations: [{ values: {}, label: "(no props)" }],
 			total: 1,
 			truncated: false,
+			dimensions: [],
 		}
 	}
 
@@ -361,7 +393,7 @@ export function generateCombinations(
 	const truncated = total > limit
 
 	const combinations = buildCombinations(fieldValues, limit)
-	return { combinations, total, truncated }
+	return { combinations, total, truncated, dimensions }
 }
 
 /**

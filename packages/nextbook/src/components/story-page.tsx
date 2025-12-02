@@ -132,7 +132,7 @@ export function StoryPage({ path, stories, basePath = "/ui" }: StoryPageProps) {
 		const storyCount = countStoryFiles(tree)
 		return (
 			<div className={styles.welcome}>
-				<AnimatedLogo className={styles.welcomeLogo} />
+				<Logo className={styles.welcomeLogo} />
 				<p className={styles.welcomeSubtitle}>Select a story from the sidebar to get started.</p>
 				<p className={styles.welcomeCount}>
 					{storyCount} {storyCount === 1 ? "story" : "stories"} available
@@ -261,13 +261,9 @@ function TabbedStoryView({ loader, filePath, componentName, requestedExport, bas
 	return (
 		<div className={styles.tabbedView}>
 			<StoryTabs exports={storyExports} activeStory={activeStory.name} basePath={basePath} filePath={filePath} />
-			<StoryErrorBoundary key={activeStory.name}>
+			<StoryErrorBoundary>
 				<StoryViewer story={activeStory.story} storyType={activeStory.type} title={title} />
 			</StoryErrorBoundary>
 		</div>
 	)
-}
-
-function AnimatedLogo({ className }: { className?: string }) {
-	return <Logo className={className} />
 }

@@ -15,11 +15,35 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export const Default = story({
+export const Controlled = story({
+	schema: z.object({
+		title: z.string().default("Dialog Title").describe("Dialog title"),
+		description: z.string().default("This is the dialog description.").describe("Dialog description"),
+		triggerText: z.string().default("Open Dialog").describe("Trigger button text"),
+	}),
+	render: ({ title, description, triggerText }) => (
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button variant="outline">{triggerText}</Button>
+			</DialogTrigger>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>{title}</DialogTitle>
+					<DialogDescription>{description}</DialogDescription>
+				</DialogHeader>
+				<DialogFooter>
+					<Button>Confirm</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	),
+})
+
+export const WithForm = story({
 	render: () => (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline">Open Dialog</Button>
+				<Button variant="outline">Edit Profile</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
@@ -48,11 +72,11 @@ export const Default = story({
 	),
 })
 
-export const Simple = story({
+export const Confirmation = story({
 	render: () => (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button>Open</Button>
+				<Button variant="destructive">Delete Account</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
@@ -62,30 +86,6 @@ export const Simple = story({
 				<DialogFooter>
 					<Button variant="outline">Cancel</Button>
 					<Button variant="destructive">Delete</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
-	),
-})
-
-export const Controlled = story({
-	schema: z.object({
-		title: z.string().default("Dialog Title").describe("Dialog title"),
-		description: z.string().default("This is the dialog description.").describe("Dialog description"),
-		triggerText: z.string().default("Open Dialog").describe("Trigger button text"),
-	}),
-	render: ({ title, description, triggerText }) => (
-		<Dialog>
-			<DialogTrigger asChild>
-				<Button variant="outline">{triggerText}</Button>
-			</DialogTrigger>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>{title}</DialogTitle>
-					<DialogDescription>{description}</DialogDescription>
-				</DialogHeader>
-				<DialogFooter>
-					<Button>Confirm</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

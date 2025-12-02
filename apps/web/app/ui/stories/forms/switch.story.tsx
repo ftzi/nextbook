@@ -1,26 +1,16 @@
 "use client"
 
-import { story } from "nextbook"
+import { story, storyMatrix } from "nextbook"
 import { z } from "zod"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 
-export const Default = story({
-	render: () => (
-		<div className="flex items-center space-x-2">
-			<Switch id="airplane-mode" />
-			<Label htmlFor="airplane-mode">Airplane Mode</Label>
-		</div>
-	),
-})
-
-export const Disabled = story({
-	render: () => (
-		<div className="flex items-center space-x-2">
-			<Switch id="disabled" disabled />
-			<Label htmlFor="disabled">Disabled</Label>
-		</div>
-	),
+export const Matrix = storyMatrix({
+	schema: z.object({
+		checked: z.enum(["false", "true"]),
+		disabled: z.enum(["false", "true"]),
+	}),
+	render: ({ checked, disabled }) => <Switch defaultChecked={checked === "true"} disabled={disabled === "true"} />,
 })
 
 export const Controlled = story({

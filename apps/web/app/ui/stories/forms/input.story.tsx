@@ -1,31 +1,15 @@
-import { story } from "nextbook"
+import { story, storyMatrix } from "nextbook"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export const Default = story({
-	render: () => <Input type="text" placeholder="Enter text..." />,
-})
-
-export const WithLabel = story({
-	render: () => (
-		<div className="grid w-full max-w-sm items-center gap-1.5">
-			<Label htmlFor="email">Email</Label>
-			<Input type="email" id="email" placeholder="Email" />
-		</div>
-	),
-})
-
-export const Disabled = story({
-	render: () => <Input disabled type="text" placeholder="Disabled" />,
-})
-
-export const WithFile = story({
-	render: () => (
-		<div className="grid w-full max-w-sm items-center gap-1.5">
-			<Label htmlFor="picture">Picture</Label>
-			<Input id="picture" type="file" />
-		</div>
+export const Matrix = storyMatrix({
+	schema: z.object({
+		type: z.enum(["text", "email", "password", "number"]),
+		disabled: z.enum(["false", "true"]),
+	}),
+	render: ({ type, disabled }) => (
+		<Input type={type} placeholder={`Enter ${type}...`} disabled={disabled === "true"} className="w-[200px]" />
 	),
 })
 
@@ -37,5 +21,23 @@ export const Controlled = story({
 	}),
 	render: ({ placeholder, type, disabled }) => (
 		<Input type={type} placeholder={placeholder} disabled={disabled} className="w-[300px]" />
+	),
+})
+
+export const WithLabel = story({
+	render: () => (
+		<div className="grid w-full max-w-sm items-center gap-1.5">
+			<Label htmlFor="email">Email</Label>
+			<Input type="email" id="email" placeholder="Email" />
+		</div>
+	),
+})
+
+export const WithFile = story({
+	render: () => (
+		<div className="grid w-full max-w-sm items-center gap-1.5">
+			<Label htmlFor="picture">Picture</Label>
+			<Input id="picture" type="file" />
+		</div>
 	),
 })

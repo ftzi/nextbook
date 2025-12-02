@@ -11,7 +11,7 @@ import { MatrixViewer } from "./matrix-viewer"
 import styles from "./story-viewer.module.css"
 import { Tooltip } from "./tooltip"
 
-type BackgroundType = "default" | "striped"
+type BackgroundType = "default" | "striped" | "checkered"
 type PanelPosition = "bottom" | "right"
 
 type StoryViewerProps = {
@@ -232,7 +232,12 @@ export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 		}
 	}
 
-	const canvasClassName = `${styles.canvas ?? ""} ${background === "striped" ? (styles.canvasStriped ?? "") : (styles.canvasDefault ?? "")} ${isDragging ? (styles.canvasDragging ?? "") : ""} ${isPanEnabled ? "" : (styles.canvasNoPan ?? "")}`
+	const backgroundClasses: Record<BackgroundType, string> = {
+		default: styles.canvasDefault ?? "",
+		striped: styles.canvasStriped ?? "",
+		checkered: styles.canvasCheckered ?? "",
+	}
+	const canvasClassName = `${styles.canvas ?? ""} ${backgroundClasses[background]} ${isDragging ? (styles.canvasDragging ?? "") : ""} ${isPanEnabled ? "" : (styles.canvasNoPan ?? "")}`
 
 	const hasControls = controls.length > 0
 	const containerClassName = `${styles.container} ${hasControls && panelPosition === "right" ? styles.containerWithRightPanel : ""}`
@@ -416,6 +421,15 @@ function BackgroundSwitcher({ value, onChange }: { value: BackgroundType; onChan
 					className={`${styles.bgButton} ${value === "striped" ? styles.bgButtonActive : ""}`}
 				>
 					<span className={`${styles.bgButtonInner} ${styles.bgStriped}`} />
+				</button>
+			</Tooltip>
+			<Tooltip content="Checkered">
+				<button
+					type="button"
+					onClick={() => onChange("checkered")}
+					className={`${styles.bgButton} ${value === "checkered" ? styles.bgButtonActive : ""}`}
+				>
+					<span className={`${styles.bgButtonInner} ${styles.bgCheckered}`} />
 				</button>
 			</Tooltip>
 		</div>

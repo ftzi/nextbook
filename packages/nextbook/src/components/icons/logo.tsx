@@ -1,5 +1,15 @@
-import type { SVGProps } from "react";
-const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
+"use client"
+
+import { useId, type SVGProps } from "react";
+const SvgLogo = (props: SVGProps<SVGSVGElement>) => {
+	const id = useId();
+	const id0 = `${id}-logo_svg__a`;
+	const id1 = `${id}-logo_svg__d`;
+	const id2 = `${id}-logo_svg__e`;
+	const id3 = `${id}-logo_svg__b`;
+	const id4 = `${id}-logo_svg__c`;
+
+	return (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="-60 -60 2720 520"
@@ -7,7 +17,7 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
     {...props}
   >
     <defs>
-      <linearGradient id="logo_svg__a" x1="0%" x2="100%" y1="0%" y2="100%">
+      <linearGradient id={id0} x1="0%" x2="100%" y1="0%" y2="100%">
         <stop
           offset="0%"
           style={{
@@ -31,7 +41,7 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
         />
       </linearGradient>
       <linearGradient
-        id="logo_svg__d"
+        id={id1}
         x1={420}
         x2={1580}
         y1={0}
@@ -54,7 +64,7 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
         />
       </linearGradient>
       <linearGradient
-        id="logo_svg__e"
+        id={id2}
         x1={0}
         x2={1220}
         y1={0}
@@ -83,14 +93,14 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
           }}
         />
       </linearGradient>
-      <filter id="logo_svg__b" width="200%" height="200%" x="-50%" y="-50%">
+      <filter id={id3} width="200%" height="200%" x="-50%" y="-50%">
         <feGaussianBlur result="coloredBlur" stdDeviation={6} />
         <feMerge>
           <feMergeNode in="coloredBlur" />
           <feMergeNode in="SourceGraphic" />
         </feMerge>
       </filter>
-      <filter id="logo_svg__c" width="200%" height="200%" x="-50%" y="-50%">
+      <filter id={id4} width="200%" height="200%" x="-50%" y="-50%">
         <feGaussianBlur result="coloredBlur" stdDeviation={3} />
         <feMerge>
           <feMergeNode in="coloredBlur" />
@@ -100,17 +110,17 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
     </defs>
     <path
       fill="none"
-      stroke="url(#logo_svg__a)"
+      stroke={`url(#${id0})`}
       strokeWidth={50}
       d="M0 0h130v130H0z"
-      filter="url(#logo_svg__b)"
+      filter={`url(#${id3})`}
       opacity={0.9}
       transform="rotate(45 -77.96 152.5)"
     />
     <text
       y={245}
       dominantBaseline="middle"
-      filter="url(#logo_svg__c)"
+      filter={`url(#${id4})`}
       fontFamily="'Helvetica Neue'"
       fontSize={550}
       fontWeight={700}
@@ -119,8 +129,8 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
       transform="translate(210)"
     >
       <tspan
-        fill="url(#logo_svg__d)"
-        stroke="url(#logo_svg__d)"
+        fill={`url(#${id1})`}
+        stroke={`url(#${id1})`}
         strokeWidth={11}
       >
         {"Next"}
@@ -129,19 +139,20 @@ const SvgLogo = (props: SVGProps<SVGSVGElement>) => (
     <text
       y={245}
       fill="none"
-      stroke="url(#logo_svg__e)"
+      stroke={`url(#${id2})`}
       strokeWidth={22}
       dominantBaseline="middle"
       filter="url(#logo_svg__mirageB)"
       fontFamily="'Helvetica Neue'"
       fontSize={550}
       fontWeight={700}
-      letterSpacing={-20}
+      letterSpacing={-16}
       opacity={0.9}
-      transform="translate(1370)"
+      transform="translate(1380)"
     >
       {"book"}
     </text>
   </svg>
 );
+};
 export default SvgLogo;

@@ -36,6 +36,7 @@
 		"test": "bun test"
 	},
 	"dependencies": {
+		"@tanstack/react-virtual": "^3.13.2",
 		"citty": "0.1.6",
 		"lucide-react": "^0.555.0"
 	},

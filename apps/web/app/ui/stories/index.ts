@@ -26,10 +26,7 @@ export const stories = createStories({
 		avatar: () => import("./data-display/avatar.story"),
 		separator: () => import("./data-display/separator.story"),
 	},
-	feedback: {
-		progress: () => import("./feedback/progress.story"),
-		slider: () => import("./feedback/slider.story"),
-	},
+	progress: () => import("./progress.story"),
 	"data-fetching": {
 		"user-card": () => import("./data-fetching/user-card.story"),
 	},
