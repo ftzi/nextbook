@@ -1,11 +1,12 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Blocks, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import { Logo } from "nextbook"
 import { useState } from "react"
 import { Container } from "@/components/shared/container"
+import { LiveDemoButton } from "@/components/shared/live-demo-button"
 import { Button } from "@/components/ui/button"
 import { externalLinks } from "@/lib/public-routes"
 
@@ -36,12 +37,7 @@ export function Header() {
 						<Button size="sm" asChild>
 							<a href="#quickstart">Get Started</a>
 						</Button>
-						<Button variant="outline" size="sm" asChild>
-							<Link href="/ui">
-								<Blocks className="mr-1.5 size-4" />
-								Live Demo
-							</Link>
-						</Button>
+						<LiveDemoButton />
 						<a
 							href={externalLinks.github}
 							target="_blank"
@@ -92,12 +88,7 @@ export function Header() {
 										Quick Start
 									</a>
 								</Button>
-								<Button variant="outline" size="sm" className="w-fit" asChild>
-									<Link href="/ui" onClick={() => setMobileMenuOpen(false)}>
-										<Blocks className="mr-1.5 size-4" />
-										Live Demo
-									</Link>
-								</Button>
+								<LiveDemoButton onClick={() => setMobileMenuOpen(false)} />
 								<Button variant="ghost" size="sm" className="justify-start" asChild>
 									<a href={externalLinks.github} target="_blank" rel="noopener noreferrer">
 										<svg viewBox="0 0 24 24" className="mr-1.5 size-4" fill="currentColor" aria-hidden="true">

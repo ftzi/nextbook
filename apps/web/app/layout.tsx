@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 			"A lightweight Storybook alternative designed for Next.js. Zero config, Zod-powered controls, automatic story matrix generation.",
 	},
 	icons: {
-		icon: "/images/icon.svg",
+		icon: "/api/icon",
 	},
 }
 

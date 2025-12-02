@@ -63,7 +63,7 @@ export function QuickStart() {
 						</div>
 						<div className="p-6">
 							<code className="font-mono text-lg">
-								<span className="text-brand-cyan">$</span> <span className="text-white">{command}</span>
+								<span className="text-brand-cyan">$</span> <span className="font-semibold text-white">{command}</span>
 							</code>
 						</div>
 					</div>
@@ -73,7 +73,7 @@ export function QuickStart() {
 						{[
 							{ step: "1", text: "Run the command in your Next.js project" },
 							{ step: "2", text: "Visit localhost:3000/ui to see your stories" },
-							{ step: "3", text: "Write stories with full TypeScript support" },
+							{ step: "3", text: "Write stories — or let AI generate them for you" },
 						].map((item) => (
 							<motion.div
 								key={item.step}

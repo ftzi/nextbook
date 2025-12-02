@@ -19,7 +19,10 @@
 			"!**/.cache",
 			"!**/e2e/.output",
 			"!**/e2e/.snapshots",
-			"!**/mockServiceWorker.js"
+			"!**/mockServiceWorker.js",
+			"!**/next-env.d.ts",
+			"!packages/nextbook/src/components/icons/icon.tsx",
+			"!packages/nextbook/src/components/icons/logo.tsx"
 		]
 	},
 	"formatter": {

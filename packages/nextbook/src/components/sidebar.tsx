@@ -1,12 +1,14 @@
 "use client"
 
-import { ChevronRight, Component, Folder, FolderOpen, Github, Search } from "lucide-react"
+import { ChevronRight, Component, Folder, FolderOpen, Search } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useMemo, useState } from "react"
 import type { StoryTreeNode } from "../types"
+import { GitHubIcon } from "./icons/github"
 import Logo from "./icons/logo"
 import styles from "./sidebar.module.css"
+import { Tooltip } from "./tooltip"
 
 type SidebarProps = {
 	tree: StoryTreeNode[]
@@ -32,15 +34,17 @@ export function Sidebar({ tree, basePath = "/ui", isOpen = false, onLinkClick }:
 				<Link href={basePath} className={styles.logo}>
 					<Logo className={styles.logoIcon} />
 				</Link>
-				<a
-					href="https://github.com/ftzi/nextbook"
-					target="_blank"
-					rel="noopener noreferrer"
-					className={styles.githubLink}
-				>
-					<Github size={18} aria-hidden="true" />
-					<span className={styles.srOnly}>View on GitHub</span>
-				</a>
+				<Tooltip content="View on GitHub">
+					<a
+						href="https://github.com/ftzi/nextbook"
+						target="_blank"
+						rel="noopener noreferrer"
+						className={styles.githubLink}
+						aria-label="View on GitHub"
+					>
+						<GitHubIcon className={styles.githubIcon} />
+					</a>
+				</Tooltip>
 			</div>
 
 			{/* Search */}
@@ -99,10 +103,21 @@ type TreeNodesProps = {
 	onLinkClick?: () => void
 }
 
+function sortNodes(nodes: StoryTreeNode[]): StoryTreeNode[] {
+	return [...nodes].sort((a, b) => {
+		const aIsFolder = Boolean(a.children && a.children.length > 0)
+		const bIsFolder = Boolean(b.children && b.children.length > 0)
+		// Folders first, then alphabetically
+		if (aIsFolder !== bIsFolder) return aIsFolder ? -1 : 1
+		return a.name.localeCompare(b.name)
+	})
+}
+
 function TreeNodes({ nodes, basePath, depth, parentPath = [], onLinkClick }: TreeNodesProps) {
+	const sortedNodes = sortNodes(nodes)
 	return (
 		<ul className={styles.treeList}>
-			{nodes.map((node) => (
+			{sortedNodes.map((node) => (
 				<TreeNode
 					key={node.segment}
 					node={node}

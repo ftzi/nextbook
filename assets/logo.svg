@@ -10,13 +10,13 @@
     <!-- Gradient for "Next" text - subtle cyan to indigo -->
     <linearGradient id="nextGradient" x1="420" y1="0" x2="1580" y2="0" gradientUnits="userSpaceOnUse">
       <stop offset="0%" style="stop-color:#06B6D4;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4169E1;stop-opacity:1" />
     </linearGradient>
 
     <!-- Gradient for "book" text - continues from where Next ends (indigo -> purple -> pink) -->
     <!-- Coordinates relative to the group's translated position (0 to ~1220 for "book" width) -->
     <linearGradient id="bookGradient" x1="0" y1="0" x2="1220" y2="0" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#4169E1;stop-opacity:1" />
       <stop offset="50%" style="stop-color:#7C3AED;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
     </linearGradient>
@@ -95,7 +95,7 @@
             dominant-baseline="middle"
             fill="none"
             stroke="url(#bookGradient)"
-            stroke-width="15">book</text>
+            stroke-width="22">book</text>
     </g>
   </g>
 </svg>

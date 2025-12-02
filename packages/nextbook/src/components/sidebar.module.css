@@ -78,20 +78,16 @@
 	width: 28px;
 	height: 28px;
 	color: var(--nb-text-tertiary);
-	border-radius: var(--nb-radius-sm);
-	transition:
-		color var(--nb-transition-fast),
-		background var(--nb-transition-fast);
+	transition: color var(--nb-transition-fast);
 }
 
 .githubLink:hover {
 	color: var(--nb-text-primary);
-	background: var(--nb-bg-hover);
 }
 
-.githubLink svg {
-	width: 18px;
-	height: 18px;
+.githubIcon {
+	width: 20px;
+	height: 20px;
 }
 
 /* Screen reader only */
