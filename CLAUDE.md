@@ -59,18 +59,18 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 
 ## Common Commands
 
-### Development
-
-- `bun dev` - Start the example app in development mode
-- `bun build` - Build all apps and packages
-
 ### Type Checking, Linting & Testing
 
 - `bun ts` - Type check all workspaces with TypeScript
 - `bun lint` - Format and lint with Biome across all workspaces
 - `bun test` - Run unit tests (nextbook package)
 - `bun ok` - Run ts, lint, and test (quick verification)
-- `bun e2e` - Run Playwright visual regression tests
+- `bun e2e` - Run Playwright visual regression tests (starts dev server automatically)
+- `bun build` - Build all apps and packages
+
+**IMPORTANT: Never run `bun dev` or `next dev` directly.** The dev server causes lock file issues and port conflicts. Instead:
+- For e2e tests: Use `bun e2e` which starts the dev server automatically via Playwright's webServer config
+- For manual testing: Ask the user to run the dev server themselves
 
 ## Architecture
 
@@ -239,12 +239,13 @@ apps/web/
 │   ├── shared/              # Header, footer, logo, container, section
 │   ├── ui/                  # shadcn/ui components (button, badge, card)
 │   └── demo/                # Demo components for stories (e.g., UserCard)
-├── tests/                   # Playwright e2e tests
-│   ├── sidebar.spec.ts      # Sidebar navigation tests
-│   ├── story-viewer.spec.ts # Story rendering tests
-│   ├── controls-panel.spec.ts # Controls panel tests
-│   ├── mocking.spec.ts      # MSW mocking tests
-│   └── matrix.spec.ts       # Matrix story tests
+├── e2e/                     # Playwright e2e tests
+│   ├── sidebar.e2e.ts       # Sidebar navigation tests
+│   ├── story-viewer.e2e.ts  # Story viewer tests
+│   ├── controls-panel.e2e.ts # Controls panel tests
+│   ├── mocking.e2e.ts       # MSW mocking tests
+│   ├── matrix.e2e.ts        # Matrix story tests
+│   └── marketing-screenshots.e2e.ts # Marketing screenshots
 ├── playwright.config.ts     # Playwright configuration
 └── public/images/           # Logo assets
 ```
@@ -353,12 +354,12 @@ The website includes placeholder areas for screenshots that need to be captured:
 
 **E2E Testing (Playwright):**
 
-- **Use e2e tests for UI verification** - Playwright tests in `apps/web/tests/` verify the nextbook `/ui` interface works correctly
-- Run `bun test:e2e` to execute all e2e tests (starts dev server automatically)
-- **Write e2e tests for new UI features** - When adding user-facing functionality (controls, indicators, interactions), add corresponding Playwright tests
+- **Prefer unit tests over e2e** - Unit/React tests are much faster to run and easier to fix. Use e2e only for: full user flows, visual regressions, complex multi-component interactions
+- **Minimize test count** - Prefer fewer, comprehensive tests over many small ones. Combine related actions into single tests
+- **Avoid trivial tests** - Don't test if something "renders" - other tests already verify this implicitly
+- **Each test must be fast** - E2e tests are expensive; keep them lean and purposeful
 - **Visual snapshots catch regressions** - Use `toHaveScreenshot()` for components where visual appearance matters
-- **Test real user flows** - E2e tests should simulate actual user interactions (clicks, typing, navigation) rather than implementation details
-- **Keep tests fast and focused** - Each test should verify one behavior; use `test.describe` to group related tests
+- Run `bun e2e` to execute all e2e tests (starts dev server automatically via Playwright's webServer config)
 
 **Implementation Standards:**
 

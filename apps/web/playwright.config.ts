@@ -7,8 +7,9 @@ export default defineConfig({
 	snapshotDir: "./e2e/.snapshots",
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
-	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
+	retries: process.env.CI ? 0 : 0,
+	workers: process.env.CI ? 1 : "100%",
+	timeout: 10000,
 	reporter: [["html", { outputFolder: "./e2e/.output/report" }]],
 	use: {
 		baseURL: "http://localhost:3000",
@@ -24,7 +25,7 @@ export default defineConfig({
 	webServer: {
 		command: "bun dev",
 		url: "http://localhost:3000",
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: true,
 		timeout: 120000,
 	},
 })

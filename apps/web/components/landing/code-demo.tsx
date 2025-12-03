@@ -7,49 +7,13 @@ import { Container } from "@/components/shared/container"
 import { Section } from "@/components/shared/section"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { codeExamples, type TabId } from "./code-examples"
 
 const tabs = [
 	{ id: "basic", label: "Basic Story" },
 	{ id: "controls", label: "With Zod Controls" },
 	{ id: "matrix", label: "Story Matrix" },
 ] as const
-
-type TabId = (typeof tabs)[number]["id"]
-
-export const codeExamples: Record<TabId, string> = {
-	basic: `import { story } from "nextbook"
-import { Button } from "@/components/ui/button"
-
-export const Default = story({
-  render: () => <Button>Click me</Button>,
-})`,
-	controls: `import { story } from "nextbook"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-
-export const Controlled = story({
-  schema: z.object({
-    variant: z.enum(["primary", "secondary"]).default("primary"),
-    disabled: z.boolean().default(false),
-    children: z.string().default("Click me"),
-  }),
-  render: (props) => <Button {...props} />,
-})`,
-	matrix: `import { storyMatrix } from "nextbook"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-
-// Generates ALL 12 combinations automatically!
-// (3 variants × 2 sizes × 2 disabled states)
-export const Matrix = storyMatrix({
-  schema: z.object({
-    variant: z.enum(["primary", "secondary", "ghost"]),
-    size: z.enum(["sm", "lg"]),
-    disabled: z.boolean(),
-  }),
-  render: (props) => <Button {...props}>Click me</Button>,
-})`,
-}
 
 function CodeBlock({ code, html }: { code: string; html: string }) {
 	const [copied, setCopied] = useState(false)
