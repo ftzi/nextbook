@@ -96,7 +96,18 @@ This is a Turborepo monorepo with two main workspace types:
 
 ### Nextbook Package (packages/nextbook/)
 
-**Purpose:** Zero-config component stories for Next.js
+**Purpose:** Zero-config, zero-dependency component stories for Next.js
+
+**Zero Dependencies Architecture:**
+
+The nextbook package has **zero runtime dependencies**. This is a key differentiator from Storybook (100+ deps) and prevents version conflicts, security vulnerabilities from transitive deps, and bloated node_modules.
+
+- **No icon library** - Icons are inline SVGs in `src/components/icons/icons.tsx`
+- **No CLI framework** - Uses native `process.argv` parsing
+- **No virtualization library** - Custom `useVirtualizer` hook in `src/utils/use-virtualizer.ts`
+- **Peer dependencies only** - `next`, `react`, `react-dom`, `zod` (required), `msw` (optional)
+
+When adding features, **never add runtime dependencies**. Implement functionality inline or use peer dependencies that users already have.
 
 **Key Files:**
 
@@ -131,7 +142,7 @@ Stories are loaded on-demand, NOT at initialization:
 
 **UI Design Philosophy:**
 
-The nextbook UI should be **AMAZING**, **MODERN**, **PROFESSIONAL**, **NEXT-GEN**, and **GAME-CHANGING**:
+The nextbook UI should be **polished**, **modern**, and **professional**:
 
 - **MUST be mobile-friendly** - Every web page MUST be fully responsive and work perfectly on mobile devices. This is non-negotiable.
 
@@ -146,7 +157,7 @@ The nextbook UI should be **AMAZING**, **MODERN**, **PROFESSIONAL**, **NEXT-GEN*
 
 The matrix viewer (`storyMatrix()`) displays all prop combinations in a grid. Key implementation details:
 
-- **Virtualized rendering** - Uses `@tanstack/react-virtual` to only render visible rows
+- **Virtualized rendering** - Custom `useVirtualizer` hook (`src/utils/use-virtualizer.ts`) renders only visible rows
 - **Cell measurement** - Starts with default dimensions (220x140), measures actual first cell after render
 - **Full render mode** - Add `?fullRender=true` to URL to render all cells (for Playwright screenshots)
 - **Accessible cells** - Uses `<div role="button" tabIndex={0}>` instead of `<button>` to avoid nested button HTML errors when story content contains buttons
@@ -156,7 +167,7 @@ The matrix viewer (`storyMatrix()`) displays all prop combinations in a grid. Ke
 ```
 packages/nextbook/src/
 ├── cli/                    # CLI tool (bunx nextbook init)
-│   ├── index.ts           # CLI entry point (citty)
+│   ├── index.ts           # CLI entry point (native process.argv)
 │   ├── init.ts            # Init logic
 │   ├── init.test.ts       # CLI tests
 │   └── templates.ts       # File templates (MUST match current API!)
@@ -176,7 +187,8 @@ packages/nextbook/src/
 │   └── tokens.css         # CSS custom properties (design tokens)
 ├── utils/
 │   ├── schema.ts          # Zod schema introspection
-│   └── schema.test.ts     # Unit tests for schema utilities
+│   ├── schema.test.ts     # Unit tests for schema utilities
+│   └── use-virtualizer.ts # Custom virtualization hook (zero-dep)
 ├── index.ts               # Public exports
 ├── registry.tsx           # createStories implementation
 ├── story.ts               # story() function and isStory()

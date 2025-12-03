@@ -149,8 +149,8 @@ export function CodeDemo() {
 							className="mt-4 rounded-lg border border-brand-purple/30 bg-brand-purple/10 p-4"
 						>
 							<p className="text-brand-purple text-sm">
-								<strong>Game-changer:</strong> Story Matrix generates all prop combinations automatically. No more
-								writing PrimarySmall, PrimaryLarge, SecondarySmall...
+								Story Matrix generates all prop combinations automatically. No more writing PrimarySmall, PrimaryLarge,
+								SecondarySmall...
 							</p>
 						</motion.div>
 					)}

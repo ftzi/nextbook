@@ -21,10 +21,11 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 
 ## ✨ Features
 
+- **Zero Dependencies** - No runtime dependencies. Just your Next.js app.
 - **Zero Config** - Uses your Next.js app's existing setup
 - **Path-Based Hierarchy** - Keys become sidebar structure automatically
 - **Zod Controls** - Auto-generate interactive controls from Zod schemas
-- **Story Matrix** - Auto-generate ALL prop combinations from Zod schemas (game-changer)
+- **Story Matrix** - Auto-generate ALL prop combinations from Zod schemas
 - **Type Safe** - Full TypeScript support with IntelliSense
 - **Lazy Loading** - Stories load on-demand for fast startup
 - **Background Switcher** - Toggle between default and striped backgrounds to spot component imperfections
@@ -437,6 +438,7 @@ export const Matrix = storyMatrix({
 
 | Feature                 | Storybook                    | Nextbook                     |
 | ----------------------- | ---------------------------- | ---------------------------- |
+| Dependencies            | 100+ packages                | **Zero**                     |
 | Setup time              | ~30 min                      | ~5 min                       |
 | Separate build          | Yes                          | No                           |
 | Config duplication      | Yes (Tailwind, etc.)         | No                           |

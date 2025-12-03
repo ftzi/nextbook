@@ -15,6 +15,7 @@ type ComparisonRow = {
 }
 
 const comparisons: ComparisonRow[] = [
+	{ feature: "Dependencies", storybook: "100+ packages", nextbook: "Zero", highlight: true },
 	{ feature: "Setup time", storybook: "~30 min", nextbook: "~5 min" },
 	{ feature: "Separate build", storybook: true, nextbook: false },
 	{ feature: "Config duplication", storybook: true, nextbook: false },

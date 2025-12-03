@@ -1,12 +1,12 @@
 "use client"
 
-import { useVirtualizer } from "@tanstack/react-virtual"
-import { ArrowDownUp, ChevronDown, Filter, RotateCcw, X } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { z } from "zod"
 import type { MatrixStory, PropCombination } from "../types"
 import { type DimensionInfo, generateCombinations } from "../utils/schema"
+import { useVirtualizer } from "../utils/use-virtualizer"
+import { ArrowDownUp, ChevronDown, Filter, RotateCcw, X } from "./icons/icons"
 import styles from "./matrix-viewer.module.css"
 import { Tooltip } from "./tooltip"
 

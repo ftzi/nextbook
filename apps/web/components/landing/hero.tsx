@@ -63,9 +63,31 @@ export function Hero() {
 						transition={{ duration: 0.5, delay: 0.2 }}
 						className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl"
 					>
-						Build interactive component documentation without leaving your Next.js app. Zod-powered controls, automatic
-						story matrix, and AI-ready API.
+						Zero dependencies. Zero config. Build interactive component documentation without leaving your Next.js app.
 					</motion.p>
+
+					{/* Stats row */}
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: 0.25 }}
+						className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm sm:gap-8"
+					>
+						<div className="flex items-center gap-2">
+							<span className="font-bold text-2xl text-brand-cyan">0</span>
+							<span className="text-muted-foreground">dependencies</span>
+						</div>
+						<div className="hidden h-6 w-px bg-border sm:block" />
+						<div className="flex items-center gap-2">
+							<span className="font-bold text-2xl text-brand-purple">5</span>
+							<span className="text-muted-foreground">min setup</span>
+						</div>
+						<div className="hidden h-6 w-px bg-border sm:block" />
+						<div className="flex items-center gap-2">
+							<span className="font-bold text-2xl text-brand-pink">100%</span>
+							<span className="text-muted-foreground">type-safe</span>
+						</div>
+					</motion.div>
 
 					{/* CTAs */}
 					<motion.div

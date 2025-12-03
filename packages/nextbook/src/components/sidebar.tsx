@@ -1,11 +1,11 @@
 "use client"
 
-import { ChevronRight, ChevronsDownUp, Component, Folder, FolderOpen, Search } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
 import type { StoryTreeNode } from "../types"
 import { GitHubIcon } from "./icons/github"
+import { ChevronRight, ChevronsDownUp, Component, Folder, FolderOpen, Search } from "./icons/icons"
 import Logo from "./icons/logo"
 import styles from "./sidebar.module.css"
 import { Tooltip } from "./tooltip"

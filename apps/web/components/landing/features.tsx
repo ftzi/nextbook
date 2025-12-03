@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import type { LucideIcon } from "lucide-react"
-import { Bot, Grid3X3, Layers, Plug, Settings2, Sparkles, Zap } from "lucide-react"
+import { Bot, Feather, Grid3X3, Layers, Plug, Settings2, Sparkles, Zap } from "lucide-react"
 
 import { Container } from "@/components/shared/container"
 import { Section } from "@/components/shared/section"
@@ -14,6 +14,12 @@ type Feature = {
 }
 
 const features: Feature[] = [
+	{
+		icon: Feather,
+		title: "Zero Dependencies",
+		description:
+			"No runtime dependencies whatsoever. Just your Next.js app. No version conflicts, no security vulnerabilities from transitive deps.",
+	},
 	{
 		icon: Zap,
 		title: "Zero Config",
