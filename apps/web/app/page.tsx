@@ -1,4 +1,4 @@
-import { CodeDemo } from "@/components/landing/code-demo"
+import { CodeDemoServer } from "@/components/landing/code-demo-server"
 import { Comparison } from "@/components/landing/comparison"
 import { CTA } from "@/components/landing/cta"
 import { Features } from "@/components/landing/features"
@@ -14,7 +14,7 @@ export default function HomePage() {
 			<main>
 				<Hero />
 				<Features />
-				<CodeDemo />
+				<CodeDemoServer />
 				<Comparison />
 				<QuickStart />
 				<CTA />

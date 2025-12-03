@@ -64,16 +64,13 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 - `bun dev` - Start the example app in development mode
 - `bun build` - Build all apps and packages
 
-### Type Checking & Linting
+### Type Checking, Linting & Testing
 
 - `bun ts` - Type check all workspaces with TypeScript
 - `bun lint` - Format and lint with Biome across all workspaces
-- `bun ok` - Run both ts and lint (quick verification)
-
-### Testing
-
 - `bun test` - Run unit tests (nextbook package)
-- `bun test:e2e` - Run Playwright visual regression tests
+- `bun ok` - Run ts, lint, and test (quick verification)
+- `bun e2e` - Run Playwright visual regression tests
 
 ## Architecture
 

@@ -2,8 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion"
 import { Check, Copy } from "lucide-react"
-import { useEffect, useState } from "react"
-import { codeToHtml } from "shiki"
+import { useState } from "react"
 import { Container } from "@/components/shared/container"
 import { Section } from "@/components/shared/section"
 import { Button } from "@/components/ui/button"
@@ -17,7 +16,7 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]["id"]
 
-const codeExamples: Record<TabId, string> = {
+export const codeExamples: Record<TabId, string> = {
 	basic: `import { story } from "nextbook"
 import { Button } from "@/components/ui/button"
 
@@ -52,16 +51,8 @@ export const Matrix = storyMatrix({
 })`,
 }
 
-function CodeBlock({ code }: { code: string }) {
+function CodeBlock({ code, html }: { code: string; html: string }) {
 	const [copied, setCopied] = useState(false)
-	const [html, setHtml] = useState<string>("")
-
-	useEffect(() => {
-		void codeToHtml(code, {
-			lang: "tsx",
-			theme: "github-dark",
-		}).then(setHtml)
-	}, [code])
 
 	const handleCopy = async () => {
 		await navigator.clipboard.writeText(code)
@@ -80,14 +71,16 @@ function CodeBlock({ code }: { code: string }) {
 				{copied ? <Check className="size-4 text-green-400" /> : <Copy className="size-4" />}
 			</Button>
 			<div
-				className="[&_pre]:!bg-transparent overflow-x-auto [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-sm [&_pre]:leading-relaxed"
+				className="overflow-x-auto [&_pre]:bg-transparent! [&_pre]:p-6 [&_pre]:font-mono [&_pre]:text-sm [&_pre]:leading-relaxed"
 				dangerouslySetInnerHTML={{ __html: html }}
 			/>
 		</div>
 	)
 }
 
-export function CodeDemo() {
+type HighlightedCode = Record<TabId, string>
+
+export function CodeDemo({ highlightedCode }: { highlightedCode: HighlightedCode }) {
 	const [activeTab, setActiveTab] = useState<TabId>("basic")
 
 	return (
@@ -118,7 +111,7 @@ export function CodeDemo() {
 									{activeTab === tab.id && (
 										<motion.div
 											layoutId="activeTab"
-											className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-brand-cyan to-brand-purple"
+											className="absolute inset-x-0 bottom-0 h-0.5 bg-linear-to-r from-brand-cyan to-brand-purple"
 											transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
 										/>
 									)}
@@ -136,7 +129,7 @@ export function CodeDemo() {
 								exit={{ opacity: 0, y: -10 }}
 								transition={{ duration: 0.2 }}
 							>
-								<CodeBlock code={codeExamples[activeTab]} />
+								<CodeBlock code={codeExamples[activeTab]} html={highlightedCode[activeTab]} />
 							</motion.div>
 						</AnimatePresence>
 					</div>
