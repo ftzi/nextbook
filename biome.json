@@ -21,8 +21,8 @@
 			"!**/e2e/.snapshots",
 			"!**/mockServiceWorker.js",
 			"!**/next-env.d.ts",
-			"!packages/nextbook/src/components/icons/icon.tsx",
-			"!packages/nextbook/src/components/icons/logo.tsx"
+			"!packages/storify/src/components/icons/icon.tsx",
+			"!packages/storify/src/components/icons/logo.tsx"
 		]
 	},
 	"formatter": {
@@ -133,7 +133,7 @@
 	},
 	"overrides": [
 		{
-			"includes": ["packages/nextbook/src/index.ts"],
+			"includes": ["packages/storify/src/index.ts"],
 			"linter": {
 				"rules": {
 					"performance": {

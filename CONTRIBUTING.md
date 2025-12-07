@@ -1,13 +1,13 @@
-# Contributing to Nextbook
+# Contributing to Storify
 
-Thanks for your interest in contributing to nextbook!
+Thanks for your interest in contributing to storify!
 
 ## Development Setup
 
 ```bash
 # Clone the repo
-git clone https://github.com/user/nextbook.git
-cd nextbook
+git clone https://github.com/ftzi/storify.git
+cd storify
 
 # Install dependencies (requires Bun 1.3+)
 bun install
@@ -19,8 +19,8 @@ bun ok
 ## Project Structure
 
 ```
-packages/nextbook/    # The main library
-apps/web/             # Marketing website + stories
+packages/storify/    # The main library
+apps/nextjs/         # Marketing website + stories (Next.js)
 ```
 
 ## Commands
@@ -42,7 +42,7 @@ apps/web/             # Marketing website + stories
 - **Biome** — Formatting and linting (runs via `bun lint`)
 - **No barrel files** — Import directly from source files
 - **Object parameters** — Prefer `fn({ name, age })` over `fn(name, age)`
-- **Zero dependencies** — Never add runtime dependencies to the nextbook package
+- **Zero dependencies** — Never add runtime dependencies to the storify package
 
 ## Pull Request Process
 
@@ -61,7 +61,7 @@ apps/web/             # Marketing website + stories
 
 ## Zero Dependencies Rule
 
-The nextbook package has **zero runtime dependencies**. This is intentional and non-negotiable. If you need functionality:
+The storify package has **zero runtime dependencies**. This is intentional and non-negotiable. If you need functionality:
 
 1. Implement it inline
 2. Use a peer dependency the user already has (next, react, zod)

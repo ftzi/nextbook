@@ -1,26 +1,26 @@
 <p align="center">
-  <img src="https://github.com/ftzi/nextbook/blob/main/assets/logo.svg" alt="Nextbook" width="400" />
+  <img src="https://github.com/ftzi/storify/blob/main/assets/logo.svg" alt="Storify" width="400" />
 </p>
 
 <h3 align="center">
-  Next-gen component stories for Next.js
+  Zero-config component stories for React frameworks
 </h3>
 
 <div align="center">
 
-[![npm](https://img.shields.io/npm/v/nextbook)](https://www.npmjs.com/package/nextbook)
-[![npm](https://img.shields.io/npm/dt/nextbook)](https://www.npmjs.com/package/nextbook)
+[![npm](https://img.shields.io/npm/v/@ftzi/storify)](https://www.npmjs.com/package/@ftzi/storify)
+[![npm](https://img.shields.io/npm/dt/@ftzi/storify)](https://www.npmjs.com/package/@ftzi/storify)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 </div>
 <br/>
 
-Nextbook is a lightweight alternative to Storybook, designed specifically for Next.js. It uses your app's existing configuration - no separate build process, no Tailwind duplication, no webpack config.
+Storify is a lightweight alternative to Storybook, designed for React frameworks like Next.js. It uses your app's existing configuration - no separate build process, no Tailwind duplication, no webpack config.
 
 ## ✨ Features
 
-- **Zero Dependencies** - No runtime dependencies. Just your Next.js app.
-- **Zero Config** - Uses your Next.js app's existing setup
+- **Zero Dependencies** - No runtime dependencies. Just your React app.
+- **Zero Config** - Uses your app's existing setup
 - **Path-Based Hierarchy** - Keys become sidebar structure automatically
 - **Zod Controls** - Auto-generate interactive controls from Zod schemas
 - **Story Matrix** - Auto-generate ALL prop combinations from Zod schemas
@@ -33,7 +33,7 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 ## 🚀 Quick Start
 
 ```bash
-npx nextbook # or: bunx, pnpm dlx, yarn dlx, etc.
+npx @ftzi/storify # or: bunx, pnpm dlx, yarn dlx, etc.
 ```
 
 This scaffolds the required files in `app/ui/` and creates an example story.
@@ -46,9 +46,9 @@ Then visit `http://localhost:3000/ui` to see your stories.
 ### 1. Install
 
 ```bash
-npm install nextbook
+npm install @ftzi/storify
 # or
-bun add nextbook
+bun add @ftzi/storify
 ```
 
 ### 2. Register your stories
@@ -57,7 +57,7 @@ bun add nextbook
 // app/ui/stories/index.ts
 "use client";
 
-import { createStories } from "nextbook";
+import { createStories } from "@ftzi/storify";
 
 export const stories = createStories({
   button: () => import("./button.story"),
@@ -75,11 +75,11 @@ Keys become sidebar paths: `forms.input` → `Forms > Input`
 ```tsx
 // app/ui/layout.tsx
 import "@/app/globals.css";
-import { NextbookShell } from "nextbook";
+import { StorifyShell } from "@ftzi/storify";
 import { notFound } from "next/navigation";
 import { stories } from "./stories";
 
-export default function NextbookLayout({
+export default function StorifyLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -89,9 +89,9 @@ export default function NextbookLayout({
   }
 
   return (
-    <NextbookShell stories={stories}>
+    <StorifyShell stories={stories}>
       {children}
-    </NextbookShell>
+    </StorifyShell>
   );
 }
 ```
@@ -102,7 +102,7 @@ export default function NextbookLayout({
 
 ```tsx
 // app/ui/[[...path]]/page.tsx
-import { StoryPage } from "nextbook";
+import { StoryPage } from "@ftzi/storify";
 import { stories } from "../stories";
 
 export default async function Page({
@@ -121,7 +121,7 @@ export default async function Page({
 
 ```tsx
 // app/ui/stories/button.story.tsx
-import { story } from "nextbook";
+import { story } from "@ftzi/storify";
 import { Button } from "@/components/ui/button";
 
 export const Default = story({
@@ -134,7 +134,7 @@ export const Default = story({
 Use Zod schemas to auto-generate interactive controls:
 
 ```tsx
-import { story } from "nextbook";
+import { story } from "@ftzi/storify";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 
@@ -165,10 +165,10 @@ export const Controlled = story({
 
 ### Story Matrix (Automatic Combinatorial Testing)
 
-This is the killer feature. Instead of manually writing dozens of story variants, let Nextbook generate ALL combinations automatically:
+This is the killer feature. Instead of manually writing dozens of story variants, let Storify generate ALL combinations automatically:
 
 ```tsx
-import { storyMatrix } from "nextbook";
+import { storyMatrix } from "@ftzi/storify";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 
@@ -233,7 +233,7 @@ export const Secondary = story({ ... }) // → "Button > Secondary"
 
 ## 🔌 Mocking API Requests
 
-Nextbook supports [MSW (Mock Service Worker)](https://mswjs.io/) for mocking API endpoints in your stories. This is useful for testing components that fetch data without hitting real backends.
+Storify supports [MSW (Mock Service Worker)](https://mswjs.io/) for mocking API endpoints in your stories. This is useful for testing components that fetch data without hitting real backends.
 
 ### Setup MSW
 
@@ -250,7 +250,7 @@ npx msw init public
 Add a `mocks` array to your story to intercept network requests:
 
 ```tsx
-import { story } from "nextbook";
+import { story } from "@ftzi/storify";
 import { http, HttpResponse } from "msw";
 
 export const WithMockedData = story({
@@ -345,7 +345,7 @@ export const WithGeneratedData = story({
 
 ## 🔒 Layout Isolation
 
-If your root layout has providers that conflict with Nextbook, use `useSelectedLayoutSegment` to skip them for the `/ui` route:
+If your root layout has providers that conflict with Storify, use `useSelectedLayoutSegment` to skip them for the `/ui` route:
 
 ```tsx
 // app/layout.tsx
@@ -356,7 +356,7 @@ import { Providers } from "./providers";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
 
-  // Skip providers for Nextbook
+  // Skip providers for Storify
   if (segment === "ui") {
     return (
       <html lang="en">
@@ -379,25 +379,25 @@ Reference: [useSelectedLayoutSegment](https://nextjs.org/docs/app/api-reference/
 
 ## 🛡️ Access Control
 
-By default, the generated layout blocks access in production. This condition can be changed to disable Nextbook based on your needs:
+By default, the generated layout blocks access in production. This condition can be changed to disable Storify based on your needs:
 
 ```tsx
 // app/ui/layout.tsx
-export default function NextbookLayout({ children }: { children: React.ReactNode }) {
-  // Change this condition to control when Nextbook is disabled
+export default function StorifyLayout({ children }: { children: React.ReactNode }) {
+  // Change this condition to control when Storify is disabled
   // if (process.env.NODE_ENV === "production") {
   //   notFound();
   // }
 
   return (
-    <NextbookShell stories={stories}>
+    <StorifyShell stories={stories}>
       {children}
-    </NextbookShell>
+    </StorifyShell>
   );
 }
 ```
 
-## 💡 Why Nextbook?
+## 💡 Why Storify?
 
 ### The Storybook Problem
 
@@ -417,7 +417,7 @@ export const SecondaryDisabled = () => <Button variant="secondary" disabled />
 // ... 20+ more exports, and you STILL missed some combinations
 ```
 
-### The Nextbook Solution
+### The Storify Solution
 
 ```tsx
 // Generates ALL 36 combinations automatically 🎉
@@ -434,7 +434,7 @@ export const Matrix = storyMatrix({
 
 ### Feature Comparison
 
-| Feature                 | Storybook                    | Nextbook                     |
+| Feature                 | Storybook                    | Storify                      |
 | ----------------------- | ---------------------------- | ---------------------------- |
 | Dependencies            | 100+ packages                | **Zero**                     |
 | Setup time              | ~30 min                      | ~5 min                       |
@@ -450,7 +450,7 @@ export const Matrix = storyMatrix({
 
 ## 🤖 AI-First Design
 
-Nextbook is the **first component documentation tool with built-in AI assistant support**. When you run `npx nextbook`, it generates `CLAUDE.md` and `AGENTS.md` files in your stories directory that teach AI assistants how to write stories.
+Storify is the **first component documentation tool with built-in AI assistant support**. When you run `npx @ftzi/storify`, it generates `CLAUDE.md` and `AGENTS.md` files in your stories directory that teach AI assistants how to write stories.
 
 **What this means:**
 
@@ -471,7 +471,7 @@ The generated instructions include:
 
 And your AI assistant already knows exactly how to create a comprehensive story with interactive controls, variants, and even a matrix for all combinations - no explanation needed.
 
-**Upgradable:** Re-running `npx nextbook` updates the AI instructions section (marked with `<!-- NEXTBOOK:START -->` / `<!-- NEXTBOOK:END -->`) while preserving any custom instructions you've added outside the markers.
+**Upgradable:** Re-running `npx @ftzi/storify` updates the AI instructions section (marked with `<!-- STORIFY:START -->` / `<!-- STORIFY:END -->`) while preserving any custom instructions you've added outside the markers.
 
 ## 🛠️ Development
 

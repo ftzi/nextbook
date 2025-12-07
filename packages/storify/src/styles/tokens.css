@@ -1,0 +1,234 @@
+/*
+ * Storify Design System
+ * A modern, professional, next-gen design language
+ */
+
+:root {
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * COLOR PALETTE - Light Mode
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+	/* Primary brand colors - refined indigo */
+	--nb-primary-50: #eef2ff;
+	--nb-primary-100: #e0e7ff;
+	--nb-primary-200: #c7d2fe;
+	--nb-primary-300: #a5b4fc;
+	--nb-primary-400: #818cf8;
+	--nb-primary-500: #6366f1;
+	--nb-primary-600: #4f46e5;
+	--nb-primary-700: #4338ca;
+	--nb-primary-800: #3730a3;
+	--nb-primary-900: #312e81;
+
+	/* Neutral scale - carefully calibrated grays */
+	--nb-neutral-0: #ffffff;
+	--nb-neutral-50: #fafafa;
+	--nb-neutral-100: #f5f5f5;
+	--nb-neutral-150: #ededed;
+	--nb-neutral-200: #e5e5e5;
+	--nb-neutral-300: #d4d4d4;
+	--nb-neutral-400: #a3a3a3;
+	--nb-neutral-500: #737373;
+	--nb-neutral-600: #525252;
+	--nb-neutral-700: #404040;
+	--nb-neutral-800: #262626;
+	--nb-neutral-850: #1a1a1a;
+	--nb-neutral-900: #171717;
+	--nb-neutral-950: #0a0a0a;
+
+	/* Semantic colors */
+	--nb-error-light: #fef2f2;
+	--nb-error-border: #fecaca;
+	--nb-error-text: #dc2626;
+	--nb-error-bg: #fee2e2;
+
+	--nb-success-light: #f0fdf4;
+	--nb-success-border: #bbf7d0;
+	--nb-success-text: #16a34a;
+
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * SEMANTIC TOKENS - Light Mode
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+	/* Backgrounds */
+	--nb-bg-app: var(--nb-neutral-0);
+	--nb-bg-sidebar: var(--nb-neutral-50);
+	--nb-bg-panel: var(--nb-neutral-50);
+	--nb-bg-canvas: var(--nb-neutral-0);
+	--nb-bg-elevated: var(--nb-neutral-0);
+	--nb-bg-hover: var(--nb-neutral-100);
+	--nb-bg-active: var(--nb-primary-50);
+	--nb-bg-input: var(--nb-neutral-0);
+	--nb-bg-glass: rgba(255, 255, 255, 0.8);
+
+	/* Borders */
+	--nb-border-subtle: var(--nb-neutral-150);
+	--nb-border-default: var(--nb-neutral-200);
+	--nb-border-strong: var(--nb-neutral-300);
+	--nb-border-focus: var(--nb-primary-500);
+
+	/* Text */
+	--nb-text-primary: var(--nb-neutral-900);
+	--nb-text-secondary: var(--nb-neutral-600);
+	--nb-text-tertiary: var(--nb-neutral-500);
+	--nb-text-muted: var(--nb-neutral-400);
+	--nb-text-inverse: var(--nb-neutral-0);
+	--nb-text-brand: var(--nb-primary-600);
+
+	/* Interactive */
+	--nb-interactive-default: var(--nb-neutral-700);
+	--nb-interactive-hover: var(--nb-neutral-900);
+	--nb-interactive-active: var(--nb-primary-600);
+
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * TYPOGRAPHY
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+	--nb-font-sans:
+		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--nb-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+	/* Font sizes */
+	--nb-text-xs: 0.75rem;
+	--nb-text-sm: 0.875rem;
+	--nb-text-base: 1rem;
+	--nb-text-lg: 1.125rem;
+	--nb-text-xl: 1.25rem;
+
+	/* Line heights */
+	--nb-leading-tight: 1.25;
+	--nb-leading-normal: 1.5;
+	--nb-leading-relaxed: 1.625;
+
+	/* Font weights */
+	--nb-font-normal: 400;
+	--nb-font-medium: 500;
+	--nb-font-semibold: 600;
+
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * SPACING
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+	--nb-space-0: 0;
+	--nb-space-1: 0.25rem;
+	--nb-space-1-5: 0.375rem;
+	--nb-space-2: 0.5rem;
+	--nb-space-3: 0.75rem;
+	--nb-space-4: 1rem;
+	--nb-space-5: 1.25rem;
+	--nb-space-6: 1.5rem;
+	--nb-space-8: 2rem;
+	--nb-space-10: 2.5rem;
+	--nb-space-12: 3rem;
+
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * EFFECTS
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+	/* Border radius */
+	--nb-radius-sm: 0.375rem;
+	--nb-radius-md: 0.5rem;
+	--nb-radius-lg: 0.75rem;
+	--nb-radius-xl: 1rem;
+	--nb-radius-full: 9999px;
+
+	/* Shadows - layered for depth */
+	--nb-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+	--nb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+	--nb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+	--nb-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+	--nb-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+
+	/* Focus ring */
+	--nb-ring-width: 2px;
+	--nb-ring-offset: 2px;
+	--nb-ring-color: var(--nb-primary-500);
+	--nb-ring:
+		0 0 0 var(--nb-ring-offset) var(--nb-bg-app), 0 0 0 calc(var(--nb-ring-offset) + var(--nb-ring-width))
+		var(--nb-ring-color);
+
+	/* Transitions */
+	--nb-transition-fast: 100ms ease;
+	--nb-transition-base: 150ms ease;
+	--nb-transition-slow: 200ms ease;
+	--nb-transition-slower: 300ms ease;
+
+	/* Glassmorphism */
+	--nb-glass-blur: 12px;
+	--nb-glass-bg: rgba(255, 255, 255, 0.85);
+	--nb-glass-border: rgba(255, 255, 255, 0.2);
+
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * LAYOUT
+   * ═══════════════════════════════════════════════════════════════════════════ */
+
+	--nb-sidebar-width: 280px;
+	--nb-header-height: 56px;
+	--nb-controls-max-height: 280px;
+	--nb-mobile-header-height: 48px;
+
+	/* ═══════════════════════════════════════════════════════════════════════════
+   * BREAKPOINTS (for reference - use in media queries)
+   * sm: 640px, md: 768px, lg: 1024px
+   * ═══════════════════════════════════════════════════════════════════════════ */
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+ * DARK MODE
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		/* Semantic tokens - Dark Mode */
+
+		/* Backgrounds */
+		--nb-bg-app: var(--nb-neutral-950);
+		--nb-bg-sidebar: var(--nb-neutral-900);
+		--nb-bg-panel: var(--nb-neutral-900);
+		--nb-bg-canvas: var(--nb-neutral-950);
+		--nb-bg-elevated: var(--nb-neutral-850);
+		--nb-bg-hover: var(--nb-neutral-800);
+		--nb-bg-active: rgba(99, 102, 241, 0.15);
+		--nb-bg-input: var(--nb-neutral-850);
+		--nb-bg-glass: rgba(10, 10, 10, 0.85);
+
+		/* Borders */
+		--nb-border-subtle: var(--nb-neutral-850);
+		--nb-border-default: var(--nb-neutral-800);
+		--nb-border-strong: var(--nb-neutral-700);
+		--nb-border-focus: var(--nb-primary-400);
+
+		/* Text */
+		--nb-text-primary: var(--nb-neutral-50);
+		--nb-text-secondary: var(--nb-neutral-300);
+		--nb-text-tertiary: var(--nb-neutral-400);
+		--nb-text-muted: var(--nb-neutral-500);
+		--nb-text-inverse: var(--nb-neutral-900);
+		--nb-text-brand: var(--nb-primary-400);
+
+		/* Interactive */
+		--nb-interactive-default: var(--nb-neutral-300);
+		--nb-interactive-hover: var(--nb-neutral-50);
+		--nb-interactive-active: var(--nb-primary-400);
+
+		/* Error states */
+		--nb-error-light: rgba(220, 38, 38, 0.1);
+		--nb-error-border: rgba(220, 38, 38, 0.3);
+		--nb-error-text: #fca5a5;
+		--nb-error-bg: rgba(220, 38, 38, 0.15);
+
+		/* Glassmorphism - dark */
+		--nb-glass-bg: rgba(23, 23, 23, 0.9);
+		--nb-glass-border: rgba(255, 255, 255, 0.1);
+
+		/* Shadows - adjusted for dark */
+		--nb-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+		--nb-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+		--nb-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+		--nb-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+		--nb-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+
+		/* Focus ring - dark */
+		--nb-ring-color: var(--nb-primary-400);
+	}
+}

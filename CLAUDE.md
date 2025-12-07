@@ -143,12 +143,12 @@ Keep entries brief and structural. Focus on "why" and "how the pieces fit togeth
 
 ## Project Overview
 
-Nextbook is a zero-config component stories library for Next.js. This monorepo contains:
+Storify is a zero-config component stories library for React frameworks. This monorepo contains:
 
-- **packages/nextbook** - The main library (publishable as `nextbook` on npm)
-- **apps/web** - Marketing website for nextbook.dev (also includes nextbook `/ui` stories and Playwright tests)
+- **packages/storify** - The main library (publishable as `@ftzi/storify` on npm)
+- **apps/nextjs** - Marketing website for storify.dev (also includes storify `/ui` stories and Playwright tests)
 
-**AI-Ready Design:** Nextbook is designed to be AI-friendly. The simple, predictable API (`story()` function + Zod schemas) makes it easy for AI assistants to generate stories for components instantly. When working with users, AI can quickly scaffold comprehensive stories with interactive controls - no complex configuration needed.
+**AI-Ready Design:** Storify is designed to be AI-friendly. The simple, predictable API (`story()` function + Zod schemas) makes it easy for AI assistants to generate stories for components instantly. When working with users, AI can quickly scaffold comprehensive stories with interactive controls - no complex configuration needed.
 
 ## Common Commands
 
@@ -156,7 +156,7 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 
 - `bun ts` - Type check all workspaces with TypeScript
 - `bun lint` - Format and lint with Biome across all workspaces
-- `bun test` - Run unit tests (nextbook package)
+- `bun test` - Run unit tests (storify package)
 - `bun ok` - Run ts, lint, and test (quick verification)
 - `bun e2e` - Run Playwright visual regression tests (starts dev server automatically)
 - `bun build` - Build all apps and packages
@@ -172,10 +172,10 @@ Nextbook is a zero-config component stories library for Next.js. This monorepo c
 This is a Turborepo monorepo with two main workspace types:
 
 - **apps/** - Application projects
-  - **web/** - Marketing website for nextbook.dev (includes `/ui` stories and Playwright tests)
+  - **nextjs/** - Marketing website for storify.dev (includes `/ui` stories and Playwright tests)
 
 - **packages/** - Shared packages
-  - **nextbook/** - The main nextbook library
+  - **storify/** - The main storify library
   - **typescript-config/** - Shared TypeScript configurations
 
 ### Package Management
@@ -184,13 +184,13 @@ This is a Turborepo monorepo with two main workspace types:
 - Workspace catalog manages shared dependencies (React 19.2.0, TypeScript 5.9.3, Zod 4.1.12, Next.js 16.0.1)
 - All internal packages use `workspace:*` protocol for dependencies
 
-### Nextbook Package (packages/nextbook/)
+### Storify Package (packages/storify/)
 
-**Purpose:** Zero-config, zero-dependency component stories for Next.js
+**Purpose:** Zero-config, zero-dependency component stories for React frameworks
 
 **Zero Dependencies Architecture:**
 
-The nextbook package has **zero runtime dependencies**. This is a key differentiator from Storybook (100+ deps) and prevents version conflicts, security vulnerabilities from transitive deps, and bloated node_modules.
+The storify package has **zero runtime dependencies**. This is a key differentiator from Storybook (100+ deps) and prevents version conflicts, security vulnerabilities from transitive deps, and bloated node_modules.
 
 - **No icon library** - Icons are inline SVGs in `src/components/icons/icons.tsx`
 - **No CLI framework** - Uses native `process.argv` parsing
@@ -201,17 +201,17 @@ When adding features, **never add runtime dependencies**. Implement functionalit
 
 **Key Files:**
 
-- `src/index.ts` - Public exports (createStories, NextbookShell, StoryPage, story)
+- `src/index.ts` - Public exports (createStories, StorifyShell, StoryPage, story)
 - `src/registry.tsx` - createStories implementation (nested loaders → flat loaders)
 - `src/story.ts` - story() function and isStory() type guard
-- `src/components/` - React components (NextbookShell, Sidebar, StoryViewer, ControlsPanel)
-- `src/cli/` - CLI tool for scaffolding (bunx nextbook init)
+- `src/components/` - React components (StorifyShell, Sidebar, StoryViewer, ControlsPanel)
+- `src/cli/` - CLI tool for scaffolding (npx @ftzi/storify)
 - `src/utils/schema.ts` - Zod schema introspection (supports both Zod 3 and 4)
 
 **Server/Client Boundary:**
 
 - `stories/index.ts` must have `"use client"` - loaders are functions that can't cross server→client boundary
-- `NextbookShell` is a client component - receives the stories object
+- `StorifyShell` is a client component - receives the stories object
 - User's layout.tsx (Server Component) must render `<html>` and `<body>` tags
 
 **Lazy Loading Strategy:**
@@ -232,7 +232,7 @@ Stories are loaded on-demand, NOT at initialization:
 
 **UI Design Philosophy:**
 
-The nextbook UI should be **polished**, **modern**, and **professional**:
+The storify UI should be **polished**, **modern**, and **professional**:
 
 - **MUST be mobile-friendly** - Every web page MUST be fully responsive and work perfectly on mobile devices. This is non-negotiable.
 
@@ -255,8 +255,8 @@ The matrix viewer (`storyMatrix()`) displays all prop combinations in a grid. Ke
 **File Structure:**
 
 ```
-packages/nextbook/src/
-├── cli/                    # CLI tool (bunx nextbook init)
+packages/storify/src/
+├── cli/                    # CLI tool (npx @ftzi/storify)
 │   ├── index.ts           # CLI entry point (native process.argv)
 │   ├── init.ts            # Init logic
 │   ├── init.test.ts       # CLI tests
@@ -266,8 +266,8 @@ packages/nextbook/src/
 │   ├── controls-panel.module.css
 │   ├── matrix-viewer.tsx       # Virtualized matrix grid (storyMatrix)
 │   ├── matrix-viewer.module.css
-│   ├── nextbook-shell.tsx      # Main shell (client component)
-│   ├── nextbook-shell.module.css
+│   ├── storify-shell.tsx       # Main shell (client component)
+│   ├── storify-shell.module.css
 │   ├── sidebar.tsx             # Navigation sidebar (client component)
 │   ├── sidebar.module.css
 │   ├── story-page.tsx          # Story rendering with error boundary
@@ -288,13 +288,13 @@ packages/nextbook/src/
 **Common Pitfalls:**
 
 1. **Forgetting "use client" on stories/index.ts** - Loaders contain functions that can't cross server→client boundary
-2. **Adding html/body in the nextbook layout** - Next.js layouts nest; the root layout already provides these tags. The `/ui` layout should only contain `<NextbookShell>`.
+2. **Adding html/body in the storify layout** - Next.js layouts nest; the root layout already provides these tags. The `/ui` layout should only contain `<StorifyShell>`.
 3. **Making createStories async** - It was async before but caused boundary issues; now synchronous
 4. **CLI templates out of sync** - `src/cli/templates.ts` MUST match current API when making changes
 
-### Marketing Website (apps/web/)
+### Marketing Website (apps/nextjs/)
 
-**Purpose:** Public-facing marketing website at nextbook.dev + nextbook `/ui` stories for testing
+**Purpose:** Public-facing marketing website at storify.dev + storify `/ui` stories for testing
 
 **Tech Stack:**
 
@@ -311,19 +311,19 @@ packages/nextbook/src/
 - Dynamic OG images using Next.js ImageResponse API
 - SEO infrastructure (sitemap.ts, robots.ts)
 - Responsive design with dark mode default
-- Nextbook stories at `/ui` demonstrating component library
+- Storify stories at `/ui` demonstrating component library
 - Playwright visual regression tests in `tests/`
 
 **File Structure:**
 
 ```
-apps/web/
+apps/nextjs/
 ├── app/
 │   ├── layout.tsx           # Root layout (Geist fonts, metadata, Analytics)
 │   ├── page.tsx             # Landing page
 │   ├── globals.css          # Tailwind CSS 4 + design tokens
-│   ├── ui/                  # Nextbook stories UI
-│   │   ├── layout.tsx       # Nextbook shell wrapper
+│   ├── ui/                  # Storify stories UI
+│   │   ├── layout.tsx       # Storify shell wrapper
 │   │   ├── [[...path]]/     # Dynamic story routes
 │   │   └── stories/         # Story definitions
 │   └── ...                  # OG images, sitemap, robots
@@ -345,14 +345,14 @@ apps/web/
 
 **Design Philosophy:**
 
-- Uses Tailwind CSS (unlike the nextbook package which uses CSS Modules)
+- Uses Tailwind CSS (unlike the storify package which uses CSS Modules)
 - This is intentional: the marketing site can use any styling, while the package must work in any user's setup
 - Brand colors match the logo gradient: cyan (#06B6D4) → purple (#7C3AED) → pink (#EC4899)
 
 **Screenshot Placeholders:**
 
 The website includes placeholder areas for screenshots that need to be captured:
-- `hero-screenshot.png` (1200x800) - Full nextbook UI
+- `hero-screenshot.png` (1200x800) - Full storify UI
 - `feature-zod-controls.png` (600x400) - Controls panel demo
 - `feature-story-matrix.png` (800x500) - Matrix view
 - `code-demo-preview.png` (800x600) - Code + preview
@@ -410,7 +410,7 @@ The website includes placeholder areas for screenshots that need to be captured:
 **Import Conventions:**
 
 - **NEVER use barrel files** - Barrel files (index.ts files that re-export everything) are forbidden
-  - Exception: `packages/nextbook/src/index.ts` is the public API entry point
+  - Exception: `packages/storify/src/index.ts` is the public API entry point
 - **Always import directly from source files** - Import from the actual file where the code is defined
 - This improves tree-shaking, makes dependencies explicit, and reduces circular dependency issues
 - **Avoid dynamic imports** - Prefer static `import` over `await import()`. Only use dynamic imports for genuine code splitting or conditional loading based on runtime conditions.
@@ -471,21 +471,21 @@ The website includes placeholder areas for screenshots that need to be captured:
 **Documentation Synchronization:**
 
 - **THE root README.md MUST BE KEPT IN SYNC WITH THE CODE AT ALL TIMES**
-- When making ANY changes to the nextbook package:
+- When making ANY changes to the storify package:
   1. Update the code
   2. **Immediately update the root README.md to reflect those changes**
   3. Verify code examples in README are copy-paste correct
 - The root README is the primary documentation for users
-- **Manual Setup must match CLI output** - The manual setup steps in README must produce the same result as `npx nextbook init`. When updating CLI templates (`src/cli/templates.ts`), also update the README manual setup section to match.
+- **Manual Setup must match CLI output** - The manual setup steps in README must produce the same result as `npx @ftzi/storify`. When updating CLI templates (`src/cli/templates.ts`), also update the README manual setup section to match.
 
-**Marketing Website Synchronization (apps/web):**
+**Marketing Website Synchronization (apps/nextjs):**
 
-- **The apps/web marketing site MUST also stay in sync with the nextbook package**
-- When making changes to nextbook features or API:
+- **The apps/nextjs marketing site MUST also stay in sync with the storify package**
+- When making changes to storify features or API:
   1. Update the package code
   2. Update the root README.md
-  3. **Update apps/web if affected** (code examples, feature descriptions, comparison table)
-- Key files to update in apps/web when features change:
+  3. **Update apps/nextjs if affected** (code examples, feature descriptions, comparison table)
+- Key files to update in apps/nextjs when features change:
   - `components/landing/features.tsx` - Feature descriptions
   - `components/landing/code-demo.tsx` - Code examples
   - `components/landing/comparison.tsx` - Comparison table
@@ -498,4 +498,4 @@ The website includes placeholder areas for screenshots that need to be captured:
 - **React Version:** Uses React 19.2.0 (latest)
 - **Next.js Version:** Uses Next.js 16.0.1
 - **Server Components:** Default to Server Components; use `"use client"` directive only when needed
-- **Import Paths:** Use workspace aliases (`nextbook`, `@workspace/typescript-config`)
+- **Import Paths:** Use workspace aliases (`@ftzi/storify`, `@workspace/typescript-config`)

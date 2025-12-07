@@ -9,7 +9,7 @@ Initial stable release.
 ### Features
 
 - **Zero Dependencies** - No runtime dependencies, just peer dependencies (next, react, zod)
-- **Zero Config** - Uses your Next.js app's existing setup, no separate build process
+- **Zero Config** - Uses your React app's existing setup, no separate build process
 - **Path-Based Hierarchy** - Keys become sidebar structure automatically
 - **Zod Controls** - Auto-generate interactive controls from Zod schemas
 - **Story Matrix** - Auto-generate ALL prop combinations with `storyMatrix()`
@@ -20,11 +20,11 @@ Initial stable release.
 - **Pan & Zoom** - Navigate large components with mouse drag and scroll wheel
 - **API Mocking** - Optional MSW integration to mock API endpoints in stories
 - **AI-Ready** - Simple, predictable API that AI assistants can use instantly
-- **CLI** - Quick start with `npx nextbook`
+- **CLI** - Quick start with `npx @ftzi/storify`
 
 ### Components
 
-- `NextbookShell` - Main shell component with sidebar navigation
+- `StorifyShell` - Main shell component with sidebar navigation
 - `StoryPage` - Story rendering with error boundary
 - `story()` - Create individual stories with optional Zod schema controls
 - `storyMatrix()` - Generate all prop combinations automatically
