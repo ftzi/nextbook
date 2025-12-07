@@ -1,20 +1,20 @@
-# Plan: Add Marketing Website for nextbook.dev
+# Plan: Add Marketing Website for storify.dev
 
 ## Summary
 
-Create a professional marketing website at nextbook.dev to showcase nextbook's features, provide documentation, and drive adoption.
+Create a professional marketing website at storify.dev to showcase storify's features, provide documentation, and drive adoption.
 
 ## Why
 
-Nextbook has grown significantly and now has its own domain: **nextbook.dev**. A professional marketing website will:
-- Showcase nextbook's features to potential users
+Storify has grown significantly and now has its own domain: **storify.dev**. A professional marketing website will:
+- Showcase storify's features to potential users
 - Provide beautiful, interactive documentation
 - Establish brand credibility with a modern, polished presence
 - Drive adoption through compelling visuals and clear value propositions
 
 ## What Changes
 
-### New: `apps/web` Marketing Website
+### New: `apps/nextjs` Marketing Website
 
 A modern marketing website inspired by Vercel, Next.js, and Storybook:
 
@@ -27,26 +27,26 @@ A modern marketing website inspired by Vercel, Next.js, and Storybook:
   - Hero with animated gradient backgrounds
   - Features showcase with interactive demos
   - Code examples with syntax highlighting
-  - Comparison table (Nextbook vs Storybook)
+  - Comparison table (Storify vs Storybook)
   - CTA sections
 
 ### Modified: CLAUDE.md
 
 Update development guidelines to include:
-- Documentation synchronization: README.md AND apps/web must stay in sync
+- Documentation synchronization: README.md AND apps/nextjs must stay in sync
 - Web app architecture patterns
 - Marketing website conventions
 
 ### Modified: Monorepo Structure
 
-- Add `apps/web` as new workspace
+- Add `apps/nextjs` as new workspace
 - Add shared catalog dependencies
 - Update turbo.json for web build tasks
 
 ## Tasks
 
 ### Phase 1: Project Scaffolding
-- [x] 1.1 Create `apps/web` directory structure
+- [x] 1.1 Create `apps/nextjs` directory structure
 - [x] 1.2 Initialize package.json with dependencies
 - [x] 1.3 Configure tsconfig.json
 - [x] 1.4 Configure next.config.mjs
@@ -76,7 +76,7 @@ Update development guidelines to include:
 - [x] 5.1 Create hero.tsx with animated gradient
 - [x] 5.2 Create features.tsx with feature grid
 - [x] 5.3 Create code-demo.tsx with syntax highlighting
-- [x] 5.4 Create comparison.tsx (Nextbook vs Storybook)
+- [x] 5.4 Create comparison.tsx (Storify vs Storybook)
 - [x] 5.5 Create quick-start.tsx with terminal command
 - [x] 5.6 Create cta.tsx
 
@@ -87,7 +87,7 @@ Update development guidelines to include:
 - [x] 6.4 Test dark mode theming
 
 ### Phase 7: Documentation
-- [x] 7.1 Update CLAUDE.md with apps/web guidelines
+- [x] 7.1 Update CLAUDE.md with apps/nextjs guidelines
 
 ## Affected Specs
 

@@ -386,7 +386,7 @@ The website includes placeholder areas for screenshots that need to be captured:
 - **NEVER run `bun build` or `bun run build`** - only use `bun ok` for verification
 - **CRITICAL: `bun ok` MUST ALWAYS be run from the project root directory**
   - NEVER run it from subdirectories like `apps/example` or `packages/*`
-  - Always navigate to the root first: `cd /Users/ftzi/dev/nextbook && bun ok`
+  - Always navigate to the root first: `cd /Users/ftzi/dev/storify && bun ok`
   - This is a Turborepo monorepo - the command must run from root to check all packages
 - `bun ok` runs both type checking and linting, leverages Turbo cache, and is always preferred
 - NEVER commit or push code - all git operations must be explicitly requested by the user

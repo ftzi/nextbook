@@ -1,6 +1,6 @@
 # Landing Page *[WEB-landing]*
 
-The landing page at nextbook.dev is the primary entry point for developers discovering nextbook. It needs to quickly communicate the value proposition and make it easy to get started.
+The landing page at storify.dev is the primary entry point for developers discovering storify. It needs to quickly communicate the value proposition and make it easy to get started.
 
 ## Design Decisions
 
@@ -19,14 +19,14 @@ Testing: e2e
 
 - WHEN page loads
 - THEN the headline communicates "zero-config component stories"
-- AND the subheadline mentions Next.js specifically
+- AND the subheadline mentions React frameworks
 - AND a CTA button links to quick start or GitHub
 
 ### Scenario: Hero screenshot *[WEB-landing.hero.screenshot]*
 Testing: e2e
 
 - WHEN viewing the hero section
-- THEN a screenshot/preview of nextbook UI is visible
+- THEN a screenshot/preview of storify UI is visible
 - AND it shows a realistic component story view
 
 ---
@@ -53,7 +53,7 @@ The comparison shows advantages over Storybook.
 Testing: e2e
 
 - WHEN viewing comparison section
-- THEN a table compares nextbook vs Storybook
+- THEN a table compares storify vs Storybook
 - AND highlights: dependencies count, config files, setup time
 
 ---
@@ -118,4 +118,4 @@ Testing: unit
 
 - WHEN page is shared on social media
 - THEN a branded OG image is displayed
-- AND it includes the nextbook logo and tagline
+- AND it includes the storify logo and tagline

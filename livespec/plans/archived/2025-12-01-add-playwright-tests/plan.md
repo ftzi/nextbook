@@ -2,11 +2,11 @@
 
 ## Summary
 
-Add Playwright-based visual regression testing infrastructure to `apps/web` for testing the nextbook `/ui` stories interface. This enables automated verification of the nextbook UI, including component rendering, controls panel, sidebar navigation, and MSW mocking features.
+Add Playwright-based visual regression testing infrastructure to `apps/nextjs` for testing the storify `/ui` stories interface. This enables automated verification of the storify UI, including component rendering, controls panel, sidebar navigation, and MSW mocking features.
 
 ## Why
 
-No automated testing existed for the nextbook UI at `/ui`. This created issues:
+No automated testing existed for the storify UI at `/ui`. This created issues:
 - No regression detection for UI changes
 - MSW mocking untested
 - Component stories verified only manually
@@ -15,9 +15,9 @@ No automated testing existed for the nextbook UI at `/ui`. This created issues:
 
 ## What Changes
 
-- Added `@playwright/test` to `apps/web`
+- Added `@playwright/test` to `apps/nextjs`
 - Created `playwright.config.ts` with chromium browser
-- Added e2e tests in `apps/web/e2e/` covering:
+- Added e2e tests in `apps/nextjs/e2e/` covering:
   - Sidebar navigation (`sidebar.e2e.ts`)
   - Story viewer (`story-viewer.e2e.ts`)
   - Controls panel (`controls-panel.e2e.ts`)
@@ -30,11 +30,11 @@ No automated testing existed for the nextbook UI at `/ui`. This created issues:
 ## Tasks
 
 ### Phase 1: Playwright Setup
-- [x] 1.1 Install `@playwright/test` in `apps/web`
+- [x] 1.1 Install `@playwright/test` in `apps/nextjs`
 - [x] 1.2 Run `npx playwright install chromium`
-- [x] 1.3 Create `apps/web/playwright.config.ts`
-- [x] 1.4 Add `apps/web/e2e/` directory
-- [x] 1.5 Add test scripts to `apps/web/package.json`
+- [x] 1.3 Create `apps/nextjs/playwright.config.ts`
+- [x] 1.4 Add `apps/nextjs/e2e/` directory
+- [x] 1.5 Add test scripts to `apps/nextjs/package.json`
 - [x] 1.6 Update root `package.json` with `bun e2e`
 - [x] 1.7 Add Playwright artifacts to biome.json ignore
 

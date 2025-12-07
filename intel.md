@@ -1,6 +1,6 @@
 # Competitive Intel: What We Need to Succeed
 
-This document synthesizes research on Storybook's pain points and competing alternatives to inform nextbook's strategy.
+This document synthesizes research on Storybook's pain points and competing alternatives to inform Storify's strategy.
 
 ---
 
@@ -107,7 +107,7 @@ These are real developer opinions from Reddit threads. This is the pain we're so
 
 Storybook 9 acknowledged this by cutting bundle size 48% (97M vs 186M) and switching from Express (2.2MB) to Polka (67KB). The maintainer says they hope to halve it again for 9.0. But developers are skeptical.
 
-**Nextbook advantage**: Zero runtime dependencies. This is our strongest differentiator. Full stop.
+**Storify advantage**: Zero runtime dependencies. This is our strongest differentiator. Full stop.
 
 ### 2. Slow Development Experience
 
@@ -118,7 +118,7 @@ Developers consistently report:
 
 Root cause: Storybook runs its own webpack/build system instead of integrating with the project's existing setup.
 
-**Nextbook advantage**: We ARE Next.js. No separate build system, no compilation overhead, instant HMR via Next.js dev server.
+**Storify advantage**: We ARE Next.js. No separate build system, no compilation overhead, instant HMR via Next.js dev server.
 
 ### 3. Configuration Complexity
 
@@ -128,7 +128,7 @@ Root cause: Storybook runs its own webpack/build system instead of integrating w
 - Frequent breaking changes with webpack config modifications
 - Upgrades are "consistently painful" - developers report multi-day upgrade efforts failing
 
-**Nextbook advantage**: Zero config. Uses your existing Next.js setup.
+**Storify advantage**: Zero config. Uses your existing Next.js setup.
 
 ### 4. Maintenance Burden (The Catch-22)
 
@@ -142,19 +142,19 @@ One developer's summary:
 
 But the reality is most teams have technical debt, and Storybook amplifies the pain rather than helping.
 
-**Nextbook advantage**: AI-friendly API makes story generation trivial. Zod schemas = automatic controls. Minimal story syntax.
+**Storify advantage**: AI-friendly API makes story generation trivial. Zod schemas = automatic controls. Minimal story syntax.
 
 ### 5. The "Isolation" Paradox
 
 Developing components in isolation can actually **mask unexpected styling conflicts**. Direct browser development with hot reloading reveals real-world interactions.
 
-**Nextbook opportunity**: We're already in the Next.js app context - styling conflicts are visible.
+**Storify opportunity**: We're already in the Next.js app context - styling conflicts are visible.
 
 ### 6. Framework Second-Class Citizens
 
 Non-React frameworks receive inferior support. Angular versions have awkwardly pulled React as a dependency.
 
-**Nextbook clarity**: We're Next.js only. One framework, done exceptionally well.
+**Storify clarity**: We're Next.js only. One framework, done exceptionally well.
 
 ### 7. Upgrade Fatigue (NEW - Major Issue in 2025)
 
@@ -166,7 +166,7 @@ This is the dominant sentiment in the Storybook 9 announcement thread. Developer
 
 The Chromatic business model concern is real: Storybook "will never be done" because constant churn drives Chromatic revenue.
 
-**Nextbook advantage**: Stability. Semver. No breaking changes without major version bumps. Your stories keep working.
+**Storify advantage**: Stability. Semver. No breaking changes without major version bumps. Your stories keep working.
 
 ### 8. Who Actually Uses It?
 
@@ -257,7 +257,7 @@ Synthesized from Reddit, Hacker News, and GitHub:
 
 ---
 
-## Strategic Implications for Nextbook
+## Strategic Implications for Storify
 
 ### Our Unfair Advantages
 
@@ -280,7 +280,7 @@ Based on pain points, these messages will land:
 - "No separate build. No webpack config. No BS."
 - "Small teams don't need Storybook's complexity"
 - "No upgrade treadmill. Your stories just work."
-- "Still on Storybook 6? Skip straight to nextbook."
+- "Still on Storybook 6? Skip straight to Storify."
 - "Simple. Predictable. Powerful."
 - "No magic. No surprises. Just components."
 
@@ -306,7 +306,7 @@ Based on pain points, these messages will land:
 
 1. **Speed perception**: First impression MUST be instant. Any lag = failure.
 
-2. **Installation story**: `npx nextbook` must be flawless. Compare: "1 command, 3 files" vs "100+ dependencies installed".
+2. **Installation story**: `npx @ftzi/storify` must be flawless. Compare: "1 command, 3 files" vs "100+ dependencies installed".
 
 3. **Upgrade path**: Must never break. Storybook's painful upgrades are THE key churn driver in 2025. Every major version announcement is met with groans.
 
@@ -345,7 +345,7 @@ Storybook has created market awareness but also market frustration. Developers k
 
 The Storybook 9 announcement thread tells the story: 173 upvotes for "feels like there's a new Storybook major version every 6 months lol" and 111 upvotes for "I'm so tired of Storybook upgrades... make me want to quit this profession."
 
-**Nextbook wins by being the anti-Storybook**: zero dependencies, zero config, instant speed, native integration, and STABILITY. We're not a "lightweight Storybook" - we're a fundamentally different approach where the component playground IS your Next.js app.
+**Storify wins by being the anti-Storybook**: zero dependencies, zero config, instant speed, native integration, and STABILITY. We're not a "lightweight Storybook" - we're a fundamentally different approach where the component playground IS your Next.js app.
 
 The market is ready. The pain is real. The timing is perfect. Execute with discipline.
 

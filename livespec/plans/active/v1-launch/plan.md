@@ -2,11 +2,11 @@
 
 ## Summary
 
-Prepare nextbook for v1.0.0 npm publication with CI/CD automation, contributor guidelines, and UI polish (light/dark mode toggle).
+Prepare storify for v1.0.0 npm publication with CI/CD automation, contributor guidelines, and UI polish (light/dark mode toggle).
 
 ## Why
 
-Nextbook is feature-complete and tested. These final items transform it from "working code" to "publishable product":
+Storify is feature-complete and tested. These final items transform it from "working code" to "publishable product":
 - **CI/CD**: Automates publishing, prevents manual errors
 - **CONTRIBUTING.md**: Welcomes PRs while setting expectations
 - **Light/dark mode toggle**: Users need control over preview background (not just system preference)
@@ -14,7 +14,7 @@ Nextbook is feature-complete and tested. These final items transform it from "wo
 
 ## What Changes
 
-### nextbook package
+### storify package
 - **NEW** Light/dark mode toggle in UI (StoryViewer toolbar)
 - **MODIFIED** Version 0.1.0 → 1.0.0
 - **MODIFIED** README.md - remove "STILL WIP!" header
@@ -88,7 +88,7 @@ Nextbook is feature-complete and tested. These final items transform it from "wo
 
 ### Phase 4: Final Shipping
 - [ ] Remove "STILL WIP!" from README.md line 1
-- [ ] Bump version to 1.0.0 in `packages/nextbook/package.json`
+- [ ] Bump version to 1.0.0 in `packages/storify/package.json`
 - [ ] Create `CHANGELOG.md` with v1.0.0 release notes
 - [ ] Run `bun ok` to verify all checks pass
 - [ ] Create git tag v1.0.0
@@ -97,8 +97,8 @@ Nextbook is feature-complete and tested. These final items transform it from "wo
 
 ## Affected Specs
 
-- `[NEX.story-viewer.theme]` — ADDED (new theme toggle feature)
-- `[NEX.story-viewer.toolbar]` — MODIFIED (add theme button)
+- `[STY.story-viewer.theme]` — ADDED (new theme toggle feature)
+- `[STY.story-viewer.toolbar]` — MODIFIED (add theme button)
 
 ---
 

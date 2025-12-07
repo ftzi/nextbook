@@ -2,7 +2,7 @@
 
 ## Summary
 
-Add optional MSW (Mock Service Worker) integration to nextbook, allowing developers to mock API endpoints when viewing component stories.
+Add optional MSW (Mock Service Worker) integration to storify, allowing developers to mock API endpoints when viewing component stories.
 
 ## Why
 
@@ -16,7 +16,7 @@ When developers view component stories at `/ui`, components that make API calls 
 ## What Changes
 
 - Add `mocks` property to `story()` accepting MSW handlers
-- MSW worker lifecycle management in NextbookShell/StoryViewer
+- MSW worker lifecycle management in StorifyShell/StoryViewer
 - UI indicator showing "Mocks Active" status
 - Documentation in README and marketing website
 
@@ -29,8 +29,8 @@ When developers view component stories at `/ui`, components that make API calls 
 
 ### Decision: No Re-exports
 **Choice:** Users import MSW utilities directly from `msw`
-**Alternatives:** Re-export common utilities from nextbook
-**Rationale:** Avoids version conflicts and keeps nextbook focused
+**Alternatives:** Re-export common utilities from storify
+**Rationale:** Avoids version conflicts and keeps storify focused
 
 ### Decision: Mock Factories
 **Choice:** Mocks can be functions that receive control values
@@ -43,7 +43,7 @@ When developers view component stories at `/ui`, components that make API calls 
 - [ ] Update `types.ts` with mock-related types
 - [ ] Update `story.ts` to include `mocks` in returned story object
 - [ ] Create `src/hooks/use-msw.ts` with worker initialization
-- [ ] Integrate MSW in NextbookShell
+- [ ] Integrate MSW in StorifyShell
 - [ ] Apply mocks in StoryViewer
 - [ ] Add mock status UI indicator
 
@@ -54,10 +54,10 @@ When developers view component stories at `/ui`, components that make API calls 
 
 ### Phase 3: Testing
 
-- [ ] Add example stories with mocks in apps/web
+- [ ] Add example stories with mocks in apps/nextjs
 - [ ] Run `bun ok` to verify
 
 ## Affected Specs
 
-- `SPEC:nextbook.story-api` — MODIFIED (add mocks property)
-- `SPEC:nextbook.msw-mocking` — ADDED (new capability)
+- `SPEC:storify.story-api` — MODIFIED (add mocks property)
+- `SPEC:storify.msw-mocking` — ADDED (new capability)

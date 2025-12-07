@@ -1,26 +1,26 @@
-# E2E Testing Infrastructure [NEX.e2e]
+# E2E Testing Infrastructure [STY.e2e]
 
-Playwright-based visual regression testing for the nextbook UI. Tests run against the example app at `/ui` to verify the nextbook shell, sidebar, story viewer, and controls panel work correctly.
+Playwright-based visual regression testing for the storify UI. Tests run against the example app at `/ui` to verify the storify shell, sidebar, story viewer, and controls panel work correctly.
 
 ## Design Decisions
 
-Tests live in `apps/web/e2e/` alongside the marketing site since that's where the nextbook `/ui` demo lives. We use Playwright's built-in screenshot comparison for visual regression. Tests run via `bun e2e` which starts the dev server automatically via Playwright's webServer config.
+Tests live in `apps/nextjs/e2e/` alongside the marketing site since that's where the storify `/ui` demo lives. We use Playwright's built-in screenshot comparison for visual regression. Tests run via `bun e2e` which starts the dev server automatically via Playwright's webServer config.
 
 ---
 
-## Test Infrastructure [NEX.e2e.infrastructure]
+## Test Infrastructure [STY.e2e.infrastructure]
 
 Playwright is configured and runnable.
 
-### Scenario: Playwright configuration [NEX.e2e.infrastructure.config]
+### Scenario: Playwright configuration [STY.e2e.infrastructure.config]
 Testing: unit
 
-- WHEN a developer checks `apps/web`
+- WHEN a developer checks `apps/nextjs`
 - THEN `playwright.config.ts` exists with valid configuration
 - AND chromium is the primary browser
 - AND baseURL points to localhost dev server
 
-### Scenario: Test command available [NEX.e2e.infrastructure.command]
+### Scenario: Test command available [STY.e2e.infrastructure.command]
 Testing: unit
 
 - WHEN developer runs `bun e2e` from project root
@@ -30,18 +30,18 @@ Testing: unit
 
 ---
 
-## Sidebar Tests [NEX.e2e.sidebar]
+## Sidebar Tests [STY.e2e.sidebar]
 
 Tests verify sidebar navigation.
 
-### Scenario: Sidebar renders story tree [NEX.e2e.sidebar.renders]
+### Scenario: Sidebar renders story tree [STY.e2e.sidebar.renders]
 Testing: e2e
 
 - WHEN sidebar test runs
 - THEN sidebar contains story files
 - AND files are organized by folder structure
 
-### Scenario: Sidebar navigation works [NEX.e2e.sidebar.navigation]
+### Scenario: Sidebar navigation works [STY.e2e.sidebar.navigation]
 Testing: e2e
 
 - WHEN a story file is clicked in sidebar
@@ -50,18 +50,18 @@ Testing: e2e
 
 ---
 
-## Story Viewer Tests [NEX.e2e.story-viewer]
+## Story Viewer Tests [STY.e2e.story-viewer]
 
 Tests verify story rendering and viewer controls.
 
-### Scenario: Story renders correctly [NEX.e2e.story-viewer.renders]
+### Scenario: Story renders correctly [STY.e2e.story-viewer.renders]
 Testing: e2e
 
 - WHEN navigating to a story
 - THEN the component renders in the viewer
 - AND visual snapshot matches baseline
 
-### Scenario: Background toggle [NEX.e2e.story-viewer.background]
+### Scenario: Background toggle [STY.e2e.story-viewer.background]
 Testing: e2e
 
 - WHEN background toggle is clicked
@@ -70,25 +70,25 @@ Testing: e2e
 
 ---
 
-## Controls Panel Tests [NEX.e2e.controls-panel]
+## Controls Panel Tests [STY.e2e.controls-panel]
 
 Tests verify the Zod-generated controls.
 
-### Scenario: Controls render from schema [NEX.e2e.controls-panel.renders]
+### Scenario: Controls render from schema [STY.e2e.controls-panel.renders]
 Testing: e2e
 
 - WHEN a story with Zod schema is displayed
 - THEN controls render in the panel
 - AND each schema field has a corresponding control
 
-### Scenario: Controls update component [NEX.e2e.controls-panel.updates]
+### Scenario: Controls update component [STY.e2e.controls-panel.updates]
 Testing: e2e
 
 - WHEN a control value changes
 - THEN the component re-renders
 - AND rendered output reflects new props
 
-### Scenario: Reset restores defaults [NEX.e2e.controls-panel.reset]
+### Scenario: Reset restores defaults [STY.e2e.controls-panel.reset]
 Testing: e2e
 
 - WHEN controls are modified and reset clicked
@@ -97,38 +97,38 @@ Testing: e2e
 
 ---
 
-## MSW Mocking Tests [NEX.e2e.mocking]
+## MSW Mocking Tests [STY.e2e.mocking]
 
 Tests verify MSW mocking for stories with API dependencies.
 
-### Scenario: Mocks indicator visible [NEX.e2e.mocking.indicator]
+### Scenario: Mocks indicator visible [STY.e2e.mocking.indicator]
 Testing: e2e
 
 - WHEN a story with mocks is displayed
 - THEN "Mocks" indicator badge is visible
 - AND indicator hidden for stories without mocks
 
-### Scenario: Mock data renders [NEX.e2e.mocking.data]
+### Scenario: Mock data renders [STY.e2e.mocking.data]
 Testing: e2e
 
 - WHEN a story with mocks is displayed
 - THEN component renders with mocked data
 - AND real network calls are intercepted
 
-### Scenario: Mock factory responds to controls [NEX.e2e.mocking.factory]
+### Scenario: Mock factory responds to controls [STY.e2e.mocking.factory]
 Testing: e2e
 
 - WHEN a story with mock factory is displayed
 - AND control values change
 - THEN mock response updates accordingly
 
-### Scenario: Error states render [NEX.e2e.mocking.error]
+### Scenario: Error states render [STY.e2e.mocking.error]
 Testing: e2e
 
 - WHEN a story mocks error response (500)
 - THEN component displays error UI
 
-### Scenario: Loading states render [NEX.e2e.mocking.loading]
+### Scenario: Loading states render [STY.e2e.mocking.loading]
 Testing: e2e
 
 - WHEN a story mocks infinite delay
@@ -136,18 +136,18 @@ Testing: e2e
 
 ---
 
-## Matrix Story Tests [NEX.e2e.matrix]
+## Matrix Story Tests [STY.e2e.matrix]
 
 Tests verify matrix view rendering.
 
-### Scenario: Matrix grid renders [NEX.e2e.matrix.renders]
+### Scenario: Matrix grid renders [STY.e2e.matrix.renders]
 Testing: e2e
 
 - WHEN a storyMatrix is displayed
 - THEN matrix grid layout renders
 - AND all prop combinations are visible
 
-### Scenario: Combination labels correct [NEX.e2e.matrix.labels]
+### Scenario: Combination labels correct [STY.e2e.matrix.labels]
 Testing: e2e
 
 - WHEN matrix view is displayed
@@ -155,18 +155,18 @@ Testing: e2e
 
 ---
 
-## Visual Regression [NEX.e2e.visual]
+## Visual Regression [STY.e2e.visual]
 
 Tests capture and compare screenshots.
 
-### Scenario: Snapshots captured [NEX.e2e.visual.capture]
+### Scenario: Snapshots captured [STY.e2e.visual.capture]
 Testing: e2e
 
 - WHEN visual regression tests run
 - THEN screenshots are captured for key UI states
 - AND stored in `.snapshots/` directory
 
-### Scenario: Snapshot comparison [NEX.e2e.visual.compare]
+### Scenario: Snapshot comparison [STY.e2e.visual.compare]
 Testing: e2e
 
 - WHEN tests run after UI changes

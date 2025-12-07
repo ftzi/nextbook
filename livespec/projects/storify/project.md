@@ -1,10 +1,10 @@
-# Nextbook Project
+# Storify Project
 
 ## Overview
 
-**Codebase:** `packages/nextbook/`
+**Codebase:** `packages/storify/`
 
-Nextbook is a zero-config, zero-dependency component stories library for Next.js. It enables developers to create interactive component documentation with minimal setup.
+Storify is a zero-config, zero-dependency component stories library for React frameworks. It enables developers to create interactive component documentation with minimal setup.
 
 ## Domain Knowledge
 
@@ -14,7 +14,7 @@ Nextbook is a zero-config, zero-dependency component stories library for Next.js
 - **Story file** — A `.story.tsx` file containing one or more story exports
 - **Controlled story** — A story with a Zod schema that generates interactive controls
 - **Matrix story** — A story created with `storyMatrix()` showing all prop combinations
-- **NextbookShell** — Main wrapper component that provides the UI shell
+- **StorifyShell** — Main wrapper component that provides the UI shell
 - **StoryPage** — Server component that renders individual stories
 
 ### Key API
@@ -55,7 +55,7 @@ export const AllVariants = storyMatrix({
 
 - CLI templates (`src/cli/templates.ts`) must stay in sync with current API
 - The `createStories()` function is synchronous (was async before, caused issues)
-- User's layout.tsx must render `<html>` and `<body>` tags, not nextbook's layout
+- User's layout.tsx must render `<html>` and `<body>` tags, not storify's layout
 
 ## Related Specs
 

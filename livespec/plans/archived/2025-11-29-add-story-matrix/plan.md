@@ -28,7 +28,7 @@ This approach:
 - **NEW `storyMatrix()` function** - Creates matrix story auto-generating all prop combinations
 - **NEW Matrix View UI** - Displays combinations in grid layout with labels
 - **NEW combination filtering** - Filter/focus on specific prop values
-- **Public export** - `storyMatrix` exported from `nextbook` alongside `story`
+- **Public export** - `storyMatrix` exported from `storify` alongside `story`
 
 ## Tasks
 

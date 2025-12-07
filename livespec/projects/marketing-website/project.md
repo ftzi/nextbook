@@ -2,16 +2,16 @@
 
 ## Overview
 
-**Codebase:** `apps/web/`
+**Codebase:** `apps/nextjs/`
 
-The marketing website for nextbook.dev. It showcases the library's features, provides documentation, and includes the nextbook `/ui` stories for dogfooding and testing.
+The marketing website for storify.dev. It showcases the library's features, provides documentation, and includes the storify `/ui` stories for dogfooding and testing.
 
 ## Domain Knowledge
 
 ### Core Concepts
 
 - **Landing page** — Main marketing page with hero, features, comparison, quick start
-- **Nextbook stories at /ui** — Dogfooding: the website uses nextbook to show its own component stories
+- **Storify stories at /ui** — Dogfooding: the website uses storify to show its own component stories
 - **Dynamic OG images** — Auto-generated social share images using Next.js ImageResponse
 
 ### Tech Stack
@@ -30,8 +30,8 @@ The marketing website for nextbook.dev. It showcases the library's features, pro
 
 ## Gotchas
 
-- Uses Tailwind CSS (unlike the nextbook package which uses CSS Modules)
-- The `/ui` layout should only contain `<NextbookShell>`, not `<html>/<body>`
+- Uses Tailwind CSS (unlike the storify package which uses CSS Modules)
+- The `/ui` layout should only contain `<StorifyShell>`, not `<html>/<body>`
 - Screenshots in landing page are placeholders that need capturing
 
 ## Related Specs

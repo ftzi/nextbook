@@ -1,4 +1,4 @@
-# MSW Mocking *[NEX-msw-mocking]*
+# MSW Mocking *[STY-msw-mocking]*
 
 MSW (Mock Service Worker) integration allows developers to mock API responses when viewing component stories. This enables testing components that fetch data without requiring real backends.
 
@@ -10,11 +10,11 @@ MSW is a peer dependency — projects that don't need mocking don't pay the cost
 
 ---
 
-## Mocks Property on Story *[NEX-msw-mocking.property]*
+## Mocks Property on Story *[STY-msw-mocking.property]*
 
 The `story()` function accepts an optional `mocks` property.
 
-### Scenario: Story with static mocks *[NEX-msw-mocking.property.static]*
+### Scenario: Story with static mocks *[STY-msw-mocking.property.static]*
 Testing: e2e
 Promote: pending
 
@@ -23,7 +23,7 @@ Promote: pending
 - THEN the MSW handlers are activated
 - AND matching network requests return mock responses
 
-### Scenario: Story with mock factory *[NEX-msw-mocking.property.factory]*
+### Scenario: Story with mock factory *[STY-msw-mocking.property.factory]*
 Testing: e2e
 Promote: pending
 
@@ -32,7 +32,7 @@ Promote: pending
 - THEN the mocks are regenerated with new control values
 - AND the updated handlers are applied
 
-### Scenario: Story without mocks *[NEX-msw-mocking.property.none]*
+### Scenario: Story without mocks *[STY-msw-mocking.property.none]*
 Testing: e2e
 Promote: pending
 
@@ -42,20 +42,20 @@ Promote: pending
 
 ---
 
-## MSW Worker Lifecycle *[NEX-msw-mocking.lifecycle]*
+## MSW Worker Lifecycle *[STY-msw-mocking.lifecycle]*
 
 The system manages the MSW service worker lifecycle.
 
-### Scenario: Worker initialization *[NEX-msw-mocking.lifecycle.init]*
+### Scenario: Worker initialization *[STY-msw-mocking.lifecycle.init]*
 Testing: e2e
 Promote: pending
 
 - WHEN MSW is installed as a peer dependency
-- AND the NextbookShell component mounts
+- AND the StorifyShell component mounts
 - THEN the MSW worker is started with `onUnhandledRequest: 'bypass'`
 - AND unhandled requests pass through to real endpoints
 
-### Scenario: Handler isolation between stories *[NEX-msw-mocking.lifecycle.isolation]*
+### Scenario: Handler isolation between stories *[STY-msw-mocking.lifecycle.isolation]*
 Testing: e2e
 Promote: pending
 
@@ -64,7 +64,7 @@ Promote: pending
 - THEN the previous story's handlers are cleared
 - AND the new story's handlers (if any) are applied
 
-### Scenario: MSW not installed *[NEX-msw-mocking.lifecycle.not-installed]*
+### Scenario: MSW not installed *[STY-msw-mocking.lifecycle.not-installed]*
 Testing: e2e
 Promote: pending
 
@@ -75,11 +75,11 @@ Promote: pending
 
 ---
 
-## UI Mock Status Indicator *[NEX-msw-mocking.indicator]*
+## UI Mock Status Indicator *[STY-msw-mocking.indicator]*
 
 The system displays a visual indicator when mocks are active.
 
-### Scenario: Mocks active indicator *[NEX-msw-mocking.indicator.active]*
+### Scenario: Mocks active indicator *[STY-msw-mocking.indicator.active]*
 Testing: e2e
 Promote: pending
 
@@ -88,7 +88,7 @@ Promote: pending
 - THEN a "Mocks Active" indicator is visible in the story viewer
 - AND the indicator has a tooltip explaining mock behavior
 
-### Scenario: No mocks indicator *[NEX-msw-mocking.indicator.none]*
+### Scenario: No mocks indicator *[STY-msw-mocking.indicator.none]*
 Testing: e2e
 Promote: pending
 
