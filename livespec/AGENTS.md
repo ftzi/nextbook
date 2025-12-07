@@ -15,15 +15,15 @@ Livespec treats specifications as **living documentation** that evolves with cod
 
 ## Glossary
 
-| Term | Definition |
-|------|------------|
-| **Spec** | A markdown file containing testable scenarios for a feature |
-| **Scenario** | A single testable behavior with WHEN/THEN structure and spec ID |
-| **Spec ID** | Unique identifier like `[PRJ.sidebar.tabs]` linking specs ↔ tests ↔ code |
-| **Feature** | A cohesive capability including its screens, modals, and logic |
-| **Plan** | A proposal for changes, lives in `plans/active/` until complete |
-| **Housekeeping** | Periodic sync check between specs, code, and tests |
-| **Entry point** | A route or action where users begin interacting with a feature |
+| Term             | Definition                                                               |
+| ---------------- | ------------------------------------------------------------------------ |
+| **Spec**         | A markdown file containing testable scenarios for a feature              |
+| **Scenario**     | A single testable behavior with WHEN/THEN structure and spec ID          |
+| **Spec ID**      | Unique identifier like `[PRJ.sidebar.tabs]` linking specs ↔ tests ↔ code |
+| **Feature**      | A cohesive capability including its screens, modals, and logic           |
+| **Plan**         | A proposal for changes, lives in `plans/active/` until complete          |
+| **Housekeeping** | Periodic sync check between specs, code, and tests                       |
+| **Entry point**  | A route or action where users begin interacting with a feature           |
 
 ## TL;DR Quick Checklist
 
@@ -47,11 +47,10 @@ Run this checklist before starting work:
 
 Each project has a 3-character code prefix for spec IDs.
 
-<!-- Run /livespec to populate this table with your projects -->
-
-| Code | Project | Path |
-|------|---------|------|
-| | | |
+| Code | Project           | Path                |
+| ---- | ----------------- | ------------------- |
+| STO  | Storify           | `packages/storify/` |
+| WEB  | Marketing Website | `apps/nextjs/`      |
 
 ## Directory Structure
 
@@ -76,6 +75,7 @@ livespec/
 ### One Spec = One Feature
 
 Each `[feature]/spec.md` contains **everything** about that feature:
+
 - **Screens** it appears on (routes, entry points)
 - **UI** layout and available actions
 - **Modals** that belong to it
@@ -111,9 +111,9 @@ Narrative explanation of what this feature is and why it exists.
 
 ## Entry Points
 
-| Route / Trigger | Description |
-|-----------------|-------------|
-| /path/to/page | Main screen for this feature |
+| Route / Trigger                | Description                            |
+| ------------------------------ | -------------------------------------- |
+| /path/to/page                  | Main screen for this feature           |
 | Modal from [PRJ.other-feature] | Triggered by action in another feature |
 
 ## UI
@@ -133,6 +133,7 @@ This section is not testable but provides essential understanding.
 Brief description of what this requirement ensures.
 
 ### Scenario: Specific behavior [PRJ.feature.requirement.behavior]
+
 Testing: e2e
 
 - WHEN precondition or action
@@ -140,6 +141,7 @@ Testing: e2e
 - AND additional outcomes
 
 ### Scenario: Another behavior [PRJ.feature.requirement.other]
+
 Testing: unit
 
 - WHEN different condition
@@ -170,10 +172,12 @@ Every scenario declares its expected test type on the line after the header:
 
 ```markdown
 ### Scenario: Tab display on navigation [PRJ.sidebar.tabs-display]
+
 Testing: e2e
 ```
 
 Valid test types:
+
 - `unit` — Unit tests (fast, isolated)
 - `e2e` — End-to-end tests (browser, full flow)
 - `integration` — Integration tests (API, database)
@@ -184,6 +188,7 @@ When implementing from plans, mark scenarios ready for promotion:
 
 ```markdown
 ### Scenario: New feature [PRJ.feature.new]
+
 Testing: e2e
 Promote: ready
 ```
@@ -200,6 +205,7 @@ it('shows all exports as tabs', () => { ... })
 ```
 
 Housekeeping discovers coverage by:
+
 1. Finding all `[PRJ.id]` declarations in spec files
 2. Searching test files for `@spec [PRJ.id]` annotations
 3. Checking if test file type matches declared `Testing:` type
@@ -230,18 +236,22 @@ Plans combine proposal, tasks, and design into one file:
 # Plan: [Brief Description]
 
 ## Summary
+
 1-2 sentences on what this plan achieves.
 
 ## Why
+
 Problem or opportunity being addressed.
 
 ## What Changes
+
 - Bullet list of changes
 - Mark breaking changes with **BREAKING**
 
 ## Design Decisions (if needed)
 
 ### Decision: [What]
+
 **Choice:** [Selected option]
 **Alternatives considered:** [Other options and why not]
 **Rationale:** [Why this choice]
@@ -249,19 +259,22 @@ Problem or opportunity being addressed.
 ## Tasks
 
 ### Phase 1: [Name]
+
 - [ ] Task description
 - [ ] Another task
 
 ### Phase 2: [Name]
+
 - [ ] Dependent task
 
 ## Affected Specs
+
 - `[PRJ.sidebar.tabs]` — ADDED/MODIFIED/REMOVED
 ```
 
 ### Plan Naming
 
-- Use kebab-case: `add-msw-mocking`, `refactor-sidebar`
+- Use kebab-case: `add-msw`, `refactor-sidebar`
 - Verb-led prefixes: `add-`, `update-`, `remove-`, `refactor-`, `fix-`
 - Short and descriptive
 - Ensure uniqueness within `plans/active/`
@@ -285,6 +298,7 @@ New request?
 ### Plan Triggers
 
 Create a plan when user says things like:
+
 - "Help me plan..." / "Create a plan for..."
 - "I want to add [feature]..." (significant feature)
 - "Let's implement..." (new capability)
@@ -306,6 +320,7 @@ When entering livespec mode (via `/livespec` or explicit request):
 ### If No Input (Status Check)
 
 Show current livespec status:
+
 1. List active plans: `ls livespec/plans/active/`
 2. List projects and specs: `find livespec/projects -name "spec.md"`
 3. Check for plans with incomplete tasks
@@ -343,10 +358,12 @@ You don't need to update specs for every change, but stay aware.
 For significant features or changes:
 
 1. **Create plan:** `livespec/plans/active/[plan-name]/`
+
    - Write `plan.md` with summary, why, what, tasks
    - Create draft specs in `plans/active/[plan-name]/specs/`
 
 2. **Get approval:** Do not start implementation until plan is reviewed
+
    - Share plan with user for approval
    - Clarify any ambiguities before proceeding
 
@@ -361,6 +378,7 @@ For significant features or changes:
 Manual routine to keep specs healthy. Run periodically or when requested.
 
 **Housekeeping checks:**
+
 1. **Spec validity** — All specs parse correctly, have required fields
 2. **Code-spec sync** — Behaviors match, no orphaned code
 3. **Test coverage** — Each scenario has test with matching type
@@ -368,6 +386,7 @@ Manual routine to keep specs healthy. Run periodically or when requested.
 5. **Stale specs** — Flag specs that haven't been verified recently
 
 **Housekeeping outputs:**
+
 - Update `manifest.md` with timestamp, commit, findings
 - Create housekeeping plans for discovered issues
 - Safe auto-fixes: move promoted specs, update timestamps
@@ -385,6 +404,7 @@ Manual routine to keep specs healthy. Run periodically or when requested.
 ### Complexity Triggers
 
 Only add complexity when you have:
+
 - Performance data showing current solution is too slow
 - Concrete scale requirements (>1000 users, >100MB data)
 - Multiple proven use cases requiring abstraction
@@ -414,31 +434,32 @@ Only add complexity when you have:
 
 ### What Belongs Where
 
-| Content | Location |
-|---------|----------|
-| Testable behavior | `[feature]/spec.md` scenarios |
-| Entry points for a feature | `[feature]/spec.md` Entry Points section |
-| All entry points overview | `project.md` |
-| UI conventions ("use X component") | `project.md` |
-| Domain knowledge, gotchas | `project.md` |
-| Permission groups | `project.md` |
-| Component library docs | Storybook, **not** livespec |
+| Content                            | Location                                 |
+| ---------------------------------- | ---------------------------------------- |
+| Testable behavior                  | `[feature]/spec.md` scenarios            |
+| Entry points for a feature         | `[feature]/spec.md` Entry Points section |
+| All entry points overview          | `project.md`                             |
+| UI conventions ("use X component") | `project.md`                             |
+| Domain knowledge, gotchas          | `project.md`                             |
+| Permission groups                  | `project.md`                             |
+| Component library docs             | Storybook, **not** livespec              |
 
 ## Tool Selection Guide
 
-| Task | Tool | Why |
-|------|------|-----|
-| Find files by pattern | Glob | Fast pattern matching |
-| Search code content | Grep | Optimized regex search |
-| Read specific files | Read | Direct file access |
-| Explore unknown scope | Task (Explore agent) | Multi-step investigation |
-| Complex implementation | Task (Plan agent) | Architectural planning |
+| Task                   | Tool                 | Why                      |
+| ---------------------- | -------------------- | ------------------------ |
+| Find files by pattern  | Glob                 | Fast pattern matching    |
+| Search code content    | Grep                 | Optimized regex search   |
+| Read specific files    | Read                 | Direct file access       |
+| Explore unknown scope  | Task (Explore agent) | Multi-step investigation |
+| Complex implementation | Task (Plan agent)    | Architectural planning   |
 
 ## Error Recovery
 
 ### Spec-Code Mismatch
 
 When housekeeping finds mismatches:
+
 1. Determine which is correct (spec or code)
 2. If spec is correct → fix code
 3. If code is correct → update spec
@@ -447,6 +468,7 @@ When housekeeping finds mismatches:
 ### Orphaned Behavior
 
 Code behavior not documented in specs:
+
 1. Housekeeping creates draft spec proposal
 2. Review if behavior is intentional
 3. If intentional → promote draft to main specs
@@ -455,12 +477,14 @@ Code behavior not documented in specs:
 ### Missing or Wrong Test Type
 
 Scenario declares `Testing: e2e` but:
+
 - No test found → housekeeping reports missing
 - Test found in unit files → housekeeping reports type mismatch
 
 ## Quick Reference
 
 ### File Purposes
+
 - `manifest.md` — Projects list, housekeeping state
 - `project.md` — Project context, codebase location, entry points overview
 - `spec.md` — Feature specs (context + scenarios)
@@ -472,35 +496,40 @@ Scenario declares `Testing: e2e` but:
 # Project Name
 
 ## Overview
+
 What this project does, codebase location.
 
 ## Domain Knowledge
+
 Key concepts, terminology, gotchas.
 
 ## Entry Points
 
-| Route | Feature | Description |
-|-------|---------|-------------|
-| /home | [PRJ.home] | Authenticated landing |
-| /checkout | [PRJ.checkout] | Purchase flow |
+| Route     | Feature        | Description           |
+| --------- | -------------- | --------------------- |
+| /home     | [PRJ.home]     | Authenticated landing |
+| /checkout | [PRJ.checkout] | Purchase flow         |
 
 ## UI Conventions
+
 - Use X component for buttons
 - Theme-aware colors only
 
 ## Permission Groups (if applicable)
 
-| Group | Permissions | Enables |
-|-------|-------------|---------|
+| Group | Permissions  | Enables    |
+| ----- | ------------ | ---------- |
 | Buyer | OrdersCreate | Purchasing |
-| Admin | UsersManage | Management |
+| Admin | UsersManage  | Management |
 ```
 
 Entry points table serves as a "table of contents" for navigating specs.
 
 ### Scenario Format
+
 ```markdown
 ### Scenario: Descriptive name [PRJ.feature.scenario]
+
 Testing: e2e
 
 - WHEN condition
@@ -508,6 +537,7 @@ Testing: e2e
 ```
 
 ### Commands (AI-Driven)
+
 - "Run housekeeping" — Trigger full housekeeping routine
 - "Check spec coverage" — Find specs missing tests
 - "Promote ready specs" — Move ready specs from plans

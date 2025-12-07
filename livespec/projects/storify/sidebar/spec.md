@@ -1,4 +1,4 @@
-# Sidebar Navigation *[STY-sidebar]*
+# Sidebar Navigation [STO.sidebar]
 
 The sidebar provides navigation for the storify UI at `/ui`. It displays story files organized by folder structure, allowing developers to quickly browse and select components to view.
 
@@ -10,11 +10,11 @@ Individual story exports (variants) are shown as tabs in the main content area, 
 
 ---
 
-## Component-Centric Sidebar *[STY-sidebar.component]*
+## Component-Centric Sidebar [STO.sidebar.component]
 
 The sidebar displays story files as single navigation items without variant expansion.
 
-### Scenario: Story file as single item *[STY-sidebar.component.single-item]*
+### Scenario: Story file as single item [STO.sidebar.component.single-item]
 Testing: e2e
 
 - WHEN a story file exists in the registry
@@ -22,7 +22,7 @@ Testing: e2e
 - AND clicking it navigates to `/ui/{filePath}`
 - AND no expansion or variant list is shown in the sidebar
 
-### Scenario: No module loading in sidebar *[STY-sidebar.component.no-loading]*
+### Scenario: No module loading in sidebar [STO.sidebar.component.no-loading]
 Testing: e2e
 
 - WHEN the sidebar renders
@@ -30,7 +30,7 @@ Testing: e2e
 - AND no loading indicators appear
 - AND the sidebar is instantly interactive
 
-### Scenario: Folder organization preserved *[STY-sidebar.component.folders]*
+### Scenario: Folder organization preserved [STO.sidebar.component.folders]
 Testing: e2e
 
 - WHEN story files are organized in folders (e.g., `forms/input`)
@@ -40,11 +40,11 @@ Testing: e2e
 
 ---
 
-## Tabbed Story View *[STY-sidebar.tabs]*
+## Tabbed Story View [STO.sidebar.tabs]
 
 The story page displays all exports from a story file as tabs.
 
-### Scenario: Tabs for all story exports *[STY-sidebar.tabs.display]*
+### Scenario: Tabs for all story exports [STO.sidebar.tabs.display]
 Testing: e2e
 
 - WHEN navigating to a story file (e.g., `/ui/button`)
@@ -52,14 +52,14 @@ Testing: e2e
 - AND a tab bar displays all story exports from that file
 - AND the first story is selected by default
 
-### Scenario: Tab selection via URL *[STY-sidebar.tabs.url-select]*
+### Scenario: Tab selection via URL [STO.sidebar.tabs.url-select]
 Testing: e2e
 
 - WHEN navigating to `/ui/button/secondary`
 - THEN the "Secondary" tab is selected
 - AND the Secondary story content is displayed
 
-### Scenario: Tab click updates URL *[STY-sidebar.tabs.click-url]*
+### Scenario: Tab click updates URL [STO.sidebar.tabs.click-url]
 Testing: e2e
 
 - WHEN a user clicks a tab
@@ -67,7 +67,7 @@ Testing: e2e
 - AND the story content updates to show the selected story
 - AND browser history is updated (back button works)
 
-### Scenario: Invalid story name in URL *[STY-sidebar.tabs.invalid-url]*
+### Scenario: Invalid story name in URL [STO.sidebar.tabs.invalid-url]
 Testing: e2e
 
 - WHEN navigating to `/ui/button/nonexistent`
@@ -76,18 +76,18 @@ Testing: e2e
 
 ---
 
-## Story Type Badges *[STY-sidebar.badges]*
+## Story Type Badges [STO.sidebar.badges]
 
 Tabs display badges indicating the type of each story.
 
-### Scenario: Simple story (no badge) *[STY-sidebar.badges.simple]*
+### Scenario: Simple story (no badge) [STO.sidebar.badges.simple]
 Testing: e2e
 
 - WHEN a story has no Zod schema
 - THEN the tab displays only the story name
 - AND no badge icon is shown
 
-### Scenario: Controlled story badge *[STY-sidebar.badges.controlled]*
+### Scenario: Controlled story badge [STO.sidebar.badges.controlled]
 Testing: e2e
 
 - WHEN a story has a Zod schema (interactive controls)
@@ -95,7 +95,7 @@ Testing: e2e
 - AND the icon appears after the story name
 - AND the icon has a tooltip explaining "Has interactive controls"
 
-### Scenario: Matrix story badge *[STY-sidebar.badges.matrix]*
+### Scenario: Matrix story badge [STO.sidebar.badges.matrix]
 Testing: e2e
 
 - WHEN a story is a matrix story
@@ -105,25 +105,25 @@ Testing: e2e
 
 ---
 
-## Single Module Load *[STY-sidebar.single-load]*
+## Single Module Load [STO.sidebar.single-load]
 
 The system loads each story module only once per navigation.
 
-### Scenario: Module loaded on navigation *[STY-sidebar.single-load.navigation]*
+### Scenario: Module loaded on navigation [STO.sidebar.single-load.navigation]
 Testing: e2e
 
 - WHEN a user navigates to a story file
 - THEN the module is loaded exactly once
 - AND all exports are extracted from that single load
 
-### Scenario: Tab switching without reload *[STY-sidebar.single-load.tab-switch]*
+### Scenario: Tab switching without reload [STO.sidebar.single-load.tab-switch]
 Testing: e2e
 
 - WHEN a user switches between tabs
 - THEN no additional module loads occur
 - AND the content switches instantly
 
-### Scenario: Navigating to different file *[STY-sidebar.single-load.different-file]*
+### Scenario: Navigating to different file [STO.sidebar.single-load.different-file]
 Testing: e2e
 
 - WHEN a user navigates to a different story file
@@ -132,32 +132,32 @@ Testing: e2e
 
 ---
 
-## URL Structure *[STY-sidebar.url]*
+## URL Structure [STO.sidebar.url]
 
 The URL structure remains backwards compatible.
 
-### Scenario: File-only URL *[STY-sidebar.url.file-only]*
+### Scenario: File-only URL [STO.sidebar.url.file-only]
 Testing: e2e
 
 - WHEN navigating to `/ui/button`
 - THEN the page displays the Button stories
 - AND the first tab is selected
 
-### Scenario: File with story URL *[STY-sidebar.url.file-story]*
+### Scenario: File with story URL [STO.sidebar.url.file-story]
 Testing: e2e
 
 - WHEN navigating to `/ui/button/controlled`
 - THEN the page displays the Button stories
 - AND the "Controlled" tab is selected
 
-### Scenario: Nested file URL *[STY-sidebar.url.nested]*
+### Scenario: Nested file URL [STO.sidebar.url.nested]
 Testing: e2e
 
 - WHEN navigating to `/ui/forms/input`
 - THEN the page displays the Input stories
 - AND the first tab is selected
 
-### Scenario: Nested file with story URL *[STY-sidebar.url.nested-story]*
+### Scenario: Nested file with story URL [STO.sidebar.url.nested-story]
 Testing: e2e
 
 - WHEN navigating to `/ui/forms/input/withplaceholder`
@@ -166,17 +166,17 @@ Testing: e2e
 
 ---
 
-## Tab Bar Overflow *[STY-sidebar.overflow]*
+## Tab Bar Overflow [STO.sidebar.overflow]
 
 The tab bar handles many stories gracefully.
 
-### Scenario: Few stories (no overflow) *[STY-sidebar.overflow.few]*
+### Scenario: Few stories (no overflow) [STO.sidebar.overflow.few]
 Testing: e2e
 
 - WHEN a story file has 5 or fewer exports
 - THEN all tabs are visible without scrolling
 
-### Scenario: Many stories (overflow) *[STY-sidebar.overflow.many]*
+### Scenario: Many stories (overflow) [STO.sidebar.overflow.many]
 Testing: e2e
 
 - WHEN a story file has more tabs than fit in the viewport
@@ -185,18 +185,18 @@ Testing: e2e
 
 ---
 
-## Active Story Indicator *[STY-sidebar.active]*
+## Active Story Indicator [STO.sidebar.active]
 
 The sidebar and tab bar clearly indicate the current selection.
 
-### Scenario: Active file in sidebar *[STY-sidebar.active.file]*
+### Scenario: Active file in sidebar [STO.sidebar.active.file]
 Testing: e2e
 
 - WHEN viewing a story file
 - THEN that file is highlighted in the sidebar
 - AND ancestor folders are expanded to show the active file
 
-### Scenario: Active tab in tab bar *[STY-sidebar.active.tab]*
+### Scenario: Active tab in tab bar [STO.sidebar.active.tab]
 Testing: e2e
 
 - WHEN viewing a specific story

@@ -1,4 +1,4 @@
-# MSW Mocking *[STY-msw-mocking]*
+# MSW Mocking _[STO.msw]_
 
 MSW (Mock Service Worker) integration allows developers to mock API responses when viewing component stories. This enables testing components that fetch data without requiring real backends.
 
@@ -10,11 +10,12 @@ MSW is a peer dependency — projects that don't need mocking don't pay the cost
 
 ---
 
-## Mocks Property on Story *[STY-msw-mocking.property]*
+## Mocks Property on Story _[STO.msw.property]_
 
 The `story()` function accepts an optional `mocks` property.
 
-### Scenario: Story with static mocks *[STY-msw-mocking.property.static]*
+### Scenario: Story with static mocks _[STO.msw.property.static]_
+
 Testing: e2e
 Promote: pending
 
@@ -23,7 +24,8 @@ Promote: pending
 - THEN the MSW handlers are activated
 - AND matching network requests return mock responses
 
-### Scenario: Story with mock factory *[STY-msw-mocking.property.factory]*
+### Scenario: Story with mock factory _[STO.msw.property.factory]_
+
 Testing: e2e
 Promote: pending
 
@@ -32,7 +34,8 @@ Promote: pending
 - THEN the mocks are regenerated with new control values
 - AND the updated handlers are applied
 
-### Scenario: Story without mocks *[STY-msw-mocking.property.none]*
+### Scenario: Story without mocks _[STO.msw.property.none]_
+
 Testing: e2e
 Promote: pending
 
@@ -42,11 +45,12 @@ Promote: pending
 
 ---
 
-## MSW Worker Lifecycle *[STY-msw-mocking.lifecycle]*
+## MSW Worker Lifecycle _[STO.msw.lifecycle]_
 
 The system manages the MSW service worker lifecycle.
 
-### Scenario: Worker initialization *[STY-msw-mocking.lifecycle.init]*
+### Scenario: Worker initialization _[STO.msw.lifecycle.init]_
+
 Testing: e2e
 Promote: pending
 
@@ -55,7 +59,8 @@ Promote: pending
 - THEN the MSW worker is started with `onUnhandledRequest: 'bypass'`
 - AND unhandled requests pass through to real endpoints
 
-### Scenario: Handler isolation between stories *[STY-msw-mocking.lifecycle.isolation]*
+### Scenario: Handler isolation between stories _[STO.msw.lifecycle.isolation]_
+
 Testing: e2e
 Promote: pending
 
@@ -64,7 +69,8 @@ Promote: pending
 - THEN the previous story's handlers are cleared
 - AND the new story's handlers (if any) are applied
 
-### Scenario: MSW not installed *[STY-msw-mocking.lifecycle.not-installed]*
+### Scenario: MSW not installed _[STO.msw.lifecycle.not-installed]_
+
 Testing: e2e
 Promote: pending
 
@@ -75,11 +81,12 @@ Promote: pending
 
 ---
 
-## UI Mock Status Indicator *[STY-msw-mocking.indicator]*
+## UI Mock Status Indicator _[STO.msw.indicator]_
 
 The system displays a visual indicator when mocks are active.
 
-### Scenario: Mocks active indicator *[STY-msw-mocking.indicator.active]*
+### Scenario: Mocks active indicator _[STO.msw.indicator.active]_
+
 Testing: e2e
 Promote: pending
 
@@ -88,7 +95,8 @@ Promote: pending
 - THEN a "Mocks Active" indicator is visible in the story viewer
 - AND the indicator has a tooltip explaining mock behavior
 
-### Scenario: No mocks indicator *[STY-msw-mocking.indicator.none]*
+### Scenario: No mocks indicator _[STO.msw.indicator.none]_
+
 Testing: e2e
 Promote: pending
 

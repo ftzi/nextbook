@@ -5,11 +5,10 @@ This project uses **Livespec** for living specification management. Specs are li
 
 ## Projects
 
-<!-- Run /livespec to populate this table with your projects -->
-
 | Code | Project | Specs | Codebase |
 |------|---------|-------|----------|
-| | | | |
+| STO | Storify | `livespec/projects/storify/` | `packages/storify/` |
+| WEB | Marketing Website | `livespec/projects/marketing-website/` | `apps/nextjs/` |
 
 ## Before Any Task
 

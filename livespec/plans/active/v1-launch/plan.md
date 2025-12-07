@@ -97,8 +97,8 @@ Storify is feature-complete and tested. These final items transform it from "wor
 
 ## Affected Specs
 
-- `[STY.story-viewer.theme]` — ADDED (new theme toggle feature)
-- `[STY.story-viewer.toolbar]` — MODIFIED (add theme button)
+- `[STO.story-viewer.theme]` — ADDED (new theme toggle feature)
+- `[STO.story-viewer.toolbar]` — MODIFIED (add theme button)
 
 ---
 

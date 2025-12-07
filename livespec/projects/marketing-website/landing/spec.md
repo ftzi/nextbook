@@ -1,4 +1,4 @@
-# Landing Page *[WEB-landing]*
+# Landing Page [WEB.landing]
 
 The landing page at storify.dev is the primary entry point for developers discovering storify. It needs to quickly communicate the value proposition and make it easy to get started.
 
@@ -10,11 +10,11 @@ Dark mode is default because developers spend most time in dark IDEs, so it feel
 
 ---
 
-## Hero Section *[WEB-landing.hero]*
+## Hero Section [WEB.landing.hero]
 
 The hero communicates the core value proposition.
 
-### Scenario: Value proposition visible *[WEB-landing.hero.value-prop]*
+### Scenario: Value proposition visible [WEB.landing.hero.value-prop]
 Testing: e2e
 
 - WHEN page loads
@@ -22,7 +22,7 @@ Testing: e2e
 - AND the subheadline mentions React frameworks
 - AND a CTA button links to quick start or GitHub
 
-### Scenario: Hero screenshot *[WEB-landing.hero.screenshot]*
+### Scenario: Hero screenshot [WEB.landing.hero.screenshot]
 Testing: e2e
 
 - WHEN viewing the hero section
@@ -31,11 +31,11 @@ Testing: e2e
 
 ---
 
-## Features Section *[WEB-landing.features]*
+## Features Section [WEB.landing.features]
 
 The features section highlights key differentiators.
 
-### Scenario: Feature cards *[WEB-landing.features.cards]*
+### Scenario: Feature cards [WEB.landing.features.cards]
 Testing: e2e
 
 - WHEN viewing features section
@@ -45,11 +45,11 @@ Testing: e2e
 
 ---
 
-## Comparison Section *[WEB-landing.comparison]*
+## Comparison Section [WEB.landing.comparison]
 
 The comparison shows advantages over Storybook.
 
-### Scenario: Comparison table *[WEB-landing.comparison.table]*
+### Scenario: Comparison table [WEB.landing.comparison.table]
 Testing: e2e
 
 - WHEN viewing comparison section
@@ -58,18 +58,18 @@ Testing: e2e
 
 ---
 
-## Quick Start Section *[WEB-landing.quickstart]*
+## Quick Start Section [WEB.landing.quickstart]
 
 The quick start enables immediate adoption.
 
-### Scenario: Installation command *[WEB-landing.quickstart.install]*
+### Scenario: Installation command [WEB.landing.quickstart.install]
 Testing: e2e
 
 - WHEN viewing quick start
 - THEN the npx/bunx command is displayed
 - AND it's easy to copy
 
-### Scenario: Code example *[WEB-landing.quickstart.code]*
+### Scenario: Code example [WEB.landing.quickstart.code]
 Testing: e2e
 
 - WHEN viewing quick start
@@ -79,11 +79,11 @@ Testing: e2e
 
 ---
 
-## Responsive Design *[WEB-landing.responsive]*
+## Responsive Design [WEB.landing.responsive]
 
 The landing page works on all device sizes.
 
-### Scenario: Mobile layout *[WEB-landing.responsive.mobile]*
+### Scenario: Mobile layout [WEB.landing.responsive.mobile]
 Testing: e2e
 
 - WHEN viewing on mobile (< 768px)
@@ -91,7 +91,7 @@ Testing: e2e
 - AND navigation collapses appropriately
 - AND no horizontal scroll occurs
 
-### Scenario: Desktop layout *[WEB-landing.responsive.desktop]*
+### Scenario: Desktop layout [WEB.landing.responsive.desktop]
 Testing: e2e
 
 - WHEN viewing on desktop (> 1024px)
@@ -101,11 +101,11 @@ Testing: e2e
 
 ---
 
-## SEO *[WEB-landing.seo]*
+## SEO [WEB.landing.seo]
 
 The landing page is optimized for search engines.
 
-### Scenario: Meta tags *[WEB-landing.seo.meta]*
+### Scenario: Meta tags [WEB.landing.seo.meta]
 Testing: unit
 
 - WHEN page is crawled
@@ -113,7 +113,7 @@ Testing: unit
 - AND Open Graph tags are set
 - AND canonical URL is correct
 
-### Scenario: Dynamic OG image *[WEB-landing.seo.og-image]*
+### Scenario: Dynamic OG image [WEB.landing.seo.og-image]
 Testing: unit
 
 - WHEN page is shared on social media

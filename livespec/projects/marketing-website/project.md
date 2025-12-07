@@ -36,4 +36,4 @@ The marketing website for storify.dev. It showcases the library's features, prov
 
 ## Related Specs
 
-- [Landing Page](specs/landing/spec.md) — Marketing page behavior
+- [Landing Page](landing/spec.md) — Marketing page behavior

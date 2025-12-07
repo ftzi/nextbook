@@ -59,7 +59,8 @@ export const AllVariants = storyMatrix({
 
 ## Related Specs
 
-- [Story API](specs/story-api/spec.md) — Core story function and types
-- [Sidebar Navigation](specs/sidebar/spec.md) — Sidebar component behavior
-- [Controls Panel](specs/controls-panel/spec.md) — Zod-generated controls UI
-- [Matrix Viewer](specs/matrix-viewer/spec.md) — Matrix story virtualization
+- [Story API](story-api/spec.md) — Core story function and types
+- [Sidebar Navigation](sidebar/spec.md) — Sidebar component behavior
+- [Controls Panel](controls-panel/spec.md) — Zod-generated controls UI
+- [Matrix Viewer](matrix-viewer/spec.md) — Matrix story virtualization
+- [E2E Testing](e2e-testing/spec.md) — Playwright test infrastructure

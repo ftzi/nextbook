@@ -1,4 +1,4 @@
-# Story Viewer Theme [STY.story-viewer.theme]
+# Story Viewer Theme [STO.story-viewer.theme]
 
 Users need control over the preview background color when developing components. Some components are designed for light backgrounds, others for dark. The system preference may not match the component's intended context.
 
@@ -17,11 +17,11 @@ We don't provide granular background colors because:
 
 ---
 
-## Theme Toggle [STY.story-viewer.theme.toggle]
+## Theme Toggle [STO.story-viewer.theme.toggle]
 
 A toggle button allows users to switch between light, dark, and system theme modes.
 
-### Scenario: Toggle cycles through modes [STY.story-viewer.theme.toggle.cycle]
+### Scenario: Toggle cycles through modes [STO.story-viewer.theme.toggle.cycle]
 Testing: e2e
 Promote: pending
 
@@ -29,7 +29,7 @@ Promote: pending
 - THEN the theme cycles: system → light → dark → system
 - AND the current mode is visually indicated
 
-### Scenario: Theme persists across sessions [STY.story-viewer.theme.toggle.persist]
+### Scenario: Theme persists across sessions [STO.story-viewer.theme.toggle.persist]
 Testing: e2e
 Promote: pending
 
@@ -38,7 +38,7 @@ Promote: pending
 - THEN the selected theme mode is restored
 - AND localStorage key "storify-theme" contains the preference
 
-### Scenario: System mode follows OS preference [STY.story-viewer.theme.toggle.system]
+### Scenario: System mode follows OS preference [STO.story-viewer.theme.toggle.system]
 Testing: e2e
 Promote: pending
 
@@ -50,11 +50,11 @@ Promote: pending
 
 ---
 
-## Preview Background [STY.story-viewer.theme.background]
+## Preview Background [STO.story-viewer.theme.background]
 
 The preview area background color reflects the current theme.
 
-### Scenario: Light theme background [STY.story-viewer.theme.background.light]
+### Scenario: Light theme background [STO.story-viewer.theme.background.light]
 Testing: e2e
 Promote: pending
 
@@ -62,7 +62,7 @@ Promote: pending
 - THEN preview area has white/light background (#ffffff or similar)
 - AND provides good contrast for dark-themed components
 
-### Scenario: Dark theme background [STY.story-viewer.theme.background.dark]
+### Scenario: Dark theme background [STO.story-viewer.theme.background.dark]
 Testing: e2e
 Promote: pending
 

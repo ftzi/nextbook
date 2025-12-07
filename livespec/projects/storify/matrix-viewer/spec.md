@@ -1,4 +1,4 @@
-# Matrix Viewer *[NEX-matrix-viewer]*
+# Matrix Viewer [STO.matrix-viewer]
 
 The matrix viewer displays all prop combinations for a `storyMatrix()` story in a virtualized grid. This allows developers to see every variant of a component at once, useful for visual regression testing and design review.
 
@@ -12,18 +12,18 @@ For Playwright screenshots and visual regression testing, we provide a `?fullRen
 
 ---
 
-## Grid Layout *[NEX-matrix-viewer.grid]*
+## Grid Layout [STO.matrix-viewer.grid]
 
 The matrix displays combinations in a grid layout.
 
-### Scenario: Cells arranged by combination *[NEX-matrix-viewer.grid.arrangement]*
+### Scenario: Cells arranged by combination [STO.matrix-viewer.grid.arrangement]
 Testing: e2e
 
 - WHEN a matrix story is viewed
 - THEN each prop combination is rendered in its own cell
 - AND cells are arranged in a responsive grid
 
-### Scenario: Cell labels *[NEX-matrix-viewer.grid.labels]*
+### Scenario: Cell labels [STO.matrix-viewer.grid.labels]
 Testing: e2e
 
 - WHEN viewing a matrix cell
@@ -32,25 +32,25 @@ Testing: e2e
 
 ---
 
-## Virtualized Rendering *[NEX-matrix-viewer.virtualization]*
+## Virtualized Rendering [STO.matrix-viewer.virtualization]
 
 The matrix uses virtualization for performance.
 
-### Scenario: Only visible rows rendered *[NEX-matrix-viewer.virtualization.visible-only]*
+### Scenario: Only visible rows rendered [STO.matrix-viewer.virtualization.visible-only]
 Testing: e2e
 
 - WHEN the matrix has many rows
 - THEN only visible rows are rendered to the DOM
 - AND scrolling renders new rows as needed
 
-### Scenario: Smooth scrolling *[NEX-matrix-viewer.virtualization.smooth]*
+### Scenario: Smooth scrolling [STO.matrix-viewer.virtualization.smooth]
 Testing: e2e
 
 - WHEN user scrolls the matrix
 - THEN rows appear seamlessly
 - AND no visual jank or flicker occurs
 
-### Scenario: Dynamic cell measurement *[NEX-matrix-viewer.virtualization.measurement]*
+### Scenario: Dynamic cell measurement [STO.matrix-viewer.virtualization.measurement]
 Testing: unit
 
 - WHEN the matrix first renders
@@ -60,18 +60,18 @@ Testing: unit
 
 ---
 
-## Full Render Mode *[NEX-matrix-viewer.full-render]*
+## Full Render Mode [STO.matrix-viewer.full-render]
 
 The matrix supports disabling virtualization for testing.
 
-### Scenario: Full render via URL *[NEX-matrix-viewer.full-render.url]*
+### Scenario: Full render via URL [STO.matrix-viewer.full-render.url]
 Testing: e2e
 
 - WHEN URL has `?fullRender=true` parameter
 - THEN all cells are rendered to the DOM
 - AND virtualization is disabled
 
-### Scenario: Playwright screenshot compatibility *[NEX-matrix-viewer.full-render.playwright]*
+### Scenario: Playwright screenshot compatibility [STO.matrix-viewer.full-render.playwright]
 Testing: e2e
 
 - WHEN taking a Playwright screenshot with fullRender
@@ -80,18 +80,18 @@ Testing: e2e
 
 ---
 
-## Accessible Cells *[NEX-matrix-viewer.accessibility]*
+## Accessible Cells [STO.matrix-viewer.accessibility]
 
 Matrix cells are accessible and interactive.
 
-### Scenario: Keyboard navigation *[NEX-matrix-viewer.accessibility.keyboard]*
+### Scenario: Keyboard navigation [STO.matrix-viewer.accessibility.keyboard]
 Testing: e2e
 
 - WHEN a cell is focused
 - THEN pressing Enter/Space triggers click
 - AND Tab moves to next cell
 
-### Scenario: No nested button errors *[NEX-matrix-viewer.accessibility.no-nested-buttons]*
+### Scenario: No nested button errors [STO.matrix-viewer.accessibility.no-nested-buttons]
 Testing: e2e
 
 - WHEN story content contains a button

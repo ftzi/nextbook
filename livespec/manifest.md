@@ -4,15 +4,14 @@ Registry of projects and housekeeping state.
 
 ## Projects
 
-<!-- Run /livespec to populate this table with your projects -->
-
 | Code | Name | Path |
 |------|------|------|
-| | | |
+| STO | Storify | `packages/storify/` |
+| WEB | Marketing Website | `apps/nextjs/` |
 
 ## Housekeeping
 
-Last run: Never
+Last run: 2025-12-07
 
 ## Notes
 

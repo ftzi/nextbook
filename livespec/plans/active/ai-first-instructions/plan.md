@@ -165,8 +165,8 @@ Instructions should NOT include:
 
 ## Affected Specs
 
-- `[STY.cli.init]` — MODIFIED (generates AI instruction files)
-- `[STY.cli.ai-instructions]` — ADDED (new feature)
+- `[STO.cli.init]` — MODIFIED (generates AI instruction files)
+- `[STO.cli.ai-instructions]` — ADDED (new feature)
 
 ---
 

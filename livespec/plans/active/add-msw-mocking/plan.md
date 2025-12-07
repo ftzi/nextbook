@@ -23,16 +23,19 @@ When developers view component stories at `/ui`, components that make API calls 
 ## Design Decisions
 
 ### Decision: MSW as Peer Dependency
+
 **Choice:** MSW is a peer dependency, not bundled
 **Alternatives:** Bundle MSW, create custom mocking solution
 **Rationale:** Users install and set up MSW themselves, maintaining our zero-dependencies principle
 
 ### Decision: No Re-exports
+
 **Choice:** Users import MSW utilities directly from `msw`
 **Alternatives:** Re-export common utilities from storify
 **Rationale:** Avoids version conflicts and keeps storify focused
 
 ### Decision: Mock Factories
+
 **Choice:** Mocks can be functions that receive control values
 **Rationale:** Allows mocks to respond to interactive control changes
 
@@ -60,4 +63,4 @@ When developers view component stories at `/ui`, components that make API calls 
 ## Affected Specs
 
 - `SPEC:storify.story-api` — MODIFIED (add mocks property)
-- `SPEC:storify.msw-mocking` — ADDED (new capability)
+- `SPEC:storify.msw` — ADDED (new capability)
