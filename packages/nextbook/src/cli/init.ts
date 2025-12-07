@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
+import { writeWithMarkers } from "./marker-writer"
 import { replaceImports, templates } from "./templates"
 
 type InitOptions = {
@@ -61,12 +62,26 @@ export function init(options: InitOptions = {}): InitResult {
 		}
 	}
 
-	// Files to create
+	// AI instruction files (use marker-aware writer for upgrades)
+	const aiFiles = [join(uiDir, "CLAUDE.md"), join(uiDir, "AGENTS.md")]
+
+	for (const aiFile of aiFiles) {
+		try {
+			const { created, updated } = writeWithMarkers(aiFile, templates.aiInstructions)
+			if (created) {
+				result.created.push(aiFile)
+			} else if (updated) {
+				// Mark as created for output purposes (it was updated)
+				result.created.push(aiFile)
+			}
+		} catch (_err) {
+			result.errors.push(`Failed to write AI instructions: ${aiFile}`)
+			result.success = false
+		}
+	}
+
+	// Regular files to create (skip if existing)
 	const files: Array<{ path: string; content: string }> = [
-		{
-			path: join(uiDir, "AGENTS.md"),
-			content: templates.agents,
-		},
 		{
 			path: join(uiDir, "layout.tsx"),
 			content: replaceImports(templates.layout, workspace),

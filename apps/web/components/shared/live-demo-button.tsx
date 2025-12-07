@@ -12,9 +12,10 @@ const sizeVariants = cva(
 	{
 		variants: {
 			size: {
-				default: "h-9 px-4 py-2 text-sm",
-				sm: "h-8 gap-1.5 px-3 text-sm",
-				lg: "h-10 px-6 text-sm",
+				// Heights account for 1px wrapper padding on each side (p-px on wrapper)
+				default: "h-[34px] px-4 py-2 text-sm",
+				sm: "h-[30px] gap-1.5 px-3 text-sm",
+				lg: "h-[38px] px-6 text-sm",
 			},
 		},
 		defaultVariants: {

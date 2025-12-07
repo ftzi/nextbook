@@ -5,7 +5,7 @@ const MOCKS_INDICATOR_PATTERN = /^Mocks$/
 test.describe("MSW Mocking", () => {
 	test("mocks indicator visibility based on story mocks", async ({ page }) => {
 		// Story with mocks should show indicator
-		await page.goto("/ui/data-fetching/user-card/default")
+		await page.goto("/ui/user-card/default")
 		await page.waitForSelector("h1")
 		await page.waitForTimeout(2000) // Wait for MSW to initialize
 
@@ -13,7 +13,7 @@ test.describe("MSW Mocking", () => {
 		await expect(mocksIndicator).toBeVisible({ timeout: 10000 })
 
 		// Story without mocks should not show indicator
-		await page.goto("/ui/button/default")
+		await page.goto("/ui/button/controlled")
 		await page.waitForSelector("h1")
 		await page.waitForTimeout(1000)
 
@@ -21,7 +21,7 @@ test.describe("MSW Mocking", () => {
 	})
 
 	test("visual snapshot", async ({ page }) => {
-		await page.goto("/ui/data-fetching/user-card/default")
+		await page.goto("/ui/user-card/default")
 		await page.waitForSelector("h1")
 		await page.waitForTimeout(1000)
 

@@ -3,80 +3,112 @@
  * These are used to scaffold the initial structure.
  */
 
-export const templates = {
-	agents: `# Nextbook - AI Assistant Instructions
+/**
+ * AI instruction content (shared between CLAUDE.md and AGENTS.md).
+ * Uses markers so users can add custom instructions outside the managed section.
+ */
+export const aiInstructionsContent = `# Nextbook Story Instructions
 
-This directory contains a [Nextbook](https://github.com/your-org/nextbook) component story setup.
+This project uses [Nextbook](https://nextbook.dev) for component stories.
 
-## Structure
+## Writing Stories
 
-- \`layout.tsx\` - Nextbook layout (wraps children with NextbookShell)
-- \`[[...path]]/page.tsx\` - Catch-all route for stories
-- \`stories/index.ts\` - Story registry (**MUST have "use client"**)
-- \`stories/*.story.tsx\` - Story files
-
-## Adding New Stories
-
-1. Create a story file in \`stories/\`:
+### Basic Story
 
 \`\`\`tsx
-// stories/my-component.story.tsx
 import { story } from "nextbook"
-import { MyComponent } from "@/components/my-component"
+import { Button } from "@/components/ui/button"
 
 export const Default = story({
-  render: () => <MyComponent />,
+  render: () => <Button>Click me</Button>,
 })
 \`\`\`
 
-2. Register it in \`stories/index.ts\`:
+### Story with Controls (Zod Schema)
 
 \`\`\`tsx
-export const stories = createStories({
-  // ... existing stories
-  myComponent: () => import("./my-component.story"),
-})
-\`\`\`
-
-## Key Rules
-
-### "use client" is required
-The \`stories/index.ts\` file MUST have \`"use client"\` at the top. The loaders contain functions that cannot cross the server→client boundary.
-
-### Keys become sidebar paths
-Registry keys become the sidebar hierarchy:
-- \`button: () => import(...)\` → "Button"
-- \`forms: { input: () => import(...) }\` → "Forms > Input"
-
-### Named exports become variants
-Each named export in a story file becomes a variant:
-- \`export const Default\` → "My Component > Default"
-- \`export const Large\` → "My Component > Large"
-
-## Zod Controls
-
-Use Zod schemas to auto-generate interactive controls:
-
-\`\`\`tsx
+import { story } from "nextbook"
 import { z } from "zod"
+import { Button } from "@/components/ui/button"
 
-export const Controlled = story({
+export const Playground = story({
   schema: z.object({
-    label: z.string().default("Click").describe("Button text"),
-    variant: z.enum(["primary", "secondary"]).default("primary"),
+    children: z.string().default("Click me"),
+    variant: z.enum(["default", "secondary", "outline", "ghost"]).default("default"),
+    size: z.enum(["sm", "default", "lg"]).default("default"),
     disabled: z.boolean().default(false),
   }),
   render: (props) => <Button {...props} />,
 })
 \`\`\`
 
-| Zod Type        | Control         |
-| --------------- | --------------- |
-| \`z.string()\`    | Text input      |
-| \`z.number()\`    | Number input    |
-| \`z.boolean()\`   | Toggle          |
-| \`z.enum([...])\` | Select dropdown |
-`,
+### Story Matrix (All Combinations)
+
+\`\`\`tsx
+import { storyMatrix } from "nextbook"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+
+export const AllVariants = storyMatrix({
+  schema: z.object({
+    variant: z.enum(["default", "secondary", "outline", "ghost"]),
+    size: z.enum(["sm", "default", "lg"]),
+  }),
+  render: (props) => <Button {...props}>Button</Button>,
+})
+// Generates 4 variants × 3 sizes = 12 stories automatically
+\`\`\`
+
+## Zod Schema Patterns
+
+| Type | Pattern | UI Control |
+|------|---------|------------|
+| String | \`z.string().default("text")\` | Text input |
+| Number | \`z.number().default(0)\` | Number input |
+| Boolean | \`z.boolean().default(false)\` | Checkbox |
+| Enum | \`z.enum(["a", "b"]).default("a")\` | Select dropdown |
+| Optional | \`z.string().optional()\` | Input with clear |
+
+## File Conventions
+
+- Story files: \`*.story.tsx\`
+- Location: \`stories/\` directory
+- One component per story file
+- Export multiple variants from same file
+
+## Registering Stories
+
+After creating a story file, register it in \`stories/index.ts\`:
+
+\`\`\`tsx
+"use client"
+
+import { createStories } from "nextbook"
+
+export const stories = createStories({
+  button: () => import("./button.story"),
+  card: () => import("./card.story"),
+  // Nested structure for organization:
+  forms: {
+    input: () => import("./forms/input.story"),
+    select: () => import("./forms/select.story"),
+  },
+})
+\`\`\`
+
+**IMPORTANT:** The \`stories/index.ts\` file MUST have \`"use client"\` at the top.
+
+## Best Practices
+
+1. **Always provide defaults** — Use \`.default()\` on schema fields
+2. **Use descriptive export names** — \`Default\`, \`WithIcon\`, \`Disabled\`
+3. **Group related variants** — Keep all Button stories in \`button.story.tsx\`
+4. **Use storyMatrix for exhaustive testing** — Cover all prop combinations
+5. **Add descriptions** — Use \`.describe("hint")\` for control labels
+`
+
+export const templates = {
+	aiInstructions: aiInstructionsContent,
 
 	layout: `import "@/app/globals.css"
 import { NextbookShell } from "nextbook"

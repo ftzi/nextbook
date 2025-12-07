@@ -1,5 +1,3 @@
-STILL WIP!
-
 <p align="center">
   <img src="https://github.com/ftzi/nextbook/blob/main/assets/logo.svg" alt="Nextbook" width="400" />
 </p>
@@ -29,7 +27,7 @@ Nextbook is a lightweight alternative to Storybook, designed specifically for Ne
 - **Type Safe** - Full TypeScript support with IntelliSense
 - **Lazy Loading** - Stories load on-demand for fast startup
 - **Background Switcher** - Toggle between default and striped backgrounds to spot component imperfections
-- **AI-Ready** - Simple, predictable API that AI assistants can use to generate stories instantly
+- **AI-First** - Generates `CLAUDE.md` and `AGENTS.md` files that teach AI assistants how to write stories
 - **API Mocking** - Optional MSW integration to mock API endpoints in stories
 
 ## 🚀 Quick Start
@@ -447,17 +445,33 @@ export const Matrix = storyMatrix({
 | **Combinatorial testing** | Manual (write each variant) | **Automatic (storyMatrix)** |
 | Variant coverage        | Whatever you remember        | **100% guaranteed**          |
 | Maintenance burden      | High (keep variants in sync) | **Zero (schema is truth)**  |
+| AI assistant support    | No                           | **Yes (CLAUDE.md, AGENTS.md)** |
 | API Mocking             | Addon (msw-storybook-addon)  | Built-in (optional MSW)      |
 
-## 🤖 AI-Ready
+## 🤖 AI-First Design
 
-Nextbook is designed to work seamlessly with AI assistants. The simple, predictable API makes it easy for AI to generate stories for your components instantly.
+Nextbook is the **first component documentation tool with built-in AI assistant support**. When you run `npx nextbook`, it generates `CLAUDE.md` and `AGENTS.md` files in your stories directory that teach AI assistants how to write stories.
 
-Just ask your AI assistant:
+**What this means:**
 
-> "Create a nextbook story for my Button component with variants for primary, secondary, and disabled states"
+- **Claude Code** reads `CLAUDE.md`
+- **Cursor** reads `AGENTS.md`
+- **Other AI tools** can reference these files
 
-The straightforward `story()` function and Zod schema integration means AI can quickly understand your component props and generate comprehensive stories with interactive controls - no complex configuration to explain.
+The generated instructions include:
+- How to write `story()` with examples
+- Zod schema patterns for controls
+- `storyMatrix()` for combinations
+- File naming conventions
+- Best practices
+
+**Just say:**
+
+> "Write a story for my Button component"
+
+And your AI assistant already knows exactly how to create a comprehensive story with interactive controls, variants, and even a matrix for all combinations - no explanation needed.
+
+**Upgradable:** Re-running `npx nextbook` updates the AI instructions section (marked with `<!-- NEXTBOOK:START -->` / `<!-- NEXTBOOK:END -->`) while preserving any custom instructions you've added outside the markers.
 
 ## 🛠️ Development
 

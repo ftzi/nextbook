@@ -1,4 +1,5 @@
 import type { Stories, StoryLoader, StoryLoaders, StoryTreeNode } from "./types"
+import { formatSegmentName } from "./utils/format-name"
 
 /** Nested input structure for createStories */
 type NestedLoaders = {
@@ -56,14 +57,14 @@ export function createStories(nestedLoaders: NestedLoaders): Stories {
 		let currentLevel = tree
 		for (let i = 0; i < segments.length; i++) {
 			const segment = segments[i] as string
-			const capitalizedSegment = segment.charAt(0).toUpperCase() + segment.slice(1)
+			const formattedName = formatSegmentName(segment)
 
 			let node = currentLevel.find((n) => n.segment.toLowerCase() === segment.toLowerCase())
 
 			if (!node) {
 				node = {
-					name: capitalizedSegment,
-					segment: capitalizedSegment,
+					name: formattedName,
+					segment, // Keep original segment for URL matching
 					children: [],
 					// Store filePath on leaf nodes for loading
 					...(i === segments.length - 1 && { filePath }),

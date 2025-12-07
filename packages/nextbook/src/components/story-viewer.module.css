@@ -97,6 +97,39 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
+ * THEME TOGGLE
+ * ═══════════════════════════════════════════════════════════════════════════════ */
+
+.themeButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: none;
+	border-radius: var(--nb-radius-sm);
+	background: transparent;
+	color: var(--nb-text-tertiary);
+	cursor: pointer;
+	transition:
+		background var(--nb-transition-fast),
+		color var(--nb-transition-fast);
+}
+
+.themeButton:hover {
+	background: var(--nb-bg-hover);
+	color: var(--nb-text-secondary);
+}
+
+.themeButtonActive {
+	color: var(--nb-text-brand);
+}
+
+.themeButtonActive:hover {
+	color: var(--nb-text-brand);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
  * PAN TOGGLE
  * ═══════════════════════════════════════════════════════════════════════════════ */
 
@@ -353,6 +386,16 @@
 	background: var(--nb-bg-canvas);
 }
 
+/* Manual light theme override */
+.canvasDefault[data-nb-theme="light"] {
+	background: #ffffff;
+}
+
+/* Manual dark theme override */
+.canvasDefault[data-nb-theme="dark"] {
+	background: #0a0a0a;
+}
+
 .canvasStriped {
 	background-image: repeating-linear-gradient(-45deg, #fff, #fff 10px, #e5e5e5 10px, #e5e5e5 20px);
 }
@@ -361,6 +404,16 @@
 	.canvasStriped {
 		background-image: repeating-linear-gradient(-45deg, #262626, #262626 10px, #404040 10px, #404040 20px);
 	}
+}
+
+/* Manual light theme override */
+.canvasStriped[data-nb-theme="light"] {
+	background-image: repeating-linear-gradient(-45deg, #fff, #fff 10px, #e5e5e5 10px, #e5e5e5 20px);
+}
+
+/* Manual dark theme override */
+.canvasStriped[data-nb-theme="dark"] {
+	background-image: repeating-linear-gradient(-45deg, #262626, #262626 10px, #404040 10px, #404040 20px);
 }
 
 .canvasCheckered {
@@ -383,6 +436,22 @@
 			linear-gradient(45deg, #404040 25%, transparent 25%), linear-gradient(-45deg, #404040 25%, transparent 25%),
 			linear-gradient(45deg, transparent 75%, #404040 75%), linear-gradient(-45deg, transparent 75%, #404040 75%);
 	}
+}
+
+/* Manual light theme override */
+.canvasCheckered[data-nb-theme="light"] {
+	background-color: #fff;
+	background-image:
+		linear-gradient(45deg, #e5e5e5 25%, transparent 25%), linear-gradient(-45deg, #e5e5e5 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #e5e5e5 75%), linear-gradient(-45deg, transparent 75%, #e5e5e5 75%);
+}
+
+/* Manual dark theme override */
+.canvasCheckered[data-nb-theme="dark"] {
+	background-color: #262626;
+	background-image:
+		linear-gradient(45deg, #404040 25%, transparent 25%), linear-gradient(-45deg, #404040 25%, transparent 25%),
+		linear-gradient(45deg, transparent 75%, #404040 75%), linear-gradient(-45deg, transparent 75%, #404040 75%);
 }
 
 .canvasInner {

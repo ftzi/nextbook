@@ -15,34 +15,15 @@ type ComparisonRow = {
 }
 
 const comparisons: ComparisonRow[] = [
-	{ feature: "Dependencies", storybook: "100+ packages", nextbook: "Zero", highlight: true },
-	{ feature: "Setup time", storybook: "~30 min", nextbook: "~5 min" },
-	{ feature: "Separate build", storybook: true, nextbook: false },
-	{ feature: "Config duplication", storybook: true, nextbook: false },
-	{ feature: "Bundle size", storybook: "Large", nextbook: "Minimal" },
-	{
-		feature: "Hot reload",
-		storybook: "Separate process",
-		nextbook: "Same as app",
-	},
-	{
-		feature: "Combinatorial testing",
-		storybook: "Manual",
-		nextbook: "Automatic",
-		highlight: true,
-	},
-	{
-		feature: "Variant coverage",
-		storybook: "What you remember",
-		nextbook: "100% guaranteed",
-		highlight: true,
-	},
-	{
-		feature: "Maintenance burden",
-		storybook: "High",
-		nextbook: "Zero",
-		highlight: true,
-	},
+	{ feature: "Runtime dependencies", storybook: "100+ packages", nextbook: "Zero" },
+	{ feature: "Setup", storybook: "Hours of config", nextbook: "npx nextbook" },
+	{ feature: "Separate build process", storybook: "Yes", nextbook: "No" },
+	{ feature: "Config files", storybook: ".storybook/*, main.js...", nextbook: "None" },
+	{ feature: "Dev server", storybook: "Separate process", nextbook: "Native Next.js" },
+	{ feature: "AI assistant support", storybook: "No", nextbook: "Yes", highlight: true },
+	{ feature: "Hosting", storybook: "Separate deployment", nextbook: "Same as your app", highlight: true },
+	{ feature: "Renders same as production", storybook: "No", nextbook: "Yes", highlight: true },
+	{ feature: "Story matrix", storybook: "No", nextbook: "Yes", highlight: true },
 ]
 
 function ValueCell({ value, isNextbook }: { value: string | boolean; isNextbook: boolean }) {
@@ -54,7 +35,16 @@ function ValueCell({ value, isNextbook }: { value: string | boolean; isNextbook:
 		)
 	}
 
-	return <span className={cn(isNextbook && "font-medium text-foreground")}>{value}</span>
+	if (isNextbook) {
+		return (
+			<span className="inline-flex items-center gap-1.5 font-medium text-foreground">
+				{value}
+				<Check className="size-4 text-green-400" />
+			</span>
+		)
+	}
+
+	return <span className="text-muted-foreground">{value}</span>
 }
 
 export function Comparison() {

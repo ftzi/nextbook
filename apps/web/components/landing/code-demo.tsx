@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Check, Copy } from "lucide-react"
+import { Check, Copy, Grid3X3, Sparkles } from "lucide-react"
 import { useState } from "react"
 import { Container } from "@/components/shared/container"
 import { Section } from "@/components/shared/section"
@@ -48,7 +48,7 @@ export function CodeDemo({ highlightedCode }: { highlightedCode: HighlightedCode
 	const [activeTab, setActiveTab] = useState<TabId>("basic")
 
 	return (
-		<Section id="code" background="gradient">
+		<Section id="code">
 			<Container>
 				<div className="mx-auto max-w-2xl text-center">
 					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">Simple, powerful API</h2>
@@ -103,12 +103,20 @@ export function CodeDemo({ highlightedCode }: { highlightedCode: HighlightedCode
 						<motion.div
 							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
-							className="mt-4 rounded-lg border border-brand-purple/30 bg-brand-purple/10 p-4"
+							className="mt-4 flex items-center gap-4 rounded-lg border border-brand-purple/30 bg-brand-purple/5 px-5 py-4"
 						>
-							<p className="text-brand-purple text-sm">
-								Story Matrix generates all prop combinations automatically. No more writing PrimarySmall, PrimaryLarge,
-								SecondarySmall...
-							</p>
+							<div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-purple/20">
+								<Grid3X3 className="size-5 text-brand-purple" />
+							</div>
+							<div className="min-w-0 flex-1">
+								<div className="flex items-center gap-2">
+									<p className="font-medium text-foreground text-sm">One line, 24 stories</p>
+									<Sparkles className="size-3.5 text-brand-purple" />
+								</div>
+								<p className="mt-0.5 text-muted-foreground text-xs">
+									4 variants × 3 sizes × 2 loading states = visual grid of every combination
+								</p>
+							</div>
 						</motion.div>
 					)}
 				</div>

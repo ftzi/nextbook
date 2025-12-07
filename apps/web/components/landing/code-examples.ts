@@ -21,13 +21,11 @@ export const Controlled = story({
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 
-// Generates ALL 12 combinations automatically!
-// (3 variants × 2 sizes × 2 disabled states)
 export const Matrix = storyMatrix({
   schema: z.object({
-    variant: z.enum(["primary", "secondary", "ghost"]),
-    size: z.enum(["sm", "lg"]),
-    disabled: z.boolean(),
+    variant: z.enum(["default", "secondary", "outline", "ghost"]),
+    size: z.enum(["sm", "default", "lg"]),
+    loading: z.boolean(),
   }),
   render: (props) => <Button {...props}>Click me</Button>,
 })`,

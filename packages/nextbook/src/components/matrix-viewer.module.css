@@ -14,7 +14,6 @@
 	flex-direction: column;
 	height: 100%;
 	min-height: 0;
-	overflow: hidden;
 	background: var(--nb-bg-canvas);
 }
 
@@ -31,6 +30,9 @@
 	border-bottom: 1px solid var(--nb-border-subtle);
 	flex-shrink: 0;
 	gap: var(--nb-space-4);
+	overflow: visible;
+	position: relative;
+	z-index: 10;
 }
 
 /* Mobile: smaller padding, wrap to multiple lines */
@@ -76,7 +78,7 @@
 .badge {
 	display: inline-flex;
 	align-items: center;
-	padding: var(--nb-space-1) var(--nb-space-2);
+	padding: var(--nb-space-1-5) var(--nb-space-3);
 	font-size: var(--nb-text-xs);
 	font-weight: var(--nb-font-medium);
 	color: var(--nb-text-brand);
@@ -145,8 +147,7 @@
 	gap: var(--nb-space-2);
 	flex: 1;
 	min-width: 0;
-	overflow-x: auto;
-	scrollbar-width: none;
+	overflow: visible;
 }
 
 .headerFilters::-webkit-scrollbar {
@@ -172,8 +173,8 @@
 .filterChip {
 	display: flex;
 	align-items: center;
-	gap: var(--nb-space-1);
-	padding: var(--nb-space-1) var(--nb-space-2-5);
+	gap: var(--nb-space-1-5);
+	padding: var(--nb-space-1-5) var(--nb-space-3);
 	font-size: var(--nb-text-xs);
 	font-weight: var(--nb-font-medium);
 	color: var(--nb-text-secondary);
@@ -316,7 +317,7 @@
 	display: flex;
 	align-items: center;
 	gap: var(--nb-space-1-5);
-	padding: var(--nb-space-1) var(--nb-space-2-5);
+	padding: var(--nb-space-1-5) var(--nb-space-3);
 	font-size: var(--nb-text-xs);
 	font-weight: var(--nb-font-medium);
 	color: var(--nb-text-secondary);

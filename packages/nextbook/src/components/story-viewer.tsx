@@ -6,12 +6,12 @@ import { useMswWorker } from "../hooks/msw-context"
 import { isMatrixStory } from "../story-matrix"
 import type { ControlConfig, MatrixStory, MockHandler, Story } from "../types"
 import { getSchemaDefaults, schemaToControls } from "../utils/schema"
+import { type BackgroundType, type ThemeMode, useBackground, useTheme } from "../utils/use-stored-state"
 import { ControlsPanel, DEFAULT_SIZE_BOTTOM, DEFAULT_SIZE_RIGHT } from "./controls-panel"
 import { MatrixViewer } from "./matrix-viewer"
 import styles from "./story-viewer.module.css"
 import { Tooltip } from "./tooltip"
 
-type BackgroundType = "default" | "striped" | "checkered"
 type PanelPosition = "bottom" | "right"
 
 type StoryViewerProps = {
@@ -30,8 +30,11 @@ export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 	const [controls, setControls] = useState<ControlConfig[]>([])
 	const [values, setValues] = useState<Record<string, unknown>>({})
 	const [defaultValues, setDefaultValues] = useState<Record<string, unknown>>({})
-	const [background, setBackground] = useState<BackgroundType>("default")
 	const [mocksActive, setMocksActive] = useState(false)
+
+	// Persisted state (reactive localStorage)
+	const [theme, setTheme] = useTheme()
+	const [background, setBackground] = useBackground()
 
 	// MSW worker for mocking
 	const { worker, isReady: mswReady } = useMswWorker()
@@ -251,6 +254,8 @@ export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 					<div className={styles.headerControls}>
 						{mocksActive && <MocksIndicator />}
 						{mocksActive && <div className={styles.divider} />}
+						<ThemeToggle value={theme} onChange={setTheme} />
+						<div className={styles.divider} />
 						<PanToggle enabled={isPanEnabled} onChange={setIsPanEnabled} />
 						<div className={styles.divider} />
 						<ZoomControls
@@ -268,7 +273,12 @@ export function StoryViewer({ story, storyType, title }: StoryViewerProps) {
 
 				{/* Story canvas */}
 				{/* biome-ignore lint/a11y/noStaticElementInteractions: canvas needs drag events for pan functionality */}
-				<div ref={canvasRef} className={canvasClassName} onMouseDown={handleMouseDown}>
+				<div
+					ref={canvasRef}
+					className={canvasClassName}
+					onMouseDown={handleMouseDown}
+					data-nb-theme={theme !== "system" ? theme : undefined}
+				>
 					<div
 						className={styles.canvasInner}
 						style={{
@@ -476,6 +486,61 @@ function MocksIndicator() {
 				</svg>
 				<span>Mocks</span>
 			</div>
+		</Tooltip>
+	)
+}
+
+const THEME_CYCLE: Record<ThemeMode, ThemeMode> = { system: "light", light: "dark", dark: "system" }
+
+function ThemeToggle({ value, onChange }: { value: ThemeMode; onChange: (value: ThemeMode) => void }) {
+	const cycleTheme = () => onChange(THEME_CYCLE[value])
+
+	const labels: Record<ThemeMode, string> = {
+		system: "System theme",
+		light: "Light theme",
+		dark: "Dark theme",
+	}
+
+	return (
+		<Tooltip content={labels[value]}>
+			<button
+				type="button"
+				onClick={cycleTheme}
+				className={`${styles.themeButton} ${value !== "system" ? styles.themeButtonActive : ""}`}
+				aria-label={labels[value]}
+			>
+				{value === "light" && (
+					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+						{/* Sun icon */}
+						<circle cx="7" cy="7" r="2.5" stroke="currentColor" strokeWidth="1.2" />
+						<path
+							d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13M2.75 2.75l1.06 1.06M10.19 10.19l1.06 1.06M2.75 11.25l1.06-1.06M10.19 3.81l1.06-1.06"
+							stroke="currentColor"
+							strokeWidth="1.2"
+							strokeLinecap="round"
+						/>
+					</svg>
+				)}
+				{value === "dark" && (
+					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+						{/* Moon icon */}
+						<path
+							d="M12.5 7.5a5.5 5.5 0 1 1-6-6 4.5 4.5 0 0 0 6 6Z"
+							stroke="currentColor"
+							strokeWidth="1.2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				)}
+				{value === "system" && (
+					<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+						{/* Monitor/system icon */}
+						<rect x="1.5" y="2" width="11" height="8" rx="1" stroke="currentColor" strokeWidth="1.2" />
+						<path d="M5 12h4M7 10v2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+					</svg>
+				)}
+			</button>
 		</Tooltip>
 	)
 }

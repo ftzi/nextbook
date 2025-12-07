@@ -1,7 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { ArrowRight, Menu, X } from "lucide-react"
 import Link from "next/link"
 import { Logo } from "nextbook"
 import { useState } from "react"
@@ -27,17 +27,20 @@ export function Header() {
 					</Link>
 
 					{/* Desktop navigation */}
-					<div className="hidden items-center gap-4 md:flex">
+					<div className="hidden items-center gap-1 md:flex">
 						<Button variant="ghost" size="sm" asChild>
 							<a href="#features">Features</a>
 						</Button>
 						<Button variant="ghost" size="sm" asChild>
-							<a href="#quickstart">Quick Start</a>
-						</Button>
-						<Button size="sm" asChild>
-							<a href="#quickstart">Get Started</a>
+							<a href="#comparison">Why Nextbook</a>
 						</Button>
 						<LiveDemoButton />
+						<Button size="sm" asChild>
+							<a href="#quickstart">
+								Get Started
+								<ArrowRight className="size-3.5" />
+							</a>
+						</Button>
 						<a
 							href={externalLinks.github}
 							target="_blank"
@@ -84,8 +87,8 @@ export function Header() {
 								</Button>
 								<Button variant="ghost" size="sm" className="justify-start" asChild>
 									{/* biome-ignore lint/a11y/useValidAnchor: hash link with menu close behavior */}
-									<a href="#quickstart" onClick={() => setMobileMenuOpen(false)}>
-										Quick Start
+									<a href="#comparison" onClick={() => setMobileMenuOpen(false)}>
+										Why Nextbook
 									</a>
 								</Button>
 								<LiveDemoButton onClick={() => setMobileMenuOpen(false)} />
@@ -101,6 +104,7 @@ export function Header() {
 									{/* biome-ignore lint/a11y/useValidAnchor: hash link with menu close behavior */}
 									<a href="#quickstart" onClick={() => setMobileMenuOpen(false)}>
 										Get Started
+										<ArrowRight className="size-3.5" />
 									</a>
 								</Button>
 							</div>

@@ -1,12 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Check, Copy, Github } from "lucide-react"
+import { Check, Copy } from "lucide-react"
 import { useState } from "react"
 import { Container } from "@/components/shared/container"
-import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { externalLinks } from "@/lib/public-routes"
 
 export function CTA() {
 	const [copied, setCopied] = useState(false)
@@ -19,11 +17,30 @@ export function CTA() {
 
 	return (
 		<section className="relative overflow-hidden py-24">
-			{/* Gradient background */}
+			{/* Geometric background */}
 			<div className="-z-10 pointer-events-none absolute inset-0">
-				<div className="absolute inset-0 bg-gradient-to-t from-brand-purple/10 via-transparent to-transparent" />
-				<div className="absolute bottom-0 left-1/4 h-[300px] w-[300px] rounded-full bg-brand-cyan/10 blur-[100px]" />
-				<div className="absolute right-1/4 bottom-0 h-[300px] w-[300px] rounded-full bg-brand-pink/10 blur-[100px]" />
+				{/* Diagonal lines pattern */}
+				<svg
+					className="absolute inset-0 h-full w-full opacity-[0.04]"
+					xmlns="http://www.w3.org/2000/svg"
+					aria-hidden="true"
+				>
+					<defs>
+						<pattern id="ctaDiagonalLines" patternUnits="userSpaceOnUse" width="60" height="60">
+							<path d="M-15,15 l30,-30 M0,60 l60,-60 M45,75 l30,-30" stroke="currentColor" strokeWidth="1" />
+						</pattern>
+					</defs>
+					<rect width="100%" height="100%" fill="url(#ctaDiagonalLines)" />
+				</svg>
+
+				{/* Accent elements */}
+				<div className="-translate-x-1/2 absolute top-0 left-1/2 h-px w-1/3 bg-gradient-to-r from-transparent via-brand-purple/30 to-transparent" />
+				<div className="-translate-x-1/2 absolute bottom-0 left-1/2 h-px w-1/2 bg-gradient-to-r from-transparent via-brand-cyan/20 to-transparent" />
+
+				{/* Corner accents */}
+				<div className="absolute top-8 left-8 size-1 rounded-full bg-brand-cyan shadow-[0_0_12px_4px] shadow-brand-cyan/30" />
+				<div className="absolute top-8 right-8 size-1 rounded-full bg-brand-purple shadow-[0_0_12px_4px] shadow-brand-purple/30" />
+				<div className="absolute bottom-8 left-1/3 size-1 rounded-full bg-brand-pink shadow-[0_0_12px_4px] shadow-brand-pink/30" />
 			</div>
 
 			<Container>
@@ -67,15 +84,6 @@ export function CTA() {
 							</TooltipContent>
 						</Tooltip>
 					</TooltipProvider>
-
-					<div className="mt-6 flex justify-center">
-						<Button size="lg" variant="outline" asChild>
-							<a href={externalLinks.github} target="_blank" rel="noopener noreferrer">
-								<Github className="size-4" />
-								GitHub
-							</a>
-						</Button>
-					</div>
 				</motion.div>
 			</Container>
 		</section>

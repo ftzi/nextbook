@@ -1,6 +1,6 @@
 {
 	"name": "nextbook",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Next-gen component stories for Next.js",
 	"type": "module",
 	"license": "MIT",
@@ -37,9 +37,9 @@
 	},
 	"peerDependencies": {
 		"msw": ">=2",
-		"next": ">=15",
-		"react": ">=18",
-		"react-dom": ">=18",
+		"next": ">=16.0.7",
+		"react": ">=19.2.1",
+		"react-dom": ">=19.2.1",
 		"zod": ">=3"
 	},
 	"peerDependenciesMeta": {
@@ -52,7 +52,7 @@
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@workspace/typescript-config": "workspace:*",
-		"msw": "^2.7.3",
+		"msw": "^2.12.4",
 		"next": "catalog:",
 		"react": "catalog:",
 		"react-dom": "catalog:",

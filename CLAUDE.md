@@ -1,21 +1,112 @@
-<!-- OPENSPEC:START -->
-# OpenSpec Instructions
+<!-- LIVESPEC:START -->
+# Livespec
 
-These instructions are for AI assistants working in this project.
+This project uses **Livespec** for living specification management. Specs are living documentation that evolves with code.
 
-Always open `@/openspec/AGENTS.md` when the request:
-- Mentions planning or proposals (words like proposal, spec, change, plan)
-- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
-- Sounds ambiguous and you need the authoritative spec before coding
+## Projects
 
-Use `@/openspec/AGENTS.md` to learn:
-- How to create and apply change proposals
-- Spec format and conventions
-- Project structure and guidelines
+<!-- Run /livespec to populate this table with your projects -->
 
-Keep this managed block so 'openspec update' can refresh the instructions.
+| Code | Project | Specs | Codebase |
+|------|---------|-------|----------|
+| | | | |
 
-<!-- OPENSPEC:END -->
+## Before Any Task
+
+- [ ] Check relevant specs in `livespec/projects/[project]/`
+- [ ] Check active plans in `livespec/plans/active/` for conflicts
+- [ ] If modifying behavior, note which specs may need updating
+
+## Decision Tree: Plan or Direct Fix?
+
+```
+├─ Bug fix restoring spec behavior? → Fix directly
+├─ Typo/format/comment only? → Fix directly
+├─ Small enhancement within existing spec? → Fix directly, update spec
+├─ New feature or capability? → Create plan
+├─ Breaking change (API, behavior)? → Create plan
+├─ Cross-cutting (multiple specs)? → Create plan
+└─ Unclear scope? → Create plan (safer)
+```
+
+## Livespec Workflow
+
+When creating significant features (plan needed):
+
+1. **Create plan** in `livespec/plans/active/[name]/plan.md`
+2. **Get approval** — Present plan, STOP, wait for user approval
+3. **Implement** — Work through tasks
+4. **Update specs** — Add/modify specs in `livespec/projects/[project]/`
+5. **Archive automatically** — Move to `livespec/plans/archived/YYYY-MM-DD-[name]/`
+
+## Plan Format
+
+```markdown
+# Plan: [Brief Description]
+
+## Summary
+1-2 sentences on what this plan achieves.
+
+## Why
+Problem or opportunity being addressed.
+
+## What Changes
+- Bullet list of changes
+- Mark breaking changes with **BREAKING**
+
+## Tasks
+- [ ] Task 1
+- [ ] Task 2
+
+## Affected Specs
+- `[PRJ.feature]` — ADDED/MODIFIED/REMOVED
+```
+
+Plan naming: kebab-case, verb-led (`add-`, `update-`, `refactor-`, `fix-`)
+
+## Spec Format
+
+```markdown
+# Feature Name [PRJ.feature]
+
+Narrative explanation of what this feature is and why it exists.
+
+---
+
+## Requirement Name [PRJ.feature.requirement]
+
+### Scenario: Behavior description [PRJ.feature.requirement.scenario]
+Testing: e2e
+
+- WHEN precondition
+- THEN expected outcome
+```
+
+- **Spec IDs**: `[PRJ.path.to.item]` — always in brackets, hierarchical with dots
+- **Testing declaration**: Every scenario needs `Testing: unit|e2e|integration`
+- **Reference in code**: `/** @spec [PRJ.sidebar.tabs] */`
+
+## Directory Structure
+
+```
+livespec/
+├── AGENTS.md           # Detailed conventions (read when writing specs)
+├── manifest.md         # Projects registry
+├── projects/[project]/ # Specs organized by feature
+├── plans/active/       # In-progress plans
+└── plans/archived/     # Completed plans
+```
+
+## Quick Commands
+
+- "Run housekeeping" — Check spec health, find gaps
+- "Continue [plan]" — Resume an active plan
+- `/livespec [request]` — Full workflow with planning
+
+<!-- LIVESPEC:END -->
+
+
+
 
 # CLAUDE.md
 
@@ -25,7 +116,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Workflow Rule:** Always run `bun ok` after finishing a task or when facing issues. This command runs type checking and linting across the entire codebase and must fully pass before considering a task complete.
 
-**No Manual Tests:** Never include manual verification tasks in OpenSpec proposals or task lists. All validation must be automated (`bun ok`, automated tests, etc.). Manual browser testing, viewport testing, and similar human-required verification steps are forbidden.
+**No Manual Tests:** Never include manual verification tasks in Livespec plans or task lists. All validation must be automated (`bun ok`, automated tests, etc.). Manual browser testing, viewport testing, and similar human-required verification steps are forbidden.
+
+**NEVER commit or push:** Do NOT run `git add`, `git commit`, or `git push`. The user handles all git operations manually.
 
 **When starting work on a Next.js project, ALWAYS call the `init` tool from next-devtools-mcp FIRST to set up proper context and establish documentation requirements. Do this automatically without being asked.**
 
@@ -320,6 +413,7 @@ The website includes placeholder areas for screenshots that need to be captured:
   - Exception: `packages/nextbook/src/index.ts` is the public API entry point
 - **Always import directly from source files** - Import from the actual file where the code is defined
 - This improves tree-shaking, makes dependencies explicit, and reduces circular dependency issues
+- **Avoid dynamic imports** - Prefer static `import` over `await import()`. Only use dynamic imports for genuine code splitting or conditional loading based on runtime conditions.
 
 **Function Parameters:**
 
@@ -351,6 +445,11 @@ The website includes placeholder areas for screenshots that need to be captured:
 - Run `bun test` to execute all unit tests
 - NEVER use `timeout` parameters when running tests - run tests normally without artificial timeouts
 - Trust the test framework's default timeout behavior
+- **Post-task test verification** - After completing any task, verify test coverage for changed files:
+  - Modified behavior → Update affected tests to match
+  - New functionality → Add tests for it
+  - Tests must catch regressions to enable confident iteration
+  - A task is not complete until its tests are updated and passing
 
 **E2E Testing (Playwright):**
 

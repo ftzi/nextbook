@@ -19,7 +19,7 @@ export function QuickStart() {
 	}
 
 	return (
-		<Section id="quickstart" background="muted">
+		<Section id="quickstart" variant="mesh">
 			<Container>
 				<div className="mx-auto max-w-2xl text-center">
 					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">Get started in seconds</h2>
@@ -36,16 +36,23 @@ export function QuickStart() {
 					className="mx-auto mt-12 max-w-xl"
 				>
 					{/* Terminal command */}
-					<div className="overflow-hidden rounded-xl border border-border/50 bg-zinc-950 shadow-2xl">
-						<div className="flex items-center justify-between border-zinc-800 border-b px-4 py-3">
+					<div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 shadow-2xl shadow-brand-purple/10">
+						<div className="flex items-center justify-between border-white/5 border-b px-4 py-3">
 							<div className="flex items-center gap-2">
-								<Terminal className="size-4 text-zinc-400" />
-								<span className="text-sm text-zinc-400">Terminal</span>
+								<div className="flex gap-1.5">
+									<div className="size-3 rounded-full bg-[#FF5F56]" />
+									<div className="size-3 rounded-full bg-[#FFBD2E]" />
+									<div className="size-3 rounded-full bg-[#27C93F]" />
+								</div>
+								<div className="ml-2 flex items-center gap-1.5">
+									<Terminal className="size-3.5 text-zinc-500" />
+									<span className="text-xs text-zinc-500">Terminal</span>
+								</div>
 							</div>
 							<Button
 								variant="ghost"
 								size="sm"
-								className="h-7 gap-1.5 text-zinc-400 hover:text-white"
+								className="h-7 gap-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-white"
 								onClick={handleCopy}
 							>
 								{copied ? (
@@ -63,17 +70,24 @@ export function QuickStart() {
 						</div>
 						<div className="p-6">
 							<code className="font-mono text-lg">
-								<span className="text-brand-cyan">$</span> <span className="font-semibold text-white">{command}</span>
+								<span className="text-brand-cyan">$</span> <span className="text-white">{command}</span>
 							</code>
 						</div>
 					</div>
 
 					{/* Steps */}
-					<div className="mt-8 space-y-4">
+					<div className="mt-10 space-y-4">
 						{[
-							{ step: "1", text: "Run the command in your Next.js project" },
-							{ step: "2", text: "Visit localhost:3000/ui to see your stories" },
-							{ step: "3", text: "Write stories — or let AI generate them for you" },
+							{ step: "1", content: "Run the command in your Next.js project" },
+							{
+								step: "2",
+								content: (
+									<>
+										Write stories — or <span className="font-semibold text-white">let AI generate them for you</span>
+									</>
+								),
+							},
+							{ step: "3", content: "Visit localhost:3000/ui to see them live" },
 						].map((item) => (
 							<motion.div
 								key={item.step}
@@ -83,10 +97,10 @@ export function QuickStart() {
 								transition={{ delay: Number(item.step) * 0.1 }}
 								className="flex items-center gap-4"
 							>
-								<div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-purple/20 font-bold font-mono text-brand-purple text-sm">
+								<div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-brand-purple to-brand-pink font-bold font-mono text-sm text-white shadow-brand-purple/20 shadow-lg">
 									{item.step}
 								</div>
-								<p className="text-muted-foreground">{item.text}</p>
+								<p className="text-muted-foreground">{item.content}</p>
 							</motion.div>
 						))}
 					</div>

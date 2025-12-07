@@ -109,6 +109,9 @@ export function MatrixViewer({ story, title }: MatrixViewerProps) {
 	const [filters, setFilters] = useState<FilterState>({})
 	const [sortItems, setSortItems] = useState<SortItem[]>([])
 
+	// Track which dropdown is open (only one at a time)
+	const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
 	// Cell dimensions - start with defaults, will be measured from first rendered cell
 	const [cellDimensions, setCellDimensions] = useState({ width: DEFAULT_CELL_WIDTH, height: DEFAULT_CELL_HEIGHT })
 	const hasMeasuredRef = useRef(false)
@@ -362,6 +365,8 @@ export function MatrixViewer({ story, title }: MatrixViewerProps) {
 									key={dim.name}
 									dimension={dim}
 									selectedValues={selectedValues}
+									isOpen={openDropdown === `filter-${dim.name}`}
+									onOpenChange={(open) => setOpenDropdown(open ? `filter-${dim.name}` : null)}
 									onFilterChange={(value, checked) => handleFilterChange({ dimName: dim.name, value, checked })}
 									onClearFilter={() => handleClearFilter(dim.name)}
 								/>
@@ -376,6 +381,8 @@ export function MatrixViewer({ story, title }: MatrixViewerProps) {
 						<SortMenu
 							dimensions={dimensions}
 							sortItems={sortItems}
+							isOpen={openDropdown === "sort"}
+							onOpenChange={(open) => setOpenDropdown(open ? "sort" : null)}
 							onAddSort={handleAddSort}
 							onRemoveSort={handleRemoveSort}
 							onToggleDirection={handleAddSort}
@@ -458,28 +465,45 @@ export function MatrixViewer({ story, title }: MatrixViewerProps) {
 type FilterChipProps = {
 	dimension: DimensionInfo
 	selectedValues: Set<unknown>
+	isOpen: boolean
+	onOpenChange: (open: boolean) => void
 	onFilterChange: (value: unknown, checked: boolean) => void
 	onClearFilter: () => void
 }
 
-function FilterChip({ dimension, selectedValues, onFilterChange, onClearFilter }: FilterChipProps) {
-	const [isOpen, setIsOpen] = useState(false)
+function FilterChip({
+	dimension,
+	selectedValues,
+	isOpen,
+	onOpenChange,
+	onFilterChange,
+	onClearFilter,
+}: FilterChipProps) {
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const isOpenRef = useRef(isOpen)
 	const hasFilter = selectedValues.size > 0
+
+	// Keep ref in sync with prop
+	useEffect(() => {
+		isOpenRef.current = isOpen
+	}, [isOpen])
 
 	const handleMouseEnter = () => {
 		if (closeTimeoutRef.current) {
 			clearTimeout(closeTimeoutRef.current)
 			closeTimeoutRef.current = null
 		}
-		setIsOpen(true)
+		onOpenChange(true)
 	}
 
 	const handleMouseLeave = () => {
 		closeTimeoutRef.current = setTimeout(() => {
-			setIsOpen(false)
-		}, 150)
+			// Only close if this dropdown is still the open one
+			if (isOpenRef.current) {
+				onOpenChange(false)
+			}
+		}, 100)
 	}
 
 	useEffect(
@@ -542,29 +566,47 @@ function FilterChip({ dimension, selectedValues, onFilterChange, onClearFilter }
 type SortMenuProps = {
 	dimensions: DimensionInfo[]
 	sortItems: SortItem[]
+	isOpen: boolean
+	onOpenChange: (open: boolean) => void
 	onAddSort: (field: string) => void
 	onRemoveSort: (field: string) => void
 	onToggleDirection: (field: string) => void
 }
 
-function SortMenu({ dimensions, sortItems, onAddSort, onRemoveSort, onToggleDirection }: SortMenuProps) {
-	const [isOpen, setIsOpen] = useState(false)
+function SortMenu({
+	dimensions,
+	sortItems,
+	isOpen,
+	onOpenChange,
+	onAddSort,
+	onRemoveSort,
+	onToggleDirection,
+}: SortMenuProps) {
 	const dropdownRef = useRef<HTMLDivElement>(null)
 	const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const isOpenRef = useRef(isOpen)
 	const hasSort = sortItems.length > 0
+
+	// Keep ref in sync with prop
+	useEffect(() => {
+		isOpenRef.current = isOpen
+	}, [isOpen])
 
 	const handleMouseEnter = () => {
 		if (closeTimeoutRef.current) {
 			clearTimeout(closeTimeoutRef.current)
 			closeTimeoutRef.current = null
 		}
-		setIsOpen(true)
+		onOpenChange(true)
 	}
 
 	const handleMouseLeave = () => {
 		closeTimeoutRef.current = setTimeout(() => {
-			setIsOpen(false)
-		}, 150)
+			// Only close if this dropdown is still the open one
+			if (isOpenRef.current) {
+				onOpenChange(false)
+			}
+		}, 100)
 	}
 
 	useEffect(

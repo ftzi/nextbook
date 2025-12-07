@@ -22,12 +22,7 @@ export const stories = createStories({
 	navigation: {
 		tabs: () => import("./navigation/tabs.story"),
 	},
-	"data-display": {
-		avatar: () => import("./data-display/avatar.story"),
-		separator: () => import("./data-display/separator.story"),
-	},
+	avatar: () => import("./avatar.story"),
 	progress: () => import("./progress.story"),
-	"data-fetching": {
-		"user-card": () => import("./data-fetching/user-card.story"),
-	},
+	"user-card": () => import("./user-card.story"),
 })

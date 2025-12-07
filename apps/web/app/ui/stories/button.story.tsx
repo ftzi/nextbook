@@ -3,10 +3,6 @@ import { story, storyMatrix } from "nextbook"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 
-export const Default = story({
-	render: () => <Button>Button</Button>,
-})
-
 export const Matrix = storyMatrix({
 	schema: z.object({
 		variant: z.enum(["default", "secondary", "destructive", "outline", "ghost", "link"]),
