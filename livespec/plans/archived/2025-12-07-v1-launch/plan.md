@@ -63,35 +63,35 @@ Storify is feature-complete and tested. These final items transform it from "wor
 ## Tasks
 
 ### Phase 1: CI/CD Workflows
-- [ ] Create `.github/workflows/ci.yml` for PR checks
+- [x] Create `.github/workflows/ci.yml` for PR checks
   - Trigger: PR to main
   - Jobs: lint, test, build
   - Uses: bun setup action
-- [ ] Create `.github/workflows/publish.yml` for npm publishing
+- [x] Create `.github/workflows/publish.yml` for npm publishing
   - Trigger: manual (workflow_dispatch) with version input
   - Jobs: build, publish to npm
   - Requires: NPM_TOKEN secret
 
 ### Phase 2: Contributor Guidelines
-- [ ] Create `CONTRIBUTING.md` with:
+- [x] Create `CONTRIBUTING.md` with:
   - How to set up dev environment
   - PR process and expectations
   - Code style (Biome, TypeScript strict)
   - Test requirements
 
 ### Phase 3: Light/Dark Mode Toggle
-- [ ] Add theme toggle button to StoryViewer toolbar
-- [ ] Implement localStorage persistence for theme preference
-- [ ] Default to system preference (prefers-color-scheme)
-- [ ] Update CSS to support manual override
-- [ ] Add spec for theme switching behavior
+- [x] Add theme toggle button to StoryViewer toolbar
+- [x] Implement localStorage persistence for theme preference
+- [x] Default to system preference (prefers-color-scheme)
+- [x] Update CSS to support manual override
+- [x] Add spec for theme switching behavior
 
 ### Phase 4: Final Shipping
-- [ ] Remove "STILL WIP!" from README.md line 1
-- [ ] Bump version to 1.0.0 in `packages/storify/package.json`
-- [ ] Create `CHANGELOG.md` with v1.0.0 release notes
-- [ ] Run `bun ok` to verify all checks pass
-- [ ] Create git tag v1.0.0
+- [x] Remove "STILL WIP!" from README.md line 1 (already removed)
+- [x] Bump version to 1.0.0 in `packages/storify/package.json` (already at 1.0.0)
+- [x] Create `CHANGELOG.md` with v1.0.0 release notes
+- [x] Run `bun ok` to verify all checks pass
+- [ ] Create git tag v1.0.0 (user handles git operations)
 
 ---
 

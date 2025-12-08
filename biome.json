@@ -21,6 +21,8 @@
 			"!**/e2e/.snapshots",
 			"!**/mockServiceWorker.js",
 			"!**/next-env.d.ts",
+			"!**/*.gen.ts",
+			"!**/.output",
 			"!packages/storify/src/components/icons/icon.tsx",
 			"!packages/storify/src/components/icons/logo.tsx"
 		]
@@ -138,6 +140,17 @@
 				"rules": {
 					"performance": {
 						"noBarrelFile": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["apps/tanstack-start/**"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noHeadElement": "off",
+						"useFilenamingConvention": "off"
 					}
 				}
 			}

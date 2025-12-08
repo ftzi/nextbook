@@ -1,0 +1,11 @@
+{
+	"extends": "@workspace/typescript-config/base.json",
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+		"paths": {
+			"~/*": ["./src/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts"]
+}

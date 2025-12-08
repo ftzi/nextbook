@@ -38,3 +38,4 @@ tsconfig.tsbuildinfo
 .claude/activity.log
 .env*.local
 .vercel
+.DS_Store

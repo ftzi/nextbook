@@ -1,8 +1,8 @@
 "use client"
 
-import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { z } from "zod"
+import { useRouterAdapter } from "../router-context"
 import type { MatrixStory, PropCombination } from "../types"
 import { type DimensionInfo, generateCombinations } from "../utils/schema"
 import { useVirtualizer } from "../utils/use-virtualizer"
@@ -95,6 +95,7 @@ function multiFieldCompare({ a, b, sortItems }: MultiFieldCompareParams): number
 }
 
 export function MatrixViewer({ story, title }: MatrixViewerProps) {
+	const { useSearchParams } = useRouterAdapter()
 	const searchParams = useSearchParams()
 	const fullRender = searchParams.get("fullRender") === "true"
 

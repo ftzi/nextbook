@@ -23,6 +23,14 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
+		},
+		"./next": {
+			"types": "./dist/adapters/next.d.ts",
+			"import": "./dist/adapters/next.js"
+		},
+		"./tanstack": {
+			"types": "./dist/adapters/tanstack.d.ts",
+			"import": "./dist/adapters/tanstack.js"
 		}
 	},
 	"bin": {
@@ -38,19 +46,27 @@
 		"test": "bun test"
 	},
 	"peerDependencies": {
+		"@tanstack/react-router": ">=1",
 		"msw": ">=2",
-		"next": ">=16.0.7",
-		"react": ">=19.2.1",
-		"react-dom": ">=19.2.1",
+		"next": ">=16",
+		"react": ">=19",
+		"react-dom": ">=19",
 		"zod": ">=3"
 	},
 	"peerDependenciesMeta": {
+		"@tanstack/react-router": {
+			"optional": true
+		},
 		"msw": {
+			"optional": true
+		},
+		"next": {
 			"optional": true
 		}
 	},
 	"devDependencies": {
 		"@svgr/cli": "^8.1.0",
+		"@tanstack/react-router": "^1.121.2",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@workspace/typescript-config": "workspace:*",

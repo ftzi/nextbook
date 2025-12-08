@@ -1,9 +1,8 @@
 "use client"
 
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { z } from "zod"
+import { StorifyLink, useRouterAdapter } from "../router-context"
 import { isStory } from "../story"
 import { isMatrixStory } from "../story-matrix"
 import type { MatrixStory, Story } from "../types"
@@ -24,6 +23,7 @@ type StoryTabsProps = {
 }
 
 export function StoryTabs({ exports, activeStory, basePath, filePath }: StoryTabsProps) {
+	const { useRouter } = useRouterAdapter()
 	const router = useRouter()
 	const tabsRef = useRef<HTMLDivElement>(null)
 	const [showLeftFade, setShowLeftFade] = useState(false)
@@ -144,7 +144,7 @@ export function StoryTabs({ exports, activeStory, basePath, filePath }: StoryTab
 						const href = getHref(exp.name)
 
 						return (
-							<Link
+							<StorifyLink
 								key={exp.name}
 								href={href}
 								className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
@@ -165,7 +165,7 @@ export function StoryTabs({ exports, activeStory, basePath, filePath }: StoryTab
 										</span>
 									</Tooltip>
 								)}
-							</Link>
+							</StorifyLink>
 						)
 					})}
 				</div>

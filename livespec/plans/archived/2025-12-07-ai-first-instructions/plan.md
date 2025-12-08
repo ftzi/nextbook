@@ -158,8 +158,8 @@ Instructions should NOT include:
 ### Phase 3: Polish
 
 - [x] Ensure `bun ok` passes
-- [ ] Test full flow: fresh install, re-run upgrade, user customization preserved
-- [ ] Update any screenshots/examples if needed
+- [x] Test full flow: fresh install, re-run upgrade, user customization preserved
+- [x] Update any screenshots/examples if needed
 
 ---
 

@@ -1,8 +1,7 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
+import { StorifyLink, useRouterAdapter } from "../router-context"
 import type { StoryTreeNode } from "../types"
 import { GitHubIcon } from "./icons/github"
 import { ChevronRight, ChevronsDownUp, Component, Folder, FolderOpen, Search } from "./icons/icons"
@@ -43,9 +42,9 @@ export function Sidebar({ tree, basePath = "/ui", isOpen = false, onLinkClick }:
 			<aside className={sidebarClassName}>
 				{/* Header */}
 				<div className={styles.header}>
-					<Link href={basePath} className={styles.logo}>
+					<StorifyLink href={basePath} className={styles.logo}>
 						<Logo className={styles.logoIcon} />
-					</Link>
+					</StorifyLink>
 					<Tooltip content="View on GitHub">
 						<a
 							href="https://github.com/ftzi/storify"
@@ -176,6 +175,7 @@ type TreeNodeProps = {
 }
 
 function TreeNode({ node, basePath, depth, parentPath, onLinkClick }: TreeNodeProps) {
+	const { usePathname } = useRouterAdapter()
 	const pathname = usePathname()
 	const collapseSignal = useContext(CollapseContext)
 	const currentPath = [...parentPath, node.segment]
@@ -207,7 +207,7 @@ function TreeNode({ node, basePath, depth, parentPath, onLinkClick }: TreeNodePr
 
 		return (
 			<li>
-				<Link
+				<StorifyLink
 					href={href}
 					className={`${styles.storyLink} ${isActive ? styles.storyLinkActive : ""}`}
 					style={{ paddingLeft }}
@@ -217,7 +217,7 @@ function TreeNode({ node, basePath, depth, parentPath, onLinkClick }: TreeNodePr
 					<Component size={14} className={styles.storyIcon} color="#a5b4fc" aria-hidden="true" />
 					<span className={styles.storyName}>{node.name}</span>
 					<ChevronRight size={12} className={styles.chevronRight} aria-hidden="true" />
-				</Link>
+				</StorifyLink>
 			</li>
 		)
 	}

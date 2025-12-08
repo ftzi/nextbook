@@ -1,5 +1,6 @@
 import "@/app/globals.css"
 import { StorifyShell } from "@ftzi/storify"
+import { NextRouterAdapter } from "@ftzi/storify/next"
 import type { Metadata } from "next"
 import { stories } from "./stories"
 
@@ -9,5 +10,9 @@ export const metadata: Metadata = {
 }
 
 export default function StorifyLayout({ children }: { children: React.ReactNode }) {
-	return <StorifyShell stories={stories}>{children}</StorifyShell>
+	return (
+		<StorifyShell stories={stories} router={NextRouterAdapter}>
+			{children}
+		</StorifyShell>
+	)
 }

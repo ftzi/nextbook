@@ -43,24 +43,24 @@ When developers view component stories at `/ui`, components that make API calls 
 
 ### Phase 1: Core MSW Integration
 
-- [ ] Update `types.ts` with mock-related types
-- [ ] Update `story.ts` to include `mocks` in returned story object
-- [ ] Create `src/hooks/use-msw.ts` with worker initialization
-- [ ] Integrate MSW in StorifyShell
-- [ ] Apply mocks in StoryViewer
-- [ ] Add mock status UI indicator
+- [x] Update `types.ts` with mock-related types
+- [x] Update `story.ts` to include `mocks` in returned story object
+- [x] Create `src/hooks/msw-context.tsx` with worker initialization
+- [x] Integrate MSW in StorifyShell
+- [x] Apply mocks in StoryViewer
+- [x] Add mock status UI indicator
 
 ### Phase 2: Documentation
 
-- [ ] Update README with mocking section
-- [ ] Update marketing website features
+- [x] Update README with mocking section
+- [x] Update marketing website features
 
 ### Phase 3: Testing
 
-- [ ] Add example stories with mocks in apps/nextjs
-- [ ] Run `bun ok` to verify
+- [x] Add example stories with mocks in apps/nextjs (user-card.story.tsx)
+- [x] Run `bun ok` to verify
 
 ## Affected Specs
 
-- `SPEC:storify.story-api` — MODIFIED (add mocks property)
-- `SPEC:storify.msw` — ADDED (new capability)
+- `[STO.story-api]` — MODIFIED (add mocks property)
+- `[STO.msw-mocking]` — ADDED (new capability)

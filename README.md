@@ -15,12 +15,13 @@
 </div>
 <br/>
 
-Storify is a lightweight alternative to Storybook, designed for React frameworks like Next.js. It uses your app's existing configuration - no separate build process, no Tailwind duplication, no webpack config.
+Storify is a lightweight alternative to Storybook, designed for React frameworks like **Next.js** and **TanStack Start**. It uses your app's existing configuration - no separate build process, no Tailwind duplication, no webpack config.
 
 ## ✨ Features
 
 - **Zero Dependencies** - No runtime dependencies. Just your React app.
 - **Zero Config** - Uses your app's existing setup
+- **Framework Agnostic** - Works with Next.js, TanStack Start, and more via router adapters
 - **Path-Based Hierarchy** - Keys become sidebar structure automatically
 - **Zod Controls** - Auto-generate interactive controls from Zod schemas
 - **Story Matrix** - Auto-generate ALL prop combinations from Zod schemas
@@ -76,6 +77,7 @@ Keys become sidebar paths: `forms.input` → `Forms > Input`
 // app/ui/layout.tsx
 import "@/app/globals.css";
 import { StorifyShell } from "@ftzi/storify";
+import { NextRouterAdapter } from "@ftzi/storify/next";
 import { notFound } from "next/navigation";
 import { stories } from "./stories";
 
@@ -89,7 +91,7 @@ export default function StorifyLayout({
   }
 
   return (
-    <StorifyShell stories={stories}>
+    <StorifyShell stories={stories} router={NextRouterAdapter}>
       {children}
     </StorifyShell>
   );
@@ -112,6 +114,89 @@ export default async function Page({
 }) {
   const { path = [] } = await params;
   return <StoryPage path={path} stories={stories} />;
+}
+```
+
+</details>
+
+<details>
+<summary>TanStack Start Setup</summary>
+
+### 1. Install
+
+```bash
+npm install @ftzi/storify
+```
+
+### 2. Register your stories
+
+```tsx
+// src/stories/index.ts
+"use client";
+
+import { createStories } from "@ftzi/storify";
+
+export const stories = createStories({
+  button: () => import("./button.story"),
+});
+```
+
+### 3. Create the layout route
+
+```tsx
+// src/routes/ui.tsx
+import { StorifyShell } from "@ftzi/storify";
+import { TanStackRouterAdapter } from "@ftzi/storify/tanstack";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { stories } from "../stories";
+
+export const Route = createFileRoute("/ui")({
+  component: UILayout,
+});
+
+function UILayout() {
+  return (
+    <StorifyShell stories={stories} router={TanStackRouterAdapter}>
+      <Outlet />
+    </StorifyShell>
+  );
+}
+```
+
+### 4. Create the index route
+
+```tsx
+// src/routes/ui/index.tsx
+import { StoryPage } from "@ftzi/storify";
+import { createFileRoute } from "@tanstack/react-router";
+import { stories } from "../../stories";
+
+export const Route = createFileRoute("/ui/")({
+  component: UIIndex,
+});
+
+function UIIndex() {
+  return <StoryPage stories={stories} path={[]} basePath="/ui" />;
+}
+```
+
+### 5. Create the catch-all route
+
+```tsx
+// src/routes/ui/$.tsx
+import { StoryPage } from "@ftzi/storify";
+import { createFileRoute } from "@tanstack/react-router";
+import { stories } from "../../stories";
+
+export const Route = createFileRoute("/ui/$")({
+  component: StoryRoute,
+});
+
+function StoryRoute() {
+  const { _splat } = Route.useParams();
+  const path = _splat ? _splat.split("/").filter(Boolean) : [];
+
+  return <StoryPage stories={stories} path={path} basePath="/ui" />;
 }
 ```
 
@@ -390,7 +475,7 @@ export default function StorifyLayout({ children }: { children: React.ReactNode 
   // }
 
   return (
-    <StorifyShell stories={stories}>
+    <StorifyShell stories={stories} router={NextRouterAdapter}>
       {children}
     </StorifyShell>
   );
@@ -442,6 +527,7 @@ export const Matrix = storyMatrix({
 | Config duplication      | Yes (Tailwind, etc.)         | No                           |
 | Bundle size             | Large                        | Minimal                      |
 | Hot reload              | Separate process             | Same as app                  |
+| Framework support       | Many (via adapters)          | Next.js, TanStack Start      |
 | **Combinatorial testing** | Manual (write each variant) | **Automatic (storyMatrix)** |
 | Variant coverage        | Whatever you remember        | **100% guaranteed**          |
 | Maintenance burden      | High (keep variants in sync) | **Zero (schema is truth)**  |
